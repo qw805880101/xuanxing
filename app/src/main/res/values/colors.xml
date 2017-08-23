@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="title_bg_e83646">#e83646</color>
+    
+    <color name="txt_bg_333333">#333333</color>
+    
+    <color name="bt_bg_c8c8c8">#c8c8c8</color>
+
+    <color name="et_bg_f5f5f5">#f5f5f5</color>
+
+    <color name="lin_e6e6e6">#e6e6e6</color>
+
+
+
+</resources>
