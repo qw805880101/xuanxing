@@ -11,12 +11,10 @@ import android.widget.ImageView;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
-import com.xuanxing.tc.game.MainActivity;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by admin on 2017/8/23.
@@ -111,7 +109,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 ToastUtils.showToast(this, "请先输入验证码");
                 return;
             }
-            startActivity(MainActivity.class);
+            startActivity(HomeActivity.class);
         }
 
         if (v == imageQqLogin){
@@ -132,7 +130,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 btGetSms.setText("重新获取验证码");
                 btGetSms.setEnabled(true);
             } else {
-                btGetSms.setText(a + "秒后重新获取验证码");
+                btGetSms.setText(a + "秒后重新获取");
             }
 
         }

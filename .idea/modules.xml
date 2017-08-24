@@ -3,8 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/game.iml" filepath="$PROJECT_DIR$/game.iml" />
+      <module fileurl="file://F:\Android works\xuanxing\game.iml" filepath="F:\Android works\xuanxing\game.iml" />
       <module fileurl="file://$PROJECT_DIR$/tcmvplibrary/tcmvplibrary.iml" filepath="$PROJECT_DIR$/tcmvplibrary/tcmvplibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xuanxing.iml" filepath="$PROJECT_DIR$/xuanxing.iml" />
     </modules>
   </component>
 </project>
