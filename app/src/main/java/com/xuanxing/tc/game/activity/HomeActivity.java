@@ -54,6 +54,13 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener {
     public void initView(Bundle savedInstanceState) {
 
         bottomTabBar.init(getSupportFragmentManager());
+        bottomTabBar.setChangeColor(getResources().getColor(R.color.title_bg_e83646), getResources().getColor(R.color.txt_828282));
+        bottomTabBar.setTabPadding(this.getResources().getDimensionPixelSize(R.dimen.top_10)
+                , this.getResources().getDimensionPixelSize(R.dimen.middle_5),
+                this.getResources().getDimensionPixelSize(R.dimen.bottom_10)
+        );
+
+
         String[] mTabs = {"首页", "发现", "代练", "交易", "我的"};
         int[] imageIds = {R.mipmap.shouye_p, R.mipmap.faxian_p, R.mipmap.faxian_p, R.mipmap.faxian_p, R.mipmap.wode_p};
         int[] imageId = {R.mipmap.shouye, R.mipmap.faxian, R.mipmap.faxian, R.mipmap.faxian, R.mipmap.wode};
@@ -61,8 +68,7 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener {
         for (int i = 0; i < mTabs.length; i++) {
             bottomTabBar.addTabItem(mTabs[i], imageIds[i], imageId[i], fragmentArray[i]);
         }
-
-        initPage();
+//        initPage();
     }
 
     @Override

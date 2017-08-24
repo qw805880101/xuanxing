@@ -15,6 +15,11 @@ public class HomeFragment extends WRBaseFragment {
 
 
     @Override
+    public View getTitleView() {
+        return null;
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
     }
