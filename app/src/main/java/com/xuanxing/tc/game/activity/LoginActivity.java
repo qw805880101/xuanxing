@@ -40,6 +40,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private String smsCode;
 
+    private SmsThread smsThread = new SmsThread();
+
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
     }
@@ -90,7 +92,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 ToastUtils.showToast(this, "请先输入手机号码");
                 return;
             }
-            new SmsThread().start();
+            smsThread.start();
             btGetSms.setEnabled(false);
         }
 
@@ -102,6 +104,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
             if (null == phoneNum || ("").equals(phoneNum)) {
                 ToastUtils.showToast(this, "请先输入手机号码");
+                return;
+            }
+
+            if (phoneNum.length() < 11){
+                ToastUtils.showToast(this, "请输入正确的手机号码");
                 return;
             }
 
@@ -125,7 +132,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void handleMessage(Message msg) {
             int a = (int) msg.obj;
-
             if (a == 0) {
                 btGetSms.setText("重新获取验证码");
                 btGetSms.setEnabled(true);
@@ -154,5 +160,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
             }
         }
+
+        public void close(){
+            a=-1;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        smsThread.close();
     }
 }

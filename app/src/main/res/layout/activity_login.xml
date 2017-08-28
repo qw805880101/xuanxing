@@ -31,18 +31,20 @@
                 android:id="@+id/et_phone_num"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_weight="0.4"
                 android:background="@null"
                 android:hint="请输入手机号"
                 android:inputType="number"
                 android:paddingLeft="10dp"
+                android:text="12345678912"
                 android:textColorHint="@color/bt_bg_c8c8c8"
                 android:textSize="20sp" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_weight="0.7"
                 android:background="@drawable/login_bt_code_bg"
                 android:text="获取验证码"
                 android:textColor="@color/title_bg_e83646"
@@ -68,19 +70,21 @@
                 android:id="@+id/et_sms"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="1"
+                android:layout_weight="0.4"
                 android:background="@null"
                 android:hint="请输入验证码"
                 android:inputType="number"
                 android:paddingLeft="10dp"
+                android:text="123456"
                 android:textColorHint="@color/bt_bg_c8c8c8"
                 android:textSize="20sp" />
 
             <Button
                 android:id="@+id/bt_get_sms"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_weight="0.7"
                 android:background="@drawable/login_bt_code_bg"
                 android:text="获取验证码"
                 android:textColor="@color/title_bg_e83646" />

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.hjm.bottomtabbar.BottomTabBar;
 import com.psylife.wrmvplibrary.base.WRBaseActivity;
@@ -20,8 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
+ * 首页
+ * <p>
  * Created by tc on 2017/8/24.
  */
 
@@ -31,6 +36,14 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener {
 
     @BindView(R.id.bottom_tab_bar)
     BottomTabBar bottomTabBar;
+    @BindView(R.id.image_tongzhi)
+    ImageView imageTongzhi;
+    @BindView(R.id.bt_recommend)
+    Button btRecommend;
+    @BindView(R.id.bt_video)
+    Button btVideo;
+    @BindView(R.id.image_search)
+    ImageView imageSearch;
 
     private Class fragmentArray[] = {HomeFragment.class, FindFragment.class, LevelingFragment.class, PayFragment.class, MyFragment.class};
     private LayoutInflater layoutInflater;
@@ -53,14 +66,14 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener {
     @Override
     public void initView(Bundle savedInstanceState) {
 
+        imageTongzhi.setOnClickListener(this);
+        imageSearch.setOnClickListener(this);
+        btRecommend.setOnClickListener(this);
+        btVideo.setOnClickListener(this);
+
         bottomTabBar.init(getSupportFragmentManager());
         bottomTabBar.setChangeColor(getResources().getColor(R.color.title_bg_e83646), getResources().getColor(R.color.txt_828282));
-        bottomTabBar.setTabPadding(this.getResources().getDimensionPixelSize(R.dimen.top_10)
-                , this.getResources().getDimensionPixelSize(R.dimen.middle_5),
-                this.getResources().getDimensionPixelSize(R.dimen.bottom_10)
-        );
-
-
+        bottomTabBar.setTabPadding(this.getResources().getDimensionPixelSize(R.dimen.top_10), this.getResources().getDimensionPixelSize(R.dimen.middle_5), this.getResources().getDimensionPixelSize(R.dimen.bottom_10));
         String[] mTabs = {"首页", "发现", "代练", "交易", "我的"};
         int[] imageIds = {R.mipmap.shouye_p, R.mipmap.faxian_p, R.mipmap.faxian_p, R.mipmap.faxian_p, R.mipmap.wode_p};
         int[] imageId = {R.mipmap.shouye, R.mipmap.faxian, R.mipmap.faxian, R.mipmap.faxian, R.mipmap.wode};
@@ -75,19 +88,6 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener {
     public void initdata() {
 
     }
-
-//    private View getTabItemView(int i, String text, int id) {
-//        layoutInflater = LayoutInflater.from(this);//加载布局管理器
-//        //将xml布局转换为view对象
-//        View view = layoutInflater.inflate(R.layout.tabcontent, null);
-//        //利用view对象，找到布局中的组件,并设置内容，然后返回视图
-//        ImageView mImageView = (ImageView) view
-//                .findViewById(R.id.image);
-//        TextView mTextView = (TextView) view.findViewById(R.id.text);
-//        mImageView.setBackgroundResource(id);
-//        mTextView.setText(text);
-//        return view;
-//    }
 
     private void initPage() {
         HomeFragment fragment1 = new HomeFragment();
@@ -106,6 +106,35 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
+        if (v == imageTongzhi){
 
+        }
+
+        if (v == imageSearch){
+
+        }
+
+        if (v == btRecommend){
+            recommendOrVideo(true);
+        }
+
+        if (v == btVideo){
+            recommendOrVideo(false);
+        }
     }
+
+    public void recommendOrVideo(boolean isROV){
+        if (isROV){
+            btRecommend.setTextColor(this.getResources().getColor(R.color.title_bg_e83646));
+            btRecommend.setBackgroundResource(R.drawable.title_bt_bg_left_f);
+            btVideo.setTextColor(this.getResources().getColor(R.color.white));
+            btVideo.setBackgroundResource(R.drawable.title_bt_bg_right_z);
+        } else {
+            btRecommend.setTextColor(this.getResources().getColor(R.color.white));
+            btRecommend.setBackgroundResource(R.drawable.title_bt_bg_left_z);
+            btVideo.setTextColor(this.getResources().getColor(R.color.title_bg_e83646));
+            btVideo.setBackgroundResource(R.drawable.title_bt_bg_right_f);
+        }
+    }
+
 }

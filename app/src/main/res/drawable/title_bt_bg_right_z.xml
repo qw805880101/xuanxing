@@ -14,5 +14,5 @@
         android:width="2px"
         android:color="@color/white"
         android:dashGap="1dp"/>
-
+    <solid android:color="@color/title_bg_e83646"/>
 </shape>

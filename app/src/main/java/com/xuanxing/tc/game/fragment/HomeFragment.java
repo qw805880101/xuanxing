@@ -2,10 +2,17 @@ package com.xuanxing.tc.game.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.psylife.wrmvplibrary.base.WRBaseFragment;
 import com.xuanxing.tc.game.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by tc on 2017/8/24.
@@ -13,6 +20,9 @@ import com.xuanxing.tc.game.R;
 
 public class HomeFragment extends WRBaseFragment {
 
+
+    @BindView(R.id.fl_home)
+    FrameLayout flHome;
 
     @Override
     public View getTitleView() {
@@ -26,6 +36,7 @@ public class HomeFragment extends WRBaseFragment {
 
     @Override
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
+
 
     }
 }

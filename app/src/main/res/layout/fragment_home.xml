@@ -4,12 +4,9 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
+    <FrameLayout
+        android:id="@+id/fl_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@color/title_bg_e83646"
-        android:text="首页"
-        android:textSize="20sp"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
 </LinearLayout>
