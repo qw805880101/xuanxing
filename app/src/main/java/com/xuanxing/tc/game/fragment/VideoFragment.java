@@ -2,23 +2,19 @@ package com.xuanxing.tc.game.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.psylife.wrmvplibrary.base.WRBaseFragment;
 import com.xuanxing.tc.game.R;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by tc on 2017/8/24.
  */
 
-public class HomeFragment extends WRBaseFragment {
+public class VideoFragment extends WRBaseFragment {
 
     @Override
     public View getTitleView() {
@@ -27,9 +23,9 @@ public class HomeFragment extends WRBaseFragment {
 
     @Override
     public int getLayoutId() {
-        System.out.println("HomeFragment");
+        System.out.println("VideoFragment");
 
-        return R.layout.fragment_home;
+        return R.layout.fragment_home_video;
     }
 
     @Override
