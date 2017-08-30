@@ -4,20 +4,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.psylife.wrmvplibrary.base.WRBaseFragment;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseFragment;
 
 /**
- * Created by tc on 2017/8/24.
+ * Created by admin on 2017/8/31.
  */
 
-public class LevelingFragment extends BaseFragment {
-
-
+public class RecommendFragment extends BaseFragment {
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_leveling;
+        return R.layout.fragment_recommend;
     }
 
     @Override

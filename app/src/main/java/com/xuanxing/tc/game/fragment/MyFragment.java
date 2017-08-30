@@ -6,12 +6,13 @@ import android.view.View;
 
 import com.psylife.wrmvplibrary.base.WRBaseFragment;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.base.BaseFragment;
 
 /**
  * Created by tc on 2017/8/24.
  */
 
-public class MyFragment  extends WRBaseFragment {
+public class MyFragment  extends BaseFragment {
 
 
     @Override

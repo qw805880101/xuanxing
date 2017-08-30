@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import com.psylife.wrmvplibrary.base.WRBaseFragment;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.base.BaseFragment;
 
 import butterknife.BindView;
 
@@ -14,7 +15,7 @@ import butterknife.BindView;
  * Created by tc on 2017/8/24.
  */
 
-public class VideoFragment extends WRBaseFragment {
+public class VideoFragment extends BaseFragment {
 
     @Override
     public View getTitleView() {

@@ -10,10 +10,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.psylife.wrmvplibrary.base.WRBaseActivity;
+import com.psylife.wrmvplibrary.data.net.RxService;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
+import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.bottomtabbar.BottomTabBar;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.api.HomeApi;
+import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.HomeFragmentInfo;
 import com.xuanxing.tc.game.fragment.FindFragment;
 import com.xuanxing.tc.game.fragment.HomeFragment;
 import com.xuanxing.tc.game.fragment.LevelingFragment;
@@ -26,6 +32,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.RequestBody;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * 首页
@@ -33,7 +42,7 @@ import butterknife.ButterKnife;
  * Created by tc on 2017/8/24.
  */
 
-public class HomeActivity extends WRBaseActivity implements OnClickListener, BottomTabBar.OnTabChangeListener {
+public class HomeActivity extends BaseActivity implements OnClickListener, BottomTabBar.OnTabChangeListener {
 
     List<Fragment> fragments = new ArrayList<>();
 
@@ -52,12 +61,17 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener, Bot
     @BindView(R.id.title_home)
     LinearLayout titleHome;
 
-    private Class fragmentArray[] = {HomeFragment.class, FindFragment.class, LevelingFragment.class, PayFragment.class, MyFragment.class};
+    private Class fragmentArray[] = {HomeFragment.class, FindFragment.class, /*LevelingFragment.class, PayFragment.class,*/ MyFragment.class};
     private LayoutInflater layoutInflater;
 
+    VpSetCurrentItem vpSetCurrentItem;
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
+    }
+
+    public void setVpSetCurrentItem(VpSetCurrentItem vpSetCurrentItem){
+        this.vpSetCurrentItem = vpSetCurrentItem;
     }
 
     @Override
@@ -82,19 +96,18 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener, Bot
         bottomTabBar.setChangeColor(getResources().getColor(R.color.title_bg_e83646), getResources().getColor(R.color.txt_828282));
         bottomTabBar.setTabPadding(this.getResources().getDimensionPixelSize(R.dimen.top_10), this.getResources().getDimensionPixelSize(R.dimen.middle_5), this.getResources().getDimensionPixelSize(R.dimen.bottom_10));
         bottomTabBar.setOnTabChangeListener(this);
-        String[] mTabs = {"首页", "发现", "代练", "交易", "我的"};
-        int[] imageIds = {R.mipmap.shouye_p, R.mipmap.faxian_p, R.mipmap.faxian_p, R.mipmap.faxian_p, R.mipmap.wode_p};
-        int[] imageId = {R.mipmap.shouye, R.mipmap.faxian, R.mipmap.faxian, R.mipmap.faxian, R.mipmap.wode};
+        String[] mTabs = {"首页", "发现", /*"代练", "交易",*/ "我的"};
+        int[] imageIds = {R.mipmap.shouye_p, R.mipmap.faxian_p, /*R.mipmap.faxian_p, R.mipmap.faxian_p,*/ R.mipmap.wode_p};
+        int[] imageId = {R.mipmap.shouye, R.mipmap.faxian, /*R.mipmap.faxian, R.mipmap.faxian,*/ R.mipmap.wode};
         /*新建Tabspec选项卡并设置Tab菜单栏的内容和绑定对应的Fragment*/
         for (int i = 0; i < mTabs.length; i++) {
             bottomTabBar.addTabItem(mTabs[i], imageIds[i], imageId[i], fragmentArray[i]);
         }
-        initPage();
     }
 
     @Override
     public void initdata() {
-
+//        initPage();
     }
 
     private void initPage() {
@@ -120,17 +133,16 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener, Bot
         }
 
         if (v == imageSearch) {
-
         }
 
         if (v == btRecommend) {
             recommendOrVideo(true);
-            bottomTabBar.changeFragmetn(new HomeFragment());
+            vpSetCurrentItem.setCurrentItem(0);
         }
 
         if (v == btVideo) {
             recommendOrVideo(false);
-            bottomTabBar.changeFragmetn(new VideoFragment());
+            vpSetCurrentItem.setCurrentItem(1);
         }
     }
 
@@ -174,6 +186,8 @@ public class HomeActivity extends WRBaseActivity implements OnClickListener, Bot
         if (position == 3) {
 
         }
-
+    }
+    public interface VpSetCurrentItem{
+        void setCurrentItem(int item);
     }
 }
