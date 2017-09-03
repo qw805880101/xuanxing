@@ -18,6 +18,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    allprojects {
+        repositories {
+            maven { url "https://jitpack.io" }
+        }
+    }
 }
 
 dependencies {
@@ -33,4 +39,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':tcmvplibrary')
     compile project(':bottomtabbar')
+    compile 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
+    compile 'com.github.danylovolokh:video-player-manager:0.2.0'
+    compile 'com.github.danylovolokh:list-visibility-utils:0.2.0'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
 }

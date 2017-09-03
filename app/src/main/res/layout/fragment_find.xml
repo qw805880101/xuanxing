@@ -2,14 +2,89 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    >
 
-    <TextView
-        android:id="@+id/textView"
+    <RelativeLayout
+        android:id="@+id/rl_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:text="发现"/>
+        android:layout_height="60dp"
+        android:background="@color/title_bg_e83646"
+        >
+
+        <ImageView
+            android:id="@+id/image_tongzhi"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="center"
+            android:visibility="gone"
+            android:src="@mipmap/tongzhi_white"
+            />
+
+        <TextView
+            android:id="@+id/txt_title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发现"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/title_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:visibility="gone"
+            >
+
+            <Button
+                android:id="@+id/bt_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_bt_bg_left_f"
+                android:text="推荐"
+                android:textColor="@color/title_bg_e83646"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/bt_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/title_bt_bg_right_z"
+                android:text="视频"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/image_search"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            android:scaleType="center"
+            android:src="@mipmap/sousuo"
+            />
+
+
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/rv_find"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 
 </LinearLayout>

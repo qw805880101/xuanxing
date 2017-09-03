@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="bg_f4f4f4">#f4f4f4</color>
 
     <color name="title_bg_e83646">#e83646</color>
     
@@ -16,5 +17,13 @@
     <color name="lin_e6e6e6">#e6e6e6</color>
 
     <color name="txt_828282">#828282</color>
+
+    <color name="txt_999999">#999999</color>
+
+    <color name="txt_969696">#969696</color>
+
+    <color name="tx_e83545">#e83545</color>
+
+    <color name="tx_808080">#808080</color>
 
 </resources>

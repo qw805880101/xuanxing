@@ -8,18 +8,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.psylife.wrmvplibrary.data.net.RxService;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
-import com.psylife.wrmvplibrary.utils.ToastUtils;
-import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.bottomtabbar.BottomTabBar;
-import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
-import com.xuanxing.tc.game.api.HomeApi;
 import com.xuanxing.tc.game.base.BaseActivity;
-import com.xuanxing.tc.game.bean.HomeFragmentInfo;
 import com.xuanxing.tc.game.fragment.FindFragment;
 import com.xuanxing.tc.game.fragment.HomeFragment;
 import com.xuanxing.tc.game.fragment.LevelingFragment;
@@ -31,10 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import okhttp3.RequestBody;
-import rx.Observable;
-import rx.functions.Action1;
 
 /**
  * 首页
@@ -48,30 +39,11 @@ public class HomeActivity extends BaseActivity implements OnClickListener, Botto
 
     @BindView(R.id.bottom_tab_bar)
     BottomTabBar bottomTabBar;
-    @BindView(R.id.image_tongzhi)
-    ImageView imageTongzhi;
-    @BindView(R.id.bt_recommend)
-    Button btRecommend;
-    @BindView(R.id.bt_video)
-    Button btVideo;
-    @BindView(R.id.image_search)
-    ImageView imageSearch;
-    @BindView(R.id.txt_title_name)
-    TextView txtTitleName;
-    @BindView(R.id.title_home)
-    LinearLayout titleHome;
 
     private Class fragmentArray[] = {HomeFragment.class, FindFragment.class, /*LevelingFragment.class, PayFragment.class,*/ MyFragment.class};
-    private LayoutInflater layoutInflater;
-
-    VpSetCurrentItem vpSetCurrentItem;
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
-    }
-
-    public void setVpSetCurrentItem(VpSetCurrentItem vpSetCurrentItem){
-        this.vpSetCurrentItem = vpSetCurrentItem;
     }
 
     @Override
@@ -86,11 +58,6 @@ public class HomeActivity extends BaseActivity implements OnClickListener, Botto
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
-        imageTongzhi.setOnClickListener(this);
-        imageSearch.setOnClickListener(this);
-        btRecommend.setOnClickListener(this);
-        btVideo.setOnClickListener(this);
 
         bottomTabBar.init(getSupportFragmentManager());
         bottomTabBar.setChangeColor(getResources().getColor(R.color.title_bg_e83646), getResources().getColor(R.color.txt_828282));
@@ -107,87 +74,16 @@ public class HomeActivity extends BaseActivity implements OnClickListener, Botto
 
     @Override
     public void initdata() {
-//        initPage();
-    }
 
-    private void initPage() {
-        HomeFragment fragment1 = new HomeFragment();
-        FindFragment fragment2 = new FindFragment();
-        LevelingFragment fragment3 = new LevelingFragment();
-        PayFragment fragment4 = new PayFragment();
-        MyFragment fragment5 = new MyFragment();
-        VideoFragment fragment6 = new VideoFragment();
-
-        fragments.add(fragment1);
-        fragments.add(fragment2);
-        fragments.add(fragment3);
-        fragments.add(fragment4);
-        fragments.add(fragment5);
-        fragments.add(fragment6);
     }
 
     @Override
     public void onClick(View v) {
-        if (v == imageTongzhi) {
-
-        }
-
-        if (v == imageSearch) {
-        }
-
-        if (v == btRecommend) {
-            recommendOrVideo(true);
-            vpSetCurrentItem.setCurrentItem(0);
-        }
-
-        if (v == btVideo) {
-            recommendOrVideo(false);
-            vpSetCurrentItem.setCurrentItem(1);
-        }
     }
 
-    public void recommendOrVideo(boolean isROV) {
-        if (isROV) {
-            btRecommend.setTextColor(this.getResources().getColor(R.color.title_bg_e83646));
-            btRecommend.setBackgroundResource(R.drawable.title_bt_bg_left_f);
-            btRecommend.setEnabled(false);
-            btVideo.setTextColor(this.getResources().getColor(R.color.white));
-            btVideo.setBackgroundResource(R.drawable.title_bt_bg_right_z);
-            btVideo.setEnabled(true);
-        } else {
-            btRecommend.setTextColor(this.getResources().getColor(R.color.white));
-            btRecommend.setBackgroundResource(R.drawable.title_bt_bg_left_z);
-            btRecommend.setEnabled(true);
-            btVideo.setTextColor(this.getResources().getColor(R.color.title_bg_e83646));
-            btVideo.setBackgroundResource(R.drawable.title_bt_bg_right_f);
-            btVideo.setEnabled(false);
-        }
-    }
 
     @Override
     public void onTabChange(int position, String name) {
-        if (position == 0) {
-            imageTongzhi.setVisibility(View.VISIBLE);
-            imageSearch.setVisibility(View.VISIBLE);
-            titleHome.setVisibility(View.VISIBLE);
-        }
 
-        if (position == 1) {
-            imageTongzhi.setVisibility(View.GONE);
-            imageSearch.setVisibility(View.GONE);
-            titleHome.setVisibility(View.GONE);
-            txtTitleName.setText(name);
-        }
-
-        if (position == 2) {
-
-        }
-
-        if (position == 3) {
-
-        }
-    }
-    public interface VpSetCurrentItem{
-        void setCurrentItem(int item);
     }
 }
