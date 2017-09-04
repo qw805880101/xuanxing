@@ -69,11 +69,10 @@
         android:layout_width="match_parent"
         android:layout_height="200dp">
         <!--播放器-->
-        <com.volokh.danylo.video_player_manager.ui.VideoPlayerView
-            android:id="@+id/item_video_vpv_player"
+        <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+            android:id="@+id/video_player"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="200dp"/>
 
         <ImageView
             android:id="@+id/iv_video_play"
@@ -81,6 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@mipmap/bofang"
+            android:visibility="gone"
             />
 
     </RelativeLayout>

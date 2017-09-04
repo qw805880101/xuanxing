@@ -6,7 +6,7 @@ android {
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.xuanxing.tc.game"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -40,7 +40,6 @@ dependencies {
     compile project(':tcmvplibrary')
     compile project(':bottomtabbar')
     compile 'com.github.anzaizai:EasySwipeMenuLayout:1.1.2'
-    compile 'com.github.danylovolokh:video-player-manager:0.2.0'
-    compile 'com.github.danylovolokh:list-visibility-utils:0.2.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
+    compile 'fm.jiecao:jiecaovideoplayer:5.8.1'
 }

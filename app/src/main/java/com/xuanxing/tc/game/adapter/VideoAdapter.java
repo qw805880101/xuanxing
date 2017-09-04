@@ -1,23 +1,18 @@
 package com.xuanxing.tc.game.adapter;
 
 import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.volokh.danylo.video_player_manager.ui.VideoPlayerView;
 import com.xuanxing.tc.game.R;
-import com.xuanxing.tc.game.bean.RecommendInfo;
 import com.xuanxing.tc.game.bean.VideoInfo;
-import com.xuanxing.tc.game.utils.VideoListItem;
 
 import java.util.List;
+
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 /**
  * Created by admin on 2017/8/31.
@@ -27,12 +22,9 @@ public class VideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolder> {
 
     private Context context;
 
-    private final List<VideoListItem> mList; // 视频项列表
-
-    public VideoAdapter(Context context, @Nullable List<VideoInfo> data, List<VideoListItem> mList) {
+    public VideoAdapter(Context context, @Nullable List<VideoInfo> data) {
         super(R.layout.item_video, data);
         this.context = context;
-        this.mList = mList;
     }
 
     public BaseViewHolder getBaseViewHolder(){
@@ -41,50 +33,9 @@ public class VideoAdapter extends BaseQuickAdapter<VideoInfo, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, VideoInfo item) {
-        try {
-
-
-        } catch (Exception e){
-            System.out.println("出错啦");
-            e.printStackTrace();
-        }
-
-//        helper.setText(R.id.txt_heading, item.getHeading())
-//        .setText(R.id.txt_author_time, item.getAuthor() + "    " + item.getTime());
-//
-//        if (item.getType() == 0){ //纯文本
-//            helper.setVisible(R.id.iv_recommend, false).
-//                    setVisible(R.id.iv_video_icon, false).
-//                    setVisible(R.id.item_lin, false).
-//                    setVisible(R.id.txt_content, true).
-//                    setImageResource(R.id.iv_total, R.mipmap.guankanshu).
-//                    setText(R.id.txt_content, item.getContent());
-//
-//        }
-//
-//        if (item.getType() == 1){ //带图片
-//            helper.setVisible(R.id.iv_recommend, true).
-//                    setVisible(R.id.iv_video_icon, false).
-//                    setVisible(R.id.item_lin, true).
-//                    setVisible(R.id.txt_content, false).
-//                    setImageResource(R.id.iv_total, R.mipmap.guankanshu).
-//                    setText(R.id.txt_content, item.getContent());
-//        }
-//
-//        if (item.getType() == 2){ //带视频
-//            helper.setVisible(R.id.iv_recommend, true).
-//                    setVisible(R.id.iv_video_icon, true).
-//                    setVisible(R.id.item_lin, true).
-//                    setVisible(R.id.txt_content, false).
-//                    setImageResource(R.id.iv_total, R.mipmap.bofangshu).
-//                    setText(R.id.txt_content, item.getContent());
-//        }
-
+        JCVideoPlayerStandard jcVideoPlayerStandard = helper.getView(R.id.video_player);
+        jcVideoPlayerStandard.setUp(item.getHeading()
+                , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "嫂子闭眼睛");
+//        jcVideoPlayerStandard.thumbImageView.setImage("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
     }
-
-    // 返回播放器
-    public VideoPlayerView getVpvPlayer() {
-        return this.getBaseViewHolder().getView(R.id.item_video_vpv_player);
-    }
-
 }
