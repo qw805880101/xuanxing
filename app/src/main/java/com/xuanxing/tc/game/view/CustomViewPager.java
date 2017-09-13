@@ -30,4 +30,14 @@ public class CustomViewPager extends ViewPager {
         // TODO Auto-generated method stub
         super.setCurrentItem(item, false);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        return false;
+    }
 }

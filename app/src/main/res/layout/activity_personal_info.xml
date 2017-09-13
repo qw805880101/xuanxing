@@ -12,6 +12,7 @@
         >
 
     <LinearLayout
+        android:id="@+id/lin_head"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
@@ -46,6 +47,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_name"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
@@ -86,6 +88,7 @@
         android:background="@color/lin_e6e6e6"
         />
     <LinearLayout
+        android:id="@+id/lin_birthday"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
@@ -129,6 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
@@ -161,6 +165,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_interest"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
@@ -201,6 +206,7 @@
         android:layout_height="60dp"
         android:gravity="center_vertical"
         android:background="@color/white"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:paddingLeft="20dp"
@@ -233,6 +239,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lin_mod_introduce"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
@@ -275,6 +282,7 @@
         android:gravity="center_vertical"
         android:background="@color/white"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_marginTop="10dp"
         android:paddingLeft="20dp"
         >

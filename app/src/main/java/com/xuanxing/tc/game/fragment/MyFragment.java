@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.CollectionActivity;
+import com.xuanxing.tc.game.activity.FansActivity;
 import com.xuanxing.tc.game.activity.FeedbackActivity;
 import com.xuanxing.tc.game.activity.MessageActivity;
 import com.xuanxing.tc.game.activity.PersonalInfoActivity;
@@ -24,7 +26,7 @@ import butterknife.Unbinder;
  * Created by tc on 2017/8/24.
  */
 
-public class MyFragment extends BaseFragment implements View.OnClickListener {
+public class MyFragment extends BaseFragment implements OnClickListener {
 
     @BindView(R.id.lin_personal_info)
     LinearLayout linPersonalInfo;
@@ -38,6 +40,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     LinearLayout linSet;
     @BindView(R.id.lin_collection)
     LinearLayout linCollection;
+    @BindView(R.id.lin_follow)
+    LinearLayout linFollow;
+    @BindView(R.id.lin_fans)
+    LinearLayout linFans;
 
 
     @Override
@@ -53,6 +59,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         linSet.setOnClickListener(this);
         linPersonalInfo.setOnClickListener(this);
         linCollection.setOnClickListener(this);
+        linFans.setOnClickListener(this);
     }
 
     @Override
@@ -62,23 +69,27 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             startActivity(intent);
         }
 
-        if (v == linFeedback){
+        if (v == linFeedback) {
             Intent intent = new Intent(this.getContext(), FeedbackActivity.class);
             startActivity(intent);
         }
 
-        if (v == linMessage){
+        if (v == linMessage) {
             Intent intent = new Intent(this.getContext(), MessageActivity.class);
             startActivity(intent);
         }
 
-        if (v == linSet){
+        if (v == linSet) {
             Intent intent = new Intent(this.getContext(), SetActivity.class);
             startActivity(intent);
         }
 
-        if (v == linCollection){
+        if (v == linCollection) {
             Intent intent = new Intent(this.getContext(), CollectionActivity.class);
+            startActivity(intent);
+        }
+        if (v == linFans){
+            Intent intent = new Intent(this.getContext(), FansActivity.class);
             startActivity(intent);
         }
     }

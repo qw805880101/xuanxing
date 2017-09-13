@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    >
+
+    <LinearLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_init"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="游戏帮"
+                android:textSize="20sp"
+                android:textColor="@color/title_bg_e83646"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="轻松快乐玩游戏！"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/txt_bg_333333"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_banner"
+        android:layout_above="@id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/timg"
+            android:scaleType="fitXY"
+            />
+
+        <Button
+            android:id="@+id/bt_skip"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:text="5  跳过"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="35dp"
+            android:layout_marginRight="15dp"
+            android:textSize="15sp"
+            android:background="@drawable/bt_bg_trans"
+            />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
