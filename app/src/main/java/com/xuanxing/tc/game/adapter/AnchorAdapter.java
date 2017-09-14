@@ -37,6 +37,6 @@ public class AnchorAdapter extends BaseQuickAdapter<RecommendInfo, BaseViewHolde
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new AnchorInfoAdapter(data));
+        recyclerView.setAdapter(new AnchorInfoAdapter(context, data));
     }
 }
