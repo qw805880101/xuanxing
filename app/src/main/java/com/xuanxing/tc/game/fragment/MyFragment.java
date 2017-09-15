@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.activity.AuthActivity;
 import com.xuanxing.tc.game.activity.CollectionActivity;
 import com.xuanxing.tc.game.activity.FansActivity;
 import com.xuanxing.tc.game.activity.FeedbackActivity;
@@ -30,8 +31,8 @@ public class MyFragment extends BaseFragment implements OnClickListener {
 
     @BindView(R.id.lin_personal_info)
     LinearLayout linPersonalInfo;
-    @BindView(R.id.lin_leveling)
-    LinearLayout linLeveling;
+    @BindView(R.id.lin_auth)
+    LinearLayout linAuth;
     @BindView(R.id.lin_message)
     LinearLayout linMessage;
     @BindView(R.id.lin_feedback)
@@ -53,7 +54,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
 
     @Override
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
-        linLeveling.setOnClickListener(this);
+        linAuth.setOnClickListener(this);
         linMessage.setOnClickListener(this);
         linFeedback.setOnClickListener(this);
         linSet.setOnClickListener(this);
@@ -90,6 +91,10 @@ public class MyFragment extends BaseFragment implements OnClickListener {
         }
         if (v == linFans){
             Intent intent = new Intent(this.getContext(), FansActivity.class);
+            startActivity(intent);
+        }
+        if (v == linAuth){
+            Intent intent = new Intent(this.getContext(), AuthActivity.class);
             startActivity(intent);
         }
     }

@@ -55,6 +55,10 @@
 
         <activity android:name=".activity.AnchorActivity"/>
 
+        <activity android:name=".activity.AuthActivity"/>
+
+        <activity android:name=".activity.SearchActivity"/>
+
     </application>
 
 </manifest>

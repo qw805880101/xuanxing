@@ -155,7 +155,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/lin_leveling"
+        android:id="@+id/lin_auth"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:background="@color/white"

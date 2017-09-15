@@ -1,5 +1,6 @@
 package com.xuanxing.tc.game.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.psylife.wrmvplibrary.utils.helper.FragmentAdapter;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.HomeActivity;
+import com.xuanxing.tc.game.activity.SearchActivity;
 import com.xuanxing.tc.game.api.HomeApi;
 import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.view.CustomViewPager;
@@ -34,7 +36,6 @@ public class HomeFragment extends BaseFragment implements HomeApi, View.OnClickL
 
     @BindView(R.id.vp_home)
     CustomViewPager vpHome;
-
     @BindView(R.id.image_tongzhi)
     ImageView imageTongzhi;
     @BindView(R.id.bt_recommend)
@@ -85,6 +86,7 @@ public class HomeFragment extends BaseFragment implements HomeApi, View.OnClickL
         }
 
         if (v == imageSearch) {
+            startActivity(new Intent(this.getContext(), SearchActivity.class));
         }
 
         if (v == btRecommend) {

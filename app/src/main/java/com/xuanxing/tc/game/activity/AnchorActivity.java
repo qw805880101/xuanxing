@@ -23,6 +23,7 @@ import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.fragment.RecommendFragment;
 import com.xuanxing.tc.game.fragment.VideoFragment;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -85,8 +86,7 @@ public class AnchorActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        setIndicator(toolbarTab, 80, 80);
-
+        XUtils.setIndicator(toolbarTab, 80, 80);
         final CollapsingToolbarLayout mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -122,37 +122,5 @@ public class AnchorActivity extends BaseActivity {
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(toolbarTab));
         toolbarTab.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
-    }
-
-    public void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
-        Class<?> tabLayout = tabs.getClass();
-        Field tabStrip = null;
-        try {
-            tabStrip = tabLayout.getDeclaredField("mTabStrip");
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-
-        tabStrip.setAccessible(true);
-        LinearLayout llTab = null;
-        try {
-            llTab = (LinearLayout) tabStrip.get(tabs);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
-        int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
-
-        for (int i = 0; i < llTab.getChildCount(); i++) {
-            View child = llTab.getChildAt(i);
-            child.setPadding(0, 0, 0, 0);
-            LayoutParams params = new LayoutParams(0, LayoutParams.MATCH_PARENT, 1);
-            params.leftMargin = left;
-            params.rightMargin = right;
-            child.setLayoutParams(params);
-            child.invalidate();
-        }
-
     }
 }
