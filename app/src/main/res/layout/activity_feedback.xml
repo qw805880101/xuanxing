@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="反馈类型"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:paddingTop="15dp"
             android:paddingLeft="10dp"
             android:paddingBottom="15dp"
@@ -39,9 +39,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
+            android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:orientation="horizontal"
             >
             <Button
@@ -50,7 +50,7 @@
                 android:background="@drawable/anchor_bg"
                 android:text="功能建议"
                 android:textColor="@color/txt_bg_333333"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 />
 
 
@@ -61,7 +61,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="闪退崩溃"
                 android:textColor="@color/txt_bg_333333"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 />
 
 
@@ -72,7 +72,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="其他"
                 android:textColor="@color/title_bg_e83646"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 />
 
         </LinearLayout>
@@ -90,10 +90,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="问题描述"
-            android:textSize="20sp"
-            android:paddingTop="15dp"
+            android:textSize="15sp"
+            android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:textColor="@color/txt_bg_333333"
             />
         <View
@@ -105,9 +105,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
+            android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:paddingBottom="20dp"
+            android:paddingBottom="10dp"
             android:orientation="vertical"
             >
 
@@ -116,13 +116,13 @@
                 android:layout_height="80dp"
                 android:gravity="top"
                 android:background="@null"
+                android:textSize="14sp"
                 android:hint="请填写反馈信息"
                 />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:src="@mipmap/tupian"
                 />
 
@@ -140,10 +140,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="联系方式"
-            android:textSize="20sp"
-            android:paddingTop="15dp"
+            android:textSize="15sp"
+            android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:textColor="@color/txt_bg_333333"
             />
         <View
@@ -155,9 +155,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
+            android:paddingTop="10dp"
             android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
+            android:paddingBottom="10dp"
             android:orientation="horizontal"
             >
             <EditText
@@ -165,6 +165,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="top"
                 android:background="@null"
+                android:textSize="14sp"
                 android:hint="请填写联系方式（手机号、QQ、邮箱等）"
                 />
         </LinearLayout>

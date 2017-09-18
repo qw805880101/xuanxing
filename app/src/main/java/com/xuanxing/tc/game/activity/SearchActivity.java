@@ -82,7 +82,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener{
     @Override
     public void initView(Bundle savedInstanceState) {
         txtCancel.setOnClickListener(this);
-        XUtils.setIndicator(toolbarTab, 80, 80);
+        XUtils.setIndicator(toolbarTab, 60, 60);
         etSearch.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

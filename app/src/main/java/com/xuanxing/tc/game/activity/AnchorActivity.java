@@ -1,20 +1,14 @@
 package com.xuanxing.tc.game.activity;
 
-import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
@@ -71,7 +65,7 @@ public class AnchorActivity extends BaseActivity {
     private List<Fragment> mFragments = new ArrayList<>();
 
     public void setStatusBarColor() {
-        StatusBarUtil.setTranslucent(this);
+        StatusBarUtil.setColor(AnchorActivity.this, AnchorActivity.this.getResources().getColor(R.color.title_bg_e83646));
     }
 
     @Override
@@ -86,20 +80,20 @@ public class AnchorActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        XUtils.setIndicator(toolbarTab, 80, 80);
-        final CollapsingToolbarLayout mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset <= -loginLayout.getHeight() / 2) {
-                    mCollapsingToolbarLayout.setTitle("Star");
-                    StatusBarUtil.setColor(AnchorActivity.this, AnchorActivity.this.getResources().getColor(R.color.title_bg_e83646));
-                } else {
-                    mCollapsingToolbarLayout.setTitle(" ");
-                    StatusBarUtil.setTranslucent(AnchorActivity.this);
-                }
-            }
-        });
+        XUtils.setIndicator(toolbarTab, 60, 60);
+//        final CollapsingToolbarLayout mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (verticalOffset <= -loginLayout.getHeight() / 2) {
+//                    mCollapsingToolbarLayout.setTitle("Star");
+////                    StatusBarUtil.setColor(AnchorActivity.this, AnchorActivity.this.getResources().getColor(R.color.title_bg_e83646));
+//                } else {
+//                    mCollapsingToolbarLayout.setTitle(" ");
+////                    StatusBarUtil.setTranslucent(AnchorActivity.this);
+//                }
+//            }
+//        });
 
         initFragment();
     }

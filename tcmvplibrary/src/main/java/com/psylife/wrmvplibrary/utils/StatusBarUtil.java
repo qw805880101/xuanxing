@@ -3,16 +3,27 @@ package com.psylife.wrmvplibrary.utils;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.ColorInt;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.psylife.wrmvplibrary.widget.statusbar.StatusBarView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Properties;
 
 
 /**
@@ -29,8 +40,39 @@ public class StatusBarUtil {
      * @param color    状态栏颜色值
      */
     public static void setColor(Activity activity, @ColorInt int color) {
-        setColor(activity, color, DEFAULT_STATUS_BAR_ALPHA);
+        if(Build.VERSION.SDK_INT > 19) {
+            setColor(activity, color, DEFAULT_STATUS_BAR_ALPHA);
+        }
     }
+
+    /**
+             *
+             * @param activity
+             * @param dark
+             */
+        public static void setStatusBarLightMode(Activity activity, boolean dark){
+
+            switch (getSystem()){
+                case SYS_MIUI:
+                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                        DefaultsetStatusBarLightMode(activity,dark);
+                    }else {
+                        MIUISetStatusBarLightMode(activity.getWindow(),dark);
+                    }
+                    break;
+                case SYS_FLYME:
+                    FlymesetStatusBarLightMode(activity,dark);
+                    break;
+            default:
+                DefaultsetStatusBarLightMode(activity,dark);
+                break;
+        }
+
+//        MIUISetStatusBarLightMode(activity.getWindow(),dark);
+//        FlymesetStatusBarLightMode(activity,dark);
+//        DefaultsetStatusBarLightMode(activity,dark);
+    }
+
 
     /**
      * 设置状态栏颜色
@@ -166,9 +208,11 @@ public class StatusBarUtil {
      * @param activity 需要设置的activity
      */
     public static void setTransparent(Activity activity) {
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
         }
+
         transparentStatusBar(activity);
         setRootView(activity);
     }
@@ -541,12 +585,43 @@ public class StatusBarUtil {
     private static void transparentStatusBar(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//            if("samsung".equals(SystemUtil.getDeviceBrand())){
+            if(isHaveNavigationBar(activity)){
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }else{
+                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
             activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
         } else {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+    }
+
+    public static boolean isHaveNavigationBar(Context context) {
+
+        boolean isHave = false;
+        Resources rs = context.getResources();
+        int id = rs.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (id > 0) {
+            isHave = rs.getBoolean(id);
+        }
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            Method m = systemPropertiesClass.getMethod("get", String.class);
+            String navBarOverride = (String) m.invoke(systemPropertiesClass, "qemu.hw.mainkeys");
+            if ("1".equals(navBarOverride)) {
+                isHave = false;
+            } else if ("0".equals(navBarOverride)) {
+                isHave = true;
+            }
+        } catch (Exception e) {
+            Log.w("TAG", e);
+        }
+
+
+        return isHave;
     }
 
     /**
@@ -593,5 +668,137 @@ public class StatusBarUtil {
         green = (int) (green * a + 0.5);
         blue = (int) (blue * a + 0.5);
         return 0xff << 24 | red << 16 | green << 8 | blue;
+    }
+
+
+
+    /**
+     * 设置状态栏字体图标为深色，需要MIUIV6以上
+     * @param window 需要设置的窗口
+     * @param dark 是否把状态栏字体及图标颜色设置为深色
+     * @return  boolean 成功执行返回true
+     *
+     */
+    public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
+        boolean result = false;
+        if (window != null) {
+            Class clazz = window.getClass();
+            try {
+                int darkModeFlag = 0;
+                Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+                Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+                darkModeFlag = field.getInt(layoutParams);
+                Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+                if(dark){
+                    extraFlagField.invoke(window,darkModeFlag,darkModeFlag);//状态栏透明且黑色字体
+                }else{
+                    extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
+                }
+                result=true;
+            }catch (Exception e){
+
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 设置状态栏图标为深色和魅族特定的文字风格
+     * 可以用来判断是否为Flyme用户
+     *
+     * @param isFontColorDark 是否把状态栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
+     */
+    public static boolean FlymesetStatusBarLightMode(Activity activity, boolean isFontColorDark) {
+        Window window = activity.getWindow();
+        boolean result = false;
+        if (window != null) {
+            try {
+                WindowManager.LayoutParams lp = window.getAttributes();
+                Field darkFlag = WindowManager.LayoutParams.class
+                        .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+                Field meizuFlags = WindowManager.LayoutParams.class
+                        .getDeclaredField("meizuFlags");
+                darkFlag.setAccessible(true);
+                meizuFlags.setAccessible(true);
+                int bit = darkFlag.getInt(null);
+                int value = meizuFlags.getInt(lp);
+                if (isFontColorDark) {
+                    value |= bit;
+                } else {
+                    value &= ~bit;
+                }
+                meizuFlags.setInt(lp, value);
+                window.setAttributes(lp);
+                result = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+
+    public static boolean DefaultsetStatusBarLightMode(Activity activity, boolean isFontColorDark) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (isFontColorDark) {
+                // 沉浸式
+                //activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                //非沉浸式
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            } else {
+                //非沉浸式
+                activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static final String SYS_EMUI = "sys_emui";
+    public static final String SYS_MIUI = "sys_miui";
+    public static final String SYS_FLYME = "sys_flyme";
+    private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
+    private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
+    private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+    private static final String KEY_EMUI_API_LEVEL = "ro.build.hw_emui_api_level";
+    private static final String KEY_EMUI_VERSION = "ro.build.version.emui";
+    private static final String KEY_EMUI_CONFIG_HW_SYS_VERSION = "ro.confg.hw_systemversion";
+
+    public static String getSystem(){
+        String SYS = "";
+        try {
+            Properties prop= new Properties();
+            prop.load(new FileInputStream(new File(Environment.getRootDirectory(), "build.prop")));
+            if(prop.getProperty(KEY_MIUI_VERSION_CODE, null) != null
+                    || prop.getProperty(KEY_MIUI_VERSION_NAME, null) != null
+                    || prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null){
+                SYS = SYS_MIUI;//小米
+            }else if(prop.getProperty(KEY_EMUI_API_LEVEL, null) != null
+                    ||prop.getProperty(KEY_EMUI_VERSION, null) != null
+                    ||prop.getProperty(KEY_EMUI_CONFIG_HW_SYS_VERSION, null) != null){
+                SYS = SYS_EMUI;//华为
+            }else if(getMeizuFlymeOSFlag().toLowerCase().contains("flyme")){
+                SYS = SYS_FLYME;//魅族
+            };
+        } catch (IOException e){
+            e.printStackTrace();
+            return SYS;
+        }
+        return SYS;
+    }
+
+    public static String getMeizuFlymeOSFlag() {
+        return getSystemProperty("ro.build.display.id", "");
+    }
+
+    private static String getSystemProperty(String key, String defaultValue) {
+        try {
+            Class<?> clz = Class.forName("android.os.SystemProperties");
+            Method get = clz.getMethod("get", String.class, String.class);
+            return (String)get.invoke(clz, key, defaultValue);
+        } catch (Exception e) {
+        }
+        return defaultValue;
     }
 }

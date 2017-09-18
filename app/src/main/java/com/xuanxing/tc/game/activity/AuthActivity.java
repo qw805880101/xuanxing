@@ -10,6 +10,7 @@ import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 
 /**
+ * 认证代练
  * Created by admin on 2017/9/15.
  */
 
