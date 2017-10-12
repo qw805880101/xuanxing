@@ -1,1 +1,1 @@
-include ':app', ':tcmvplibrary', ':bottomtabbar'
+include ':app', ':bottomtabbar', ':tcmvplibrary'

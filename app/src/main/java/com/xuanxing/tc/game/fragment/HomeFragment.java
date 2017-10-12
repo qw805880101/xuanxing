@@ -9,15 +9,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.psylife.wrmvplibrary.data.net.RxService;
 import com.psylife.wrmvplibrary.utils.helper.FragmentAdapter;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
-import com.xuanxing.tc.game.activity.HomeActivity;
 import com.xuanxing.tc.game.activity.SearchActivity;
-import com.xuanxing.tc.game.api.HomeApi;
+import com.xuanxing.tc.game.api.Api;
 import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.view.CustomViewPager;
 
@@ -32,7 +30,7 @@ import rx.Observable;
  * Created by tc on 2017/8/24.
  */
 
-public class HomeFragment extends BaseFragment implements HomeApi, View.OnClickListener {
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.vp_home)
     CustomViewPager vpHome;
@@ -71,11 +69,6 @@ public class HomeFragment extends BaseFragment implements HomeApi, View.OnClickL
         imageSearch.setOnClickListener(this);
         btRecommend.setOnClickListener(this);
         btVideo.setOnClickListener(this);
-    }
-
-    @Override
-    public Observable<Object> test(RequestBody file) {
-        return RxService.createApi(HomeApi.class).test(file).compose(RxUtil.rxSchedulerHelper());
     }
 
     @Override

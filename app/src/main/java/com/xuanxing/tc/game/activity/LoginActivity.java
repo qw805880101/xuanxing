@@ -1,5 +1,6 @@
 package com.xuanxing.tc.game.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,15 +14,18 @@ import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.BaseBeanClass;
+import com.xuanxing.tc.game.bean.LoginInfo;
 
 import butterknife.BindView;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by admin on 2017/8/23.
  */
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-
 
     @BindView(R.id.et_phone_num)
     EditText etPhoneNum;
@@ -96,36 +100,47 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             btGetSms.setEnabled(false);
         }
 
-        if (v == btLogin){
-
+        if (v == btLogin) {
             phoneNum = etPhoneNum.getText().toString().trim();
-
             smsCode = etSms.getText().toString().trim();
-
             if (null == phoneNum || ("").equals(phoneNum)) {
                 ToastUtils.showToast(this, "请先输入手机号码");
                 return;
             }
-
-            if (phoneNum.length() < 11){
+            if (phoneNum.length() < 11) {
                 ToastUtils.showToast(this, "请输入正确的手机号码");
                 return;
             }
-
             if (null == smsCode || ("").equals(smsCode)) {
                 ToastUtils.showToast(this, "请先输入验证码");
                 return;
             }
-            startActivity(HomeActivity.class);
+            login();
         }
 
-        if (v == imageQqLogin){
+        if (v == imageQqLogin) {
 
         }
 
-        if (v == imageWxLogin){
+        if (v == imageWxLogin) {
 
         }
+    }
+
+    private void login() {
+        Observable<BaseBeanClass<LoginInfo>> login = mXuanXingApi.login("", "123", "1", "1", "",
+                "", phoneNum, smsCode);
+        mRxManager.add(login.subscribe(new Action1<BaseBeanClass<LoginInfo>>() {
+            @Override
+            public void call(BaseBeanClass<LoginInfo> loginInfoBaseBeanClass) {
+                if (loginInfoBaseBeanClass.getCode().equals("0000")) {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    intent.putExtra("loginInfo", loginInfoBaseBeanClass.getData());
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, this));
     }
 
     Handler handler = new Handler() {
@@ -161,8 +176,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         }
 
-        public void close(){
-            a=-1;
+        public void close() {
+            a = -1;
         }
     }
 

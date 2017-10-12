@@ -10,6 +10,6 @@ public class MyApplication extends WRCoreApp {
 
     @Override
     public String setBaseUrl() {
-        return "http://www.baidu.com";
+        return "http://120.27.18.127:10086/gamehelp_admin/";
     }
 }
