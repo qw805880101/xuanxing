@@ -18,6 +18,7 @@
         >
 
         <ImageView
+            android:id="@+id/iv_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/touxiang"
@@ -32,6 +33,7 @@
             >
 
             <TextView
+                android:id="@+id/txt_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="小魚"
@@ -40,6 +42,7 @@
                 android:textSize="20sp"
                 />
             <TextView
+                android:id="@+id/txt_intro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="为代练而生！！！"
@@ -79,6 +82,7 @@
             >
 
             <TextView
+                android:id="@+id/txt_attention_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30"
@@ -107,6 +111,7 @@
             >
 
             <TextView
+                android:id="@+id/txt_fans_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30"
@@ -135,6 +140,7 @@
             >
 
             <TextView
+                android:id="@+id/txt_collect_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="30"

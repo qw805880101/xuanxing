@@ -10,12 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.psylife.wrmvplibrary.data.net.RxService;
 import com.psylife.wrmvplibrary.utils.helper.FragmentAdapter;
-import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.SearchActivity;
-import com.xuanxing.tc.game.api.Api;
 import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.view.CustomViewPager;
 
@@ -23,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import okhttp3.RequestBody;
-import rx.Observable;
 
 /**
  * Created by tc on 2017/8/24.
@@ -69,6 +64,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         imageSearch.setOnClickListener(this);
         btRecommend.setOnClickListener(this);
         btVideo.setOnClickListener(this);
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     @Override

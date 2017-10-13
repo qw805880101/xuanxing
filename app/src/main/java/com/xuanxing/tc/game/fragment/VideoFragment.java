@@ -8,9 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.VideoAdapter;
 import com.xuanxing.tc.game.base.BaseFragment;
+import com.xuanxing.tc.game.bean.BaseBeanClass;
+import com.xuanxing.tc.game.bean.BaseBeanListClass;
+import com.xuanxing.tc.game.bean.NewsInfo;
+import com.xuanxing.tc.game.bean.VedioList;
 import com.xuanxing.tc.game.bean.VideoItemUtil;
 
 import java.util.ArrayList;
@@ -19,6 +24,8 @@ import java.util.List;
 import butterknife.BindView;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by tc on 2017/8/24.
@@ -42,6 +49,10 @@ public class VideoFragment extends BaseFragment {
 
     private JCVideoPlayerStandard currPlayer;
 
+    private VideoAdapter mVideoAdapter;
+
+    private List<NewsInfo> mNewsInfos = new ArrayList<>();
+
     @Override
     public View getTitleView() {
         return null;
@@ -54,8 +65,11 @@ public class VideoFragment extends BaseFragment {
 
     @Override
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
+
+        mVideoAdapter = new VideoAdapter(this.getContext(), mNewsInfos);
+
         rvVideo.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        rvVideo.setAdapter(new VideoAdapter(this.getContext(), VideoItemUtil.getRecommendItem()));
+        rvVideo.setAdapter(mVideoAdapter);
         rvVideo.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -99,4 +113,22 @@ public class VideoFragment extends BaseFragment {
         //释放其他视频资源
         JCVideoPlayer.releaseAllVideos();
     }
+
+    @Override
+    public void initData() {
+        Observable<BaseBeanClass<VedioList>> vedioList = mXuanXingApi.getVedioList("1", "10")
+                .compose(RxUtil.<BaseBeanClass<VedioList>>rxSchedulerHelper());
+        mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<VedioList>>() {
+            @Override
+            public void call(BaseBeanClass<VedioList> newsListBaseBeanListClass) {
+                if (newsListBaseBeanListClass.getCode().equals("0000")) {
+                    mVideoAdapter.setNewData(newsListBaseBeanListClass.getData().getVideoList());
+                } else {
+                    toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());
+                }
+            }
+        }, this));
+
+    }
+
 }

@@ -1,11 +1,16 @@
 package com.xuanxing.tc.game.bean;
 
+import java.io.Serializable;
+
 /**
  * 用户信息
  * Created by tianchao on 2017/10/12.
  */
 
-public class MemberInfo {
+public class MemberInfo implements Serializable {
+
+    private static final long serialVersionUID = 3888947993155795928L;
+
     private String nickName; // 用户名称
     private String memberId; // 用户ID
     private String birthdayStr; // 用户生日

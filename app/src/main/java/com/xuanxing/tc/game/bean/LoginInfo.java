@@ -4,14 +4,16 @@ import java.io.Serializable;
 
 /**
  * 登录信息
- *
+ * <p>
  * Created by tianchao on 2017/10/12.
  */
 
 public class LoginInfo implements Serializable {
 
+    private static final long serialVersionUID = -4722897279115242284L;
+
     private String p_token; //App请求凭证
-    private MemberInfo mMemberInfo; //用户详情
+    private MemberInfo memberInfo; //用户详情
     private String attentionNum; //关注数量
     private String fansNum; //粉丝数量
     private String collectNum; //收藏数量
@@ -25,11 +27,11 @@ public class LoginInfo implements Serializable {
     }
 
     public MemberInfo getMemberInfo() {
-        return mMemberInfo;
+        return memberInfo;
     }
 
     public void setMemberInfo(MemberInfo memberInfo) {
-        mMemberInfo = memberInfo;
+        this.memberInfo = memberInfo;
     }
 
     public String getAttentionNum() {

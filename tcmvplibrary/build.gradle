@@ -58,6 +58,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.alibaba:fastjson:1.1.56.android'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile ('com.hwangjr.rxbus:rxbus:1.0.3') {
         exclude group: 'com.hwangjr.utils', module: 'timber'

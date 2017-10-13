@@ -334,6 +334,10 @@ public class BottomTabBar extends LinearLayout {
         mTabHost.setBackgroundResource(resid);
         return this;
     }
+
+    public CustomFragmentTabHost getTapHost(){
+        return mTabHost;
+    }
 //    /**
 //     * 设置BottomTabBar的整体背景
 //     * api 16开始才支持

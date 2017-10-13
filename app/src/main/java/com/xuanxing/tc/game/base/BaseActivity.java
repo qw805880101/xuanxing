@@ -22,15 +22,24 @@ public abstract class BaseActivity extends WRBaseActivity implements Action1<Thr
 
     public RxManager mRxManager = new RxManager();
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mRxManager.clear();
+    /**
+     * 显示错误日志
+     * @param code
+     * @param msg
+     */
+    public void toastMessage(String code, String msg){
+        ToastUtils.showToast(this, msg);
     }
 
     @Override
     public void call(Throwable throwable) {
         System.out.println(throwable.getMessage());
         ToastUtils.showToast(this, "网络错误");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRxManager.clear();
     }
 }

@@ -8,6 +8,10 @@ import com.psylife.wrmvplibrary.WRCoreApp;
 
 public class MyApplication extends WRCoreApp {
 
+    public static final String USER_INFO = "userInfo";
+
+    public static String token = "";
+
     @Override
     public String setBaseUrl() {
         return "http://120.27.18.127:10086/gamehelp_admin/";

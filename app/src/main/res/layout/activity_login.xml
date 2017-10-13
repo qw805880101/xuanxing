@@ -36,7 +36,7 @@
                 android:hint="请输入手机号"
                 android:inputType="number"
                 android:paddingLeft="10dp"
-                android:text="12345678912"
+                android:text="15201751883"
                 android:textColorHint="@color/bt_bg_c8c8c8"
                 android:textSize="20sp" />
 
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_weight="0.7"
+                android:layout_weight="1"
                 android:background="@drawable/bt_bg_read"
                 android:text="获取验证码"
                 android:textColor="@color/title_bg_e83646"
@@ -75,7 +75,7 @@
                 android:hint="请输入验证码"
                 android:inputType="number"
                 android:paddingLeft="10dp"
-                android:text="123456"
+                android:text="666666"
                 android:textColorHint="@color/bt_bg_c8c8c8"
                 android:textSize="20sp" />
 
@@ -87,6 +87,7 @@
                 android:layout_weight="0.7"
                 android:background="@drawable/bt_bg_read"
                 android:text="获取验证码"
+                android:textSize="12sp"
                 android:textColor="@color/title_bg_e83646" />
 
         </LinearLayout>

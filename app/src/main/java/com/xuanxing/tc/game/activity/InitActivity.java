@@ -52,7 +52,7 @@ public class InitActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 a = 0;
-                Intent intent = new Intent(InitActivity.this, LoginActivity.class);
+                Intent intent = new Intent(InitActivity.this, HomeActivity.class);
                 InitActivity.this.startActivity(intent);
                 InitActivity.this.finish();
             }
@@ -83,7 +83,7 @@ public class InitActivity extends BaseActivity {
             try{
                 btSkip.setText(a + "  跳过");
                 if (a == 0){
-                    Intent intent = new Intent(InitActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(InitActivity.this, HomeActivity.class);
                     InitActivity.this.startActivity(intent);
                     InitActivity.this.finish();
                 }

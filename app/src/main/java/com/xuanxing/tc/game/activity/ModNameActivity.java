@@ -1,5 +1,6 @@
 package com.xuanxing.tc.game.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -53,7 +54,7 @@ public class ModNameActivity extends BaseActivity implements OnClickListener {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_mod_introduce;
+        return R.layout.activity_mod_name;
     }
 
     @Override
@@ -75,7 +76,7 @@ public class ModNameActivity extends BaseActivity implements OnClickListener {
                 /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
                 editStart = etName.getSelectionStart();
                 editEnd = etName.getSelectionEnd();
-                if (s.length() > 20){
+                if (s.length() > 20) {
                     s.delete(editStart - 1, editEnd);
                 }
             }
@@ -84,7 +85,9 @@ public class ModNameActivity extends BaseActivity implements OnClickListener {
 
     @Override
     public void initdata() {
-
+        Intent intent = this.getIntent();
+        String name = intent.getStringExtra("userName");
+        etName.setText(name);
     }
 
     @Override

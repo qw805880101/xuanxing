@@ -9,17 +9,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
+import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.LoginInfo;
 
 import butterknife.BindView;
 import rx.Observable;
 import rx.functions.Action1;
+
+import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
 /**
  * Created by admin on 2017/8/23.
@@ -96,8 +102,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 ToastUtils.showToast(this, "请先输入手机号码");
                 return;
             }
-            smsThread.start();
-            btGetSms.setEnabled(false);
+            smsCode();
         }
 
         if (v == btLogin) {
@@ -127,17 +132,42 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * 获取验证码
+     */
+    private void smsCode() {
+        Observable<BaseBean> getSmsCode = mXuanXingApi.getSmsCode(phoneNum).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+        mRxManager.add(getSmsCode.subscribe(new Action1<BaseBean>() {
+            @Override
+            public void call(BaseBean baseBean) {
+                if (baseBean.getCode().equals("0000")) {
+                    smsThread.start();
+                    btGetSms.setEnabled(false);
+                    ToastUtils.showToast(LoginActivity.this, "验证码发送成功!");
+                } else {
+                    toastMessage(baseBean.getCode(), baseBean.getMsg());
+                }
+            }
+        }, this));
+    }
+
+    /**
+     * 登录
+     */
     private void login() {
         Observable<BaseBeanClass<LoginInfo>> login = mXuanXingApi.login("", "123", "1", "1", "",
-                "", phoneNum, smsCode);
+                "", phoneNum, smsCode).compose(RxUtil.<BaseBeanClass<LoginInfo>>rxSchedulerHelper());
         mRxManager.add(login.subscribe(new Action1<BaseBeanClass<LoginInfo>>() {
             @Override
             public void call(BaseBeanClass<LoginInfo> loginInfoBaseBeanClass) {
                 if (loginInfoBaseBeanClass.getCode().equals("0000")) {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("loginInfo", loginInfoBaseBeanClass.getData());
+                    SpUtils.putString(LoginActivity.this, USER_INFO, JSON.toJSONString(loginInfoBaseBeanClass.getData()));
                     startActivity(intent);
                     finish();
+                } else {
+                    toastMessage(loginInfoBaseBeanClass.getCode(), loginInfoBaseBeanClass.getMsg());
                 }
             }
         }, this));
