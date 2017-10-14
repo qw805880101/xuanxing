@@ -25,11 +25,21 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
 
+    public static final int FOLLOW = 0;
+
+    public static final int SHARE = 1;
+
     private Context context;
+
+    private MyOnClickListener mOnClickListener;
 
     public VideoAdapter(Context context, @Nullable List<NewsInfo> data) {
         super(R.layout.item_video, data);
         this.context = context;
+    }
+
+    public void setOnClickListener(MyOnClickListener mOnClickListener){
+        this.mOnClickListener = mOnClickListener;
     }
 
     public BaseViewHolder getBaseViewHolder() {
@@ -37,7 +47,7 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, NewsInfo item) {
+    protected void convert(final BaseViewHolder helper, NewsInfo item) {
 
         helper.setText(R.id.txt_video_name, item.getMemberName());
         helper.setText(R.id.txt_video_time, item.getCreateTime());
@@ -53,10 +63,10 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
         /**
          * 关注
          */
-       helper.setOnClickListener(R.id.bt_video_follow, new OnClickListener() {
+        helper.setOnClickListener(R.id.bt_video_follow, new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.showToast(context, "关注");
+                mOnClickListener.setOnClick(view, FOLLOW, helper.getLayoutPosition());
             }
         });
 
@@ -66,7 +76,7 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
         helper.setOnClickListener(R.id.txt_video_forward, new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.showToast(context, "分享");
+                mOnClickListener.setOnClick(view, SHARE, helper.getLayoutPosition());
             }
         });
 
@@ -75,4 +85,9 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
                 , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
 //        jcVideoPlayerStandard.thumbImageView.setImage("http://p.qpic.cn/videoyun/0/2449_43b6f696980311e59ed467f22794e792_1/640");
     }
+
+    public interface MyOnClickListener {
+        void setOnClick(View view, int type, int pos);
+    }
+
 }

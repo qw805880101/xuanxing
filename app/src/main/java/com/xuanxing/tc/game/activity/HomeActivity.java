@@ -19,6 +19,7 @@ import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.xuanxing.tc.bottomtabbar.BottomTabBar;
 import com.xuanxing.tc.bottomtabbar.CustomFragmentTabHost;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.LoginInfo;
@@ -84,8 +85,7 @@ public class HomeActivity extends BaseActivity implements OnClickListener, Botto
         mCustomFragmentTabHost.getTabWidget().getChildTabViewAt(2).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginInfo loginInfo = getMyData();
-                if (loginInfo == null) {
+                if (MyApplication.loginInfo == null) {
                     Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                     startActivity(intent);
                 } else {
@@ -109,14 +109,13 @@ public class HomeActivity extends BaseActivity implements OnClickListener, Botto
     public void onTabChange(int position, String name) {
     }
 
-    public LoginInfo getMyData() {
-        String userInfo = SpUtils.getString(this, USER_INFO);
-        System.out.println(userInfo);
-        if (userInfo != null && !userInfo.equals("")) {
-            LoginInfo loginInfo = JSON.parseObject(userInfo, LoginInfo.class);
-            return loginInfo;
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            if (intent.getBooleanExtra("isLoginOut", false)) {
+                mCustomFragmentTabHost.setCurrentTab(0);
+            }
         }
-        return null;
     }
-
 }

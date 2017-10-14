@@ -1,5 +1,8 @@
 package com.xuanxing.tc.game.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
 import android.util.TypedValue;
@@ -7,7 +10,25 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.alibaba.fastjson.JSON;
+import com.psylife.wrmvplibrary.RxManager;
+import com.psylife.wrmvplibrary.utils.SpUtil;
+import com.psylife.wrmvplibrary.utils.SpUtils;
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
+import com.xuanxing.tc.game.MyApplication;
+import com.xuanxing.tc.game.activity.LoginActivity;
+import com.xuanxing.tc.game.api.Api;
+import com.xuanxing.tc.game.bean.BaseBean;
+import com.xuanxing.tc.game.bean.LoginInfo;
+
 import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import rx.Observable;
+import rx.functions.Action1;
+
+import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
 /**
  * Created by admin on 2017/9/15.
@@ -44,7 +65,53 @@ public class XUtils {
             child.setLayoutParams(params);
             child.invalidate();
         }
+    }
 
+    public static void modUserInfo(Context context, LoginInfo loginInfo) {
+        SpUtils.putString(context, USER_INFO, JSON.toJSONString(loginInfo));
+    }
+
+    public static void modUserInfo(Context context, Map<String, String> map) {
+        for (Entry<String, String> entry : map.entrySet()) {
+            if (entry.getKey().equals("nickname") && !entry.getValue().equals("")) {
+                MyApplication.loginInfo.getMemberInfo().setNickName(entry.getValue());
+            }
+            if (entry.getKey().equals("birthday") && !entry.getValue().equals("")) {
+                MyApplication.loginInfo.getMemberInfo().setBirthdayStr(entry.getValue());
+            }
+            if (entry.getKey().equals("alipay") && !entry.getValue().equals("")) {
+//                MyApplication.loginInfo.getMemberInfo().setNickName(entry.getValue());
+            }
+            if (entry.getKey().equals("sex") && !entry.getValue().equals("")) {
+                MyApplication.loginInfo.getMemberInfo().setSex(entry.getValue());
+            }
+            if (entry.getKey().equals("headicon") && !entry.getValue().equals("")) {
+                MyApplication.loginInfo.getMemberInfo().setHeadIcon(entry.getValue());
+            }
+            if (entry.getKey().equals("intro")) {
+                MyApplication.loginInfo.getMemberInfo().setIntro(entry.getValue());
+            }
+            if (entry.getKey().equals("followNum") && !entry.getValue().equals("")){
+                MyApplication.loginInfo.setAttentionNum(entry.getValue());
+            }
+        }
+        SpUtils.putString(context, USER_INFO, JSON.toJSONString(MyApplication.loginInfo));
+    }
+
+    public static void modName(final String nickname, String birthday, String alipay, String sex, String headicon,
+                               String intro, Api api, RxManager manager, Action1<BaseBean> action1, Action1<Throwable> action2) {
+        Observable<BaseBean> modUserInfo = api.modUserInfo(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token(), nickname,
+                birthday, alipay, sex, headicon, intro).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+        manager.add(modUserInfo.subscribe(action1, action2));
+    }
+
+    public static String getVersionName(Context context) throws Exception {
+        // 获取packagemanager的实例
+        PackageManager packageManager = context.getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+        String version = packInfo.versionName;
+        return version;
     }
 
 }

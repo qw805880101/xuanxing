@@ -1,6 +1,7 @@
 package com.xuanxing.tc.game;
 
 import com.psylife.wrmvplibrary.WRCoreApp;
+import com.xuanxing.tc.game.bean.LoginInfo;
 
 /**
  * Created by admin on 2017/8/30.
@@ -10,7 +11,7 @@ public class MyApplication extends WRCoreApp {
 
     public static final String USER_INFO = "userInfo";
 
-    public static String token = "";
+    public static LoginInfo loginInfo;
 
     @Override
     public String setBaseUrl() {

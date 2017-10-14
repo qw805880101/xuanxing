@@ -73,8 +73,53 @@ public interface Api {
      */
     @POST("api/home/videoList")
     Observable<BaseBeanClass<VedioList>> getVedioList(/*@Body RequestBody requestBody,*/
-                                                         @Query("page") String page,
+                                                      @Query("page") String page,
                                                       @Query("limit") String limit);
+
+    /**
+     * 编辑用户信息
+     * @param app_m_id
+     * @param app_p_token
+     * @param nickname
+     * @param birthday
+     * @param alipay
+     * @param sex
+     * @param headicon
+     * @param intro
+     * @return
+     */
+    @POST("api/member/mEditInfo")
+    Observable<BaseBean> modUserInfo(@Query("app_m_id") String app_m_id,
+                                     @Query("app_p_token") String app_p_token,
+                                     @Query("nickname") String nickname,
+                                     @Query("birthday") String birthday,
+                                     @Query("alipay") String alipay,
+                                     @Query("sex") String sex,
+                                     @Query("headicon") String headicon,
+                                     @Query("intro") String intro);
+
+    /**
+     * 退出登录
+     * @param app_m_id
+     * @param app_p_token
+     * @return
+     */
+    @POST("api/member/mLogout")
+    Observable<BaseBean> loginOut(@Query("app_m_id") String app_m_id,
+                                     @Query("app_p_token") String app_p_token);
+
+    /**
+     * 关注用户
+     * @param app_m_id
+     * @param app_p_token
+     * @param newsMemberId
+     * @return
+     */
+    @POST("api/relation/addAttention")
+    Observable<BaseBean> follow(@Query("app_m_id") String app_m_id,
+                                  @Query("app_p_token") String app_p_token,
+                                  @Query("newsMemberId") String newsMemberId);
+
 
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);

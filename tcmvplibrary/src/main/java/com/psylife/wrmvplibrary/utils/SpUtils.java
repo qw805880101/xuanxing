@@ -102,6 +102,7 @@ public class SpUtils {
         editor.putLong(strKey, strData);
         editor.commit();
     }
+
     public static float getFloat(Context context, String strKey) {
         SharedPreferences setPreferences = context.getSharedPreferences(
                 spFileName, Context.MODE_PRIVATE);
@@ -123,4 +124,13 @@ public class SpUtils {
         editor.putFloat(strKey, strData);
         editor.commit();
     }
+
+    public static void remove(Context context, String strKey) {
+        SharedPreferences activityPreferences = context.getSharedPreferences(
+                spFileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = activityPreferences.edit();
+        editor.remove(strKey);
+        editor.commit();
+    }
+
 }

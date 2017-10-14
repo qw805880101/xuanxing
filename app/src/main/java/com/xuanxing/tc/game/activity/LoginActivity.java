@@ -15,11 +15,13 @@ import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.LoginInfo;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import butterknife.BindView;
 import rx.Observable;
@@ -161,9 +163,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void call(BaseBeanClass<LoginInfo> loginInfoBaseBeanClass) {
                 if (loginInfoBaseBeanClass.getCode().equals("0000")) {
+                    MyApplication.loginInfo = loginInfoBaseBeanClass.getData();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("loginInfo", loginInfoBaseBeanClass.getData());
-                    SpUtils.putString(LoginActivity.this, USER_INFO, JSON.toJSONString(loginInfoBaseBeanClass.getData()));
+                    XUtils.modUserInfo(LoginActivity.this, loginInfoBaseBeanClass.getData());
                     startActivity(intent);
                     finish();
                 } else {

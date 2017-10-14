@@ -1,5 +1,6 @@
 package com.xuanxing.tc.game.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,18 +9,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 
+import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.activity.HomeActivity;
+import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.adapter.VideoAdapter;
+import com.xuanxing.tc.game.adapter.VideoAdapter.MyOnClickListener;
 import com.xuanxing.tc.game.base.BaseFragment;
+import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.VedioList;
 import com.xuanxing.tc.game.bean.VideoItemUtil;
+import com.xuanxing.tc.game.utils.SendEvent;
+import com.xuanxing.tc.game.utils.XUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
@@ -31,7 +44,7 @@ import rx.functions.Action1;
  * Created by tc on 2017/8/24.
  */
 
-public class VideoFragment extends BaseFragment {
+public class VideoFragment extends BaseFragment implements MyOnClickListener {
 
     @BindView(R.id.rv_video)
     RecyclerView rvVideo;
@@ -67,7 +80,7 @@ public class VideoFragment extends BaseFragment {
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
 
         mVideoAdapter = new VideoAdapter(this.getContext(), mNewsInfos);
-
+        mVideoAdapter.setOnClickListener(this);
         rvVideo.setLayoutManager(new LinearLayoutManager(this.getContext()));
         rvVideo.setAdapter(mVideoAdapter);
         rvVideo.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -122,13 +135,51 @@ public class VideoFragment extends BaseFragment {
             @Override
             public void call(BaseBeanClass<VedioList> newsListBaseBeanListClass) {
                 if (newsListBaseBeanListClass.getCode().equals("0000")) {
-                    mVideoAdapter.setNewData(newsListBaseBeanListClass.getData().getVideoList());
+                    mNewsInfos = newsListBaseBeanListClass.getData().getVideoList();
+                    mVideoAdapter.setNewData(mNewsInfos);
                 } else {
                     toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());
                 }
             }
         }, this));
 
+    }
+
+    @Override
+    public void setOnClick(View view, int type, int pos) {
+        if (type == mVideoAdapter.FOLLOW) {
+            follow(pos);
+        }
+        if (type == mVideoAdapter.SHARE) {
+
+        }
+    }
+
+    private void follow(int pos) {
+        if (MyApplication.loginInfo == null) {
+            Intent intent = new Intent(this.getContext(), LoginActivity.class);
+            startActivity(intent);
+            ToastUtils.showToast(this.getContext(), "未登录，请先登录");
+            return;
+        }
+        final Map map = new LinkedHashMap();
+        final String num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) + 1);
+        map.put("followNum", num);
+        Observable<BaseBean> follow = mXuanXingApi.follow(MyApplication.loginInfo.getMemberInfo().getMemberId(),
+                MyApplication.loginInfo.getP_token(), /*"" + mNewsInfos.get(pos).getMemberId())*/ "123").compose(RxUtil.<BaseBean>rxSchedulerHelper());
+        mRxManager.add(follow.subscribe(new Action1<BaseBean>() {
+            @Override
+            public void call(BaseBean baseBean) {
+                if (baseBean.getCode().equals("0000")) {
+                    ToastUtils.showToast(VideoFragment.this.getContext(), "关注成功");
+                    //事件发送
+                    EventBus.getDefault().post(new SendEvent("followNum", num));
+                    XUtils.modUserInfo(VideoFragment.this.getContext(), map);
+                } else {
+                    toastMessage(baseBean.getCode(), baseBean.getMsg());
+                }
+            }
+        }, this));
     }
 
 }

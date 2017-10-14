@@ -10,12 +10,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
+import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.LoginInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
 /**
  * Created by admin on 2017/9/14.
@@ -61,6 +67,7 @@ public class InitActivity extends BaseActivity {
 
     @Override
     public void initdata() {
+        getMyData();
         new Thread() {
             @Override
             public void run() {
@@ -75,6 +82,16 @@ public class InitActivity extends BaseActivity {
                 }
             }
         }.start();
+    }
+
+    public LoginInfo getMyData() {
+        String userInfo = SpUtils.getString(this, USER_INFO);
+        if (userInfo != null && !userInfo.equals("")) {
+            LoginInfo loginInfo = JSON.parseObject(userInfo, LoginInfo.class);
+            MyApplication.loginInfo = loginInfo;
+            return loginInfo;
+        }
+        return null;
     }
 
     private Handler mHandler = new Handler(){

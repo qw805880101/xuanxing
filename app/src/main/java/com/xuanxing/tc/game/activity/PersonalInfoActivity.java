@@ -9,9 +9,15 @@ import android.widget.TextView;
 
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
+import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.MemberInfo;
+import com.xuanxing.tc.game.utils.SendEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +72,8 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
 
     @Override
     public int getLayoutId() {
+        //事件注册
+        EventBus.getDefault().register(this);
         return R.layout.activity_personal_info;
     }
 
@@ -82,7 +90,6 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
     public void initdata() {
         Intent intent = this.getIntent();
         mMemberInfo = (MemberInfo) intent.getSerializableExtra(USER_INFO);
-
         mTxtUserName.setText(mMemberInfo.getNickName());
         mTxtBirthday.setText(mMemberInfo.getBirthdayStr() != null && !mMemberInfo.getBirthdayStr().equals("") ? mMemberInfo.getBirthdayStr() : "1991-01-01");
         mTxtInterest.setText(mMemberInfo.getNickName());
@@ -111,7 +118,34 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
 
         if (v == linModIntroduce) {
             Intent intent = new Intent(this, ModIntroduceActivity.class);
+            intent.putExtra("intro", mMemberInfo.getIntro());
             startActivity(intent);
         }
+    }
+
+    //事件接受
+    @Subscribe
+    public void onEventMainThread(SendEvent event) {
+        if (event != null) {
+            if (event.getKey().equals("nickname") && !event.getValue().equals("")) {
+                mTxtUserName.setText(event.getValue());
+            }
+            if (event.getKey().equals("birthday") && !event.getValue().equals("")) {
+                mTxtBirthday.setText(event.getValue());
+            }
+            if (event.getKey().equals("headicon") && !event.getValue().equals("")) {
+//                .loginInfo.getMemberInfo().setHeadIcon(event.getValue());
+            }
+            if (event.getKey().equals("intro")) {
+                mTxtIntro.setText(event.getValue());
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //取消注册
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.AuthActivity;
 import com.xuanxing.tc.game.activity.CollectionActivity;
@@ -26,6 +28,10 @@ import com.xuanxing.tc.game.activity.SetActivity;
 import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.MemberInfo;
+import com.xuanxing.tc.game.utils.SendEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,12 +74,12 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     @BindView(R.id.txt_collect_num)
     TextView mTxtCollectNum;
 
-    private LoginInfo mLoginInfo;
     private MemberInfo memberInfo;
 
     @Override
     public int getLayoutId() {
-        System.out.println("getLayoutId");
+        //事件注册
+        EventBus.getDefault().register(this);
         return R.layout.fragment_my;
     }
 
@@ -90,10 +96,10 @@ public class MyFragment extends BaseFragment implements OnClickListener {
 
     @Override
     public void initData() {
-        memberInfo = mLoginInfo.getMemberInfo();
-        mTxtAttentionNum.setText(mLoginInfo.getAttentionNum());
-        mTxtFansNum.setText(mLoginInfo.getFansNum());
-        mTxtCollectNum.setText(mLoginInfo.getCollectNum());
+        memberInfo = MyApplication.loginInfo.getMemberInfo();
+        mTxtAttentionNum.setText(MyApplication.loginInfo.getAttentionNum());
+        mTxtFansNum.setText(MyApplication.loginInfo.getFansNum());
+        mTxtCollectNum.setText(MyApplication.loginInfo.getCollectNum());
         mTxtUserName.setText(memberInfo.getNickName());
         mTxtIntro.setText(memberInfo.getIntro());
     }
@@ -138,6 +144,38 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mLoginInfo = ((HomeActivity) activity).getMyData();
+    }
+
+    //事件接受
+    @Subscribe
+    public void onEventMainThread(SendEvent event) {
+        if (event != null) {
+            if (event.getKey().equals("nickname") && !event.getValue().equals("")) {
+                mTxtUserName.setText(event.getValue());
+            }
+            if (event.getKey().equals("intro")) {
+                mTxtIntro.setText(event.getValue());
+            }
+            if (event.getKey().equals("followNum")){
+                mTxtAttentionNum.setText(event.getValue());
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //取消注册
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onNewBundle(Bundle args) {
+        memberInfo = MyApplication.loginInfo.getMemberInfo();
+        mTxtAttentionNum.setText(MyApplication.loginInfo.getAttentionNum());
+        mTxtFansNum.setText(MyApplication.loginInfo.getFansNum());
+        mTxtCollectNum.setText(MyApplication.loginInfo.getCollectNum());
+        mTxtUserName.setText(memberInfo.getNickName());
+        mTxtIntro.setText(memberInfo.getIntro());
     }
 }
