@@ -1,7 +1,9 @@
 package com.xuanxing.tc.game.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xuanxing.tc.game.R;
@@ -42,6 +44,8 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
                     setImageResource(R.id.iv_total, R.mipmap.guankanshu).
                     setText(R.id.txt_content, item.getShortContent());
         } else {
+            ImageView imageView = helper.getView(R.id.iv_recommend);
+            //TODO 添加照片
             helper.setVisible(R.id.iv_recommend, true).
                     setVisible(R.id.iv_video_icon, false).
                     setVisible(R.id.item_lin, true).

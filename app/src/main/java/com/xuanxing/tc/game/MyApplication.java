@@ -14,6 +14,11 @@ public class MyApplication extends WRCoreApp {
     public static LoginInfo loginInfo;
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
     public String setBaseUrl() {
         return "http://120.27.18.127:10086/gamehelp_admin/";
     }

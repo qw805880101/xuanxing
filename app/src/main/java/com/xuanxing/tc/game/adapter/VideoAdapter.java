@@ -12,6 +12,7 @@ import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.VideoInfo;
+import com.xuanxing.tc.game.utils.DateUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -48,9 +49,18 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
 
     @Override
     protected void convert(final BaseViewHolder helper, NewsInfo item) {
-
         helper.setText(R.id.txt_video_name, item.getMemberName());
-        helper.setText(R.id.txt_video_time, item.getCreateTime());
+        try{
+            if(DateUtils.IsToday(item.getCreateTime())){
+                helper.setText(R.id.txt_video_time, "今天"+item.getCreateTime().substring(11, 12) + "点");
+            } else if(DateUtils.IsYesterday(item.getCreateTime())){
+                helper.setText(R.id.txt_video_time, "昨天"+item.getCreateTime().substring(11, 12) + "点");
+            } else {
+                helper.setText(R.id.txt_video_time, item.getCreateTime());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         helper.setText(R.id.txt_video_heading, item.getTitle());
         if (item.getPlayNum() > 1000) {
             DecimalFormat df = new DecimalFormat("######0.00");

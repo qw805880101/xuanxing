@@ -79,7 +79,6 @@ public class ModNameActivity extends BaseActivity implements OnClickListener {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        etName.setSelection(etName.length());
         etName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,6 +107,7 @@ public class ModNameActivity extends BaseActivity implements OnClickListener {
         Intent intent = this.getIntent();
         name = intent.getStringExtra("userName");
         etName.setText(name);
+        etName.setSelection(etName.length());
     }
 
     @Override

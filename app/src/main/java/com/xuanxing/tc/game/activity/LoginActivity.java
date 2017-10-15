@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSON;
-import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
@@ -26,8 +24,6 @@ import com.xuanxing.tc.game.utils.XUtils;
 import butterknife.BindView;
 import rx.Observable;
 import rx.functions.Action1;
-
-import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
 /**
  * Created by admin on 2017/8/23.
