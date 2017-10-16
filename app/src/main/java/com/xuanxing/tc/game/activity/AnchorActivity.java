@@ -103,12 +103,12 @@ public class AnchorActivity extends BaseActivity {
 
     }
 
-    private void initFragment(){
-        if(recommendFragment==null){
-            recommendFragment=new RecommendFragment();
+    private void initFragment() {
+        if (recommendFragment == null) {
+            recommendFragment = new RecommendFragment();
         }
-        if(videoFragment==null){
-            videoFragment=new VideoFragment();
+        if (videoFragment == null) {
+            videoFragment = new VideoFragment();
         }
         mFragments.add(recommendFragment);
         mFragments.add(videoFragment);

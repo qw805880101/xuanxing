@@ -57,7 +57,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/bg_f4f4f4"
         android:visibility="gone"
+        android:fitsSystemWindows="true"
         >
 
     <android.support.design.widget.TabLayout
@@ -65,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
-        android:background="#ffffff"
+        android:background="@color/white"
         android:fillViewport="false"
         app:layout_scrollFlags="scroll"
         app:tabIndicatorColor="@color/title_bg_e83646"
