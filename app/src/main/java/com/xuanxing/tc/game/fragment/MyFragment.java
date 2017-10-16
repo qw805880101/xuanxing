@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
@@ -36,6 +37,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
@@ -62,7 +64,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     @BindView(R.id.lin_fans)
     LinearLayout linFans;
     @BindView(R.id.iv_head)
-    ImageView mIvHead;
+    CircleImageView mIvHead;
     @BindView(R.id.txt_user_name)
     TextView mTxtUserName;
     @BindView(R.id.txt_intro)
@@ -102,6 +104,8 @@ public class MyFragment extends BaseFragment implements OnClickListener {
         mTxtCollectNum.setText(MyApplication.loginInfo.getCollectNum());
         mTxtUserName.setText(memberInfo.getNickName());
         mTxtIntro.setText(memberInfo.getIntro());
+        //TODO 添加照片
+        Glide.with(mContext).load(memberInfo.getHeadIcon()).into(mIvHead);
     }
 
     @Override

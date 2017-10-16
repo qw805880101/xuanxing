@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -17,6 +18,7 @@ import com.xuanxing.tc.game.utils.DateUtils;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
@@ -49,6 +51,9 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
 
     @Override
     protected void convert(final BaseViewHolder helper, NewsInfo item) {
+        CircleImageView circleImageView = helper.getView(R.id.iv_video_head);
+        //TODO 添加照片
+        Glide.with(mContext).load(item.getTopicPic()).into(circleImageView);
         helper.setText(R.id.txt_video_name, item.getMemberName());
         try{
             if(DateUtils.IsToday(item.getCreateTime())){

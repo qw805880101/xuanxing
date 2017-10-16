@@ -46,6 +46,7 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
         } else {
             ImageView imageView = helper.getView(R.id.iv_recommend);
             //TODO 添加照片
+            Glide.with(mContext).load(item.getTopicPic()).into(imageView);
             helper.setVisible(R.id.iv_recommend, true).
                     setVisible(R.id.iv_video_icon, false).
                     setVisible(R.id.item_lin, true).
@@ -55,6 +56,9 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
         }
 
         if (item.getTopicType() == 1) { //带图片
+            ImageView imageView = helper.getView(R.id.iv_recommend);
+            //TODO 添加照片
+            Glide.with(mContext).load(item.getTopicPic()).into(imageView);
             helper.setVisible(R.id.iv_recommend, true).
                     setVisible(R.id.iv_video_icon, false).
                     setVisible(R.id.item_lin, true).
@@ -64,6 +68,9 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
         }
 
         if (item.getTopicType() == 2) { //视频
+            ImageView imageView = helper.getView(R.id.iv_recommend);
+            //TODO 添加照片
+            Glide.with(mContext).load(item.getTopicPic()).into(imageView);
             helper.setVisible(R.id.iv_recommend, true).
                     setVisible(R.id.iv_video_icon, true).
                     setVisible(R.id.item_lin, true).

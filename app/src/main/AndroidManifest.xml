@@ -61,6 +61,10 @@
 
         <activity android:name=".activity.SearchActivity" />
 
+        <activity android:name=".activity.HotGameMoreActivity" />
+
+        <activity android:name=".activity.AnchorMoreActivity" />
+
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import com.chad.library.adapter.base.entity.SectionEntity;
 
 public class SearchHead extends SectionEntity<SearchHistory> {
 
+    private static final long serialVersionUID = -2195256780773165207L;
 
     private String headName;
     private int headImage;

@@ -18,6 +18,7 @@
             android:src="@drawable/lin_game"
             />
         <TextView
+            android:id="@+id/txt_game_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -28,6 +29,7 @@
             />
 
         <TextView
+            android:id="@+id/txt_anchor_game_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="更多"

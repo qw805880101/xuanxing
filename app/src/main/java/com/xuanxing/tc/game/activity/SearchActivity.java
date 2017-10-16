@@ -23,11 +23,16 @@ import android.widget.Toast;
 
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.helper.FragmentAdapter;
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.SearchAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.BaseBeanClass;
+import com.xuanxing.tc.game.bean.FindList;
 import com.xuanxing.tc.game.bean.SearchHead;
 import com.xuanxing.tc.game.bean.SearchHistory;
+import com.xuanxing.tc.game.bean.SearchHotKey;
+import com.xuanxing.tc.game.bean.SearchHotKeyList;
 import com.xuanxing.tc.game.fragment.RecommendFragment;
 import com.xuanxing.tc.game.fragment.VideoFragment;
 import com.xuanxing.tc.game.utils.XUtils;
@@ -37,12 +42,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by admin on 2017/9/15.
  */
 
-public class SearchActivity extends BaseActivity implements OnClickListener{
+public class SearchActivity extends BaseActivity implements OnClickListener {
 
     @BindView(R.id.et_search)
     EditText etSearch;
@@ -64,6 +71,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener{
     private List<Fragment> mFragments = new ArrayList<>();
 
     List<SearchHead> data = new ArrayList<>();
+    private SearchAdapter searchAdapter;
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
@@ -82,7 +90,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener{
     @Override
     public void initView(Bundle savedInstanceState) {
         txtCancel.setOnClickListener(this);
-        XUtils.setIndicator(toolbarTab, 60, 60);
+        XUtils.setIndicator(toolbarTab, 20, 20);
         etSearch.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -96,7 +104,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener{
                     return false;
                 if (event.getX() > etSearch.getWidth()
                         - etSearch.getPaddingRight()
-                        - drawable.getIntrinsicWidth()){
+                        - drawable.getIntrinsicWidth()) {
                     etSearch.setText("");
                     rvSearchList.setVisibility(View.VISIBLE);
                     linSearchResult.setVisibility(View.GONE);
@@ -108,7 +116,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener{
         etSearch.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 //                    Toast.makeText(SearchActivity.this,"呵呵",Toast.LENGTH_SHORT).show();
                     rvSearchList.setVisibility(View.GONE);
                     linSearchResult.setVisibility(View.VISIBLE);
@@ -123,44 +131,59 @@ public class SearchActivity extends BaseActivity implements OnClickListener{
         /**
          * 头部数据
          */
-        SearchHead historyHead = new SearchHead(true, "101");
-        historyHead.setHeadType("101");
-        data.add(historyHead);
-        for (int i = 0; i < 5; i++) {
-            history.setHistorySearchContent("阴阳师" + i);
-            history.setNum(5);
-            SearchHead historyHeadInfo = new SearchHead(history);
-            data.add(historyHeadInfo);
-        }
-        /**
-         * 内容数据
-         */
+//        SearchHead historyHead = new SearchHead(true, "101");
+//        historyHead.setHeadType("101");
+//        data.add(historyHead);
+//        for (int i = 0; i < 5; i++) {
+//            history.setHistorySearchContent("阴阳师" + i);
+//            history.setNum(5);
+//            SearchHead historyHeadInfo = new SearchHead(history);
+//            data.add(historyHeadInfo);
+//        }
         SearchHead hotHead = new SearchHead(true, "102");
         hotHead.setHeadType("102");
         data.add(hotHead);
-        for (int i = 0; i < 6; i++) {
-            hot.setHistorySearchContent("英雄联盟" + i);
-            hot.setNum(6);
-            SearchHead historyHeadInfo = new SearchHead(hot);
-            data.add(historyHeadInfo);
-        }
-
-        SearchAdapter searchAdapter = new SearchAdapter(this, data);
+//        for (int i = 0; i < 6; i++) {
+//            hot.setHistorySearchContent("英雄联盟" + i);
+//            hot.setNum(6);
+//            SearchHead historyHeadInfo = new SearchHead(hot);
+//            data.add(historyHeadInfo);
+//        }
+        searchAdapter = new SearchAdapter(this, data);
         rvSearchList.setLayoutManager(new LinearLayoutManager(this));
         rvSearchList.setAdapter(searchAdapter);
     }
 
     @Override
     public void initdata() {
-
+        Observable<BaseBeanClass<SearchHotKeyList>> searchKey = mXuanXingApi.searchKey().compose(RxUtil.<BaseBeanClass<SearchHotKeyList>>rxSchedulerHelper());
+        mRxManager.add(searchKey.subscribe(new Action1<BaseBeanClass<SearchHotKeyList>>() {
+            @Override
+            public void call(BaseBeanClass<SearchHotKeyList> searchHotKeyBaseBeanClass) {
+                /**
+                 * 内容数据
+                 */
+                if (searchHotKeyBaseBeanClass.getCode().equals("0000")) {
+                    for (int i = 0; i < searchHotKeyBaseBeanClass.getData().getSearchHotKeyList().size(); i++) {
+                        SearchHotKey searchHotKey = searchHotKeyBaseBeanClass.getData().getSearchHotKeyList().get(i);
+                        SearchHistory searchHistory = new SearchHistory(searchHotKeyBaseBeanClass.getData().getSearchHotKeyList().size(), searchHotKey.getKeyWord());
+                        SearchHead historyHeadInfo = new SearchHead(searchHistory);
+                        data.add(historyHeadInfo);
+                    }
+                    searchAdapter.setNewData(data);
+                } else {
+                    toastMessage(searchHotKeyBaseBeanClass.getCode(), searchHotKeyBaseBeanClass.getMsg());
+                }
+            }
+        }, this));
     }
 
-    private void initFragment(){
-        if(recommendFragment==null){
-            recommendFragment=new RecommendFragment();
+    private void initFragment() {
+        if (recommendFragment == null) {
+            recommendFragment = new RecommendFragment();
         }
-        if(videoFragment==null){
-            videoFragment=new VideoFragment();
+        if (videoFragment == null) {
+            videoFragment = new VideoFragment();
         }
         mFragments.add(recommendFragment);
         mFragments.add(videoFragment);
@@ -174,7 +197,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if (v == txtCancel){
+        if (v == txtCancel) {
             this.finish();
         }
     }

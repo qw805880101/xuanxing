@@ -1,5 +1,8 @@
 package com.xuanxing.tc.game;
 
+import android.os.Build;
+import android.os.StrictMode;
+
 import com.psylife.wrmvplibrary.WRCoreApp;
 import com.xuanxing.tc.game.bean.LoginInfo;
 
@@ -16,6 +19,10 @@ public class MyApplication extends WRCoreApp {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
     }
 
     @Override

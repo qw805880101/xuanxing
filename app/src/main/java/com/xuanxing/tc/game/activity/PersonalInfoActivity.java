@@ -1,12 +1,20 @@
 package com.xuanxing.tc.game.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
@@ -14,14 +22,20 @@ import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.MemberInfo;
+import com.xuanxing.tc.game.utils.DialogUtil;
 import com.xuanxing.tc.game.utils.SendEvent;
+import com.xuanxing.tc.game.utils.TakePhotosDispose;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.os.Build.VERSION_CODES.M;
 import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
 /**
@@ -29,6 +43,8 @@ import static com.xuanxing.tc.game.MyApplication.USER_INFO;
  */
 
 public class PersonalInfoActivity extends BaseActivity implements OnClickListener {
+
+    public static final int EXTERNAL_STORAGE_REQ_CAMERA_CODE = 10;
 
     @BindView(R.id.lin_head)
     LinearLayout linHead;
@@ -44,12 +60,16 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
     TextView mTxtUserName;
     @BindView(R.id.txt_birthday)
     TextView mTxtBirthday;
+    @BindView(R.id.iv_head)
+    CircleImageView mIvHead;
     @BindView(R.id.txt_interest)
     TextView mTxtInterest;
     @BindView(R.id.txt_intro)
     TextView mTxtIntro;
 
     private MemberInfo mMemberInfo;
+
+    private String path;
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
@@ -94,12 +114,26 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
         mTxtBirthday.setText(mMemberInfo.getBirthdayStr() != null && !mMemberInfo.getBirthdayStr().equals("") ? mMemberInfo.getBirthdayStr() : "1991-01-01");
         mTxtInterest.setText(mMemberInfo.getNickName());
         mTxtIntro.setText(mMemberInfo.getIntro());
+        //TODO 添加照片
+        Glide.with(mContext).load(mMemberInfo.getHeadIcon()).into(mIvHead);
     }
 
     @Override
     public void onClick(View v) {
         if (v == linHead) {
-
+            if (android.os.Build.VERSION.SDK_INT >= M) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    //进行权限请求
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            EXTERNAL_STORAGE_REQ_CAMERA_CODE);
+                } else {
+                    DialogUtil.showTakePhotoDialog(this);
+                }
+            } else {
+                DialogUtil.showTakePhotoDialog(this);
+            }
         }
 
         if (v == linName) {
@@ -139,6 +173,49 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
             if (event.getKey().equals("intro")) {
                 mTxtIntro.setText(event.getValue());
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case TakePhotosDispose.CROPIMAGE:
+                case TakePhotosDispose.TAKEPHOTO:
+                    path = DialogUtil.currentFileName.getAbsolutePath();
+                    break;
+                case TakePhotosDispose.PICKPHOTO:
+                    // 相册选图
+                    Uri selectedImage = data.getData();
+                    if (!selectedImage.toString().substring(0, 7).equals("content")) {
+                        // 如果路径错误
+                        String picturePath = selectedImage.getPath();
+                        path = picturePath;
+                    } else {
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        String picturePath = cursor.getString(columnIndex);
+                        cursor.close();
+                        path = picturePath;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            System.out.println("path = " + path);
+//            Glide.with(this).load(new File(path))
+//                    .placeholder(R.mipmap.wellcom) //设置占位图
+//                    .error(R.mipmap.wellcom) //设置错误图片
+//                    .crossFade() //设置淡入淡出效果，默认300ms，可以传参
+//                    .transform(new GlideCircleTransform(context)).into(mIvHead);
+            Glide.with(this).load(new File(path))
+                    .crossFade() //设置淡入淡出效果，默认300ms，可以传参
+                    .into(mIvHead);
+
         }
     }
 

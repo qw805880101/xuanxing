@@ -17,12 +17,14 @@
         android:paddingLeft="20dp"
         >
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/iv_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@mipmap/touxiang"
-            />
+            app:border_color="#FF000000"
+            app:border_overlay="false"
+            app:border_width="0dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -3,8 +3,11 @@ package com.xuanxing.tc.game.api;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
+import com.xuanxing.tc.game.bean.FindList;
 import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.NewsInfo;
+import com.xuanxing.tc.game.bean.SearchHotKey;
+import com.xuanxing.tc.game.bean.SearchHotKeyList;
 import com.xuanxing.tc.game.bean.VedioList;
 
 import okhttp3.RequestBody;
@@ -119,6 +122,20 @@ public interface Api {
     Observable<BaseBean> follow(@Query("app_m_id") String app_m_id,
                                   @Query("app_p_token") String app_p_token,
                                   @Query("newsMemberId") String newsMemberId);
+
+    /**
+     * 获取发现数据
+     * @return
+     */
+    @POST("api/found/index")
+    Observable<BaseBeanClass<FindList>> findData();
+
+    /**
+     * 获取热门搜索
+     * @return
+     */
+    @POST("api/search/mInitSearchHotKey")
+    Observable<BaseBeanClass<SearchHotKeyList>> searchKey();
 
 
     @POST("xxx")

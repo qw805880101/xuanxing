@@ -24,6 +24,20 @@ public class SearchHistory {
      */
     private String hotSearchContent;
 
+    public SearchHistory() {
+    }
+
+    public SearchHistory(int num, String historySearchContent) {
+        this.num = num;
+        this.historySearchContent = historySearchContent;
+    }
+
+    public SearchHistory(String historySearchContent, int num, String hotSearchContent) {
+        this.historySearchContent = historySearchContent;
+        this.num = num;
+        this.hotSearchContent = hotSearchContent;
+    }
+
     public int getNum() {
         return num;
     }
