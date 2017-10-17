@@ -9,6 +9,24 @@ import java.util.List;
 public class SearchList {
 
     private List<SearchHistory> mSearchHistories;
+    private NewsList newsList;
+    private VedioList videoList;
+
+    public NewsList getNewsList() {
+        return newsList;
+    }
+
+    public void setNewsList(NewsList newsList) {
+        this.newsList = newsList;
+    }
+
+    public VedioList getVideoList() {
+        return videoList;
+    }
+
+    public void setVideoList(VedioList videoList) {
+        this.videoList = videoList;
+    }
 
     public List<SearchHistory> getSearchHistories() {
         return mSearchHistories;

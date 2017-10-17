@@ -130,19 +130,6 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
 
     @Override
     public void initData() {
-        Observable<BaseBeanClass<Vedios>> vedioList = mXuanXingApi.getVedioList("1", "10")
-                .compose(RxUtil.<BaseBeanClass<Vedios>>rxSchedulerHelper());
-        mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<Vedios>>() {
-            @Override
-            public void call(BaseBeanClass<Vedios> newsListBaseBeanListClass) {
-                if (newsListBaseBeanListClass.getCode().equals("0000")) {
-                    mNewsInfos = newsListBaseBeanListClass.getData().getVideoList().getItems() ;
-                    mVideoAdapter.setNewData(mNewsInfos);
-                } else {
-                    toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());
-                }
-            }
-        }, this));
 
     }
 
@@ -183,4 +170,21 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
         }, this));
     }
 
+    @Override
+    protected void initLazyView() {
+        System.out.println("initLazyView");
+        Observable<BaseBeanClass<Vedios>> vedioList = mXuanXingApi.getVedioList("1", "10")
+                .compose(RxUtil.<BaseBeanClass<Vedios>>rxSchedulerHelper());
+        mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<Vedios>>() {
+            @Override
+            public void call(BaseBeanClass<Vedios> newsListBaseBeanListClass) {
+                if (newsListBaseBeanListClass.getCode().equals("0000")) {
+                    mNewsInfos = newsListBaseBeanListClass.getData().getVideoList().getItems() ;
+                    mVideoAdapter.setNewData(mNewsInfos);
+                } else {
+                    toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());
+                }
+            }
+        }, this));
+    }
 }

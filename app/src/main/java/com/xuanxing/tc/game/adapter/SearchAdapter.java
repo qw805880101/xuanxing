@@ -51,7 +51,7 @@ public class SearchAdapter extends BaseSectionQuickAdapter<SearchHead, BaseViewH
             helper.getView(R.id.iv_search_hear_del).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mSearchOnclick.setOnclick(view);
+                    mSearchOnclick.setOnclick(view, "", -1);
                 }
             });
             helper.setText(R.id.txt_head_title, "历史记录")
@@ -78,7 +78,7 @@ public class SearchAdapter extends BaseSectionQuickAdapter<SearchHead, BaseViewH
         helper.getView(R.id.txt_search_content).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.showToast(context, item.t.getHistorySearchContent());
+                mSearchOnclick.setOnclick(view,  item.t.getHistorySearchContent(), item.t.getType());
             }
         });
         if (helper.getLayoutPosition() == item.t.getNum()) {
@@ -95,7 +95,7 @@ public class SearchAdapter extends BaseSectionQuickAdapter<SearchHead, BaseViewH
     }
 
     public interface SearchOnclick{
-        void setOnclick(View view);
+        void setOnclick(View view, String searchKey, int type);
     }
 
 }

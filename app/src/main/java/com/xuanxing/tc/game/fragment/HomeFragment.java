@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.psylife.wrmvplibrary.utils.LogUtil;
 import com.psylife.wrmvplibrary.utils.helper.FragmentAdapter;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.SearchActivity;
@@ -44,6 +45,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     List<Fragment> fragments = new ArrayList<>();
 
+    private RecommendFragment recommendFragment;
+    private  VideoFragment videoFragment;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
@@ -51,8 +55,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
-        RecommendFragment recommendFragment = new RecommendFragment();
-        VideoFragment videoFragment = new VideoFragment();
+        recommendFragment = new RecommendFragment();
+        videoFragment = new VideoFragment();
 
         fragments.add(recommendFragment);
         fragments.add(videoFragment);
@@ -84,10 +88,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         if (v == btRecommend) {
             recommendOrVideo(true);
+//            recommendFragment.setUserVisibleHint(false);
+//            videoFragment.setUserVisibleHint(true);
         }
 
         if (v == btVideo) {
             recommendOrVideo(false);
+//            recommendFragment.setUserVisibleHint(true);
+            videoFragment.setUserVisibleHint(true);
         }
     }
 
@@ -109,5 +117,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             btVideo.setBackgroundResource(R.drawable.title_bt_bg_right_f);
             btVideo.setEnabled(false);
         }
+    }
+
+    @Override
+    protected void initLazyView() {
+        LogUtil.d("Home_initLazyView");
     }
 }

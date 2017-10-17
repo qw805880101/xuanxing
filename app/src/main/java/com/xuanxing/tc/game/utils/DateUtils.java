@@ -75,4 +75,9 @@ public class DateUtils {
 
     private static ThreadLocal<SimpleDateFormat> DateLocal = new ThreadLocal<SimpleDateFormat>();
 
+    public static String getNowData() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        return df.format(new Date());
+    }
+
 }

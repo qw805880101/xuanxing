@@ -10,6 +10,7 @@ import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.NewsList;
 import com.xuanxing.tc.game.bean.SearchHotKey;
 import com.xuanxing.tc.game.bean.SearchHotKeyList;
+import com.xuanxing.tc.game.bean.SearchList;
 import com.xuanxing.tc.game.bean.VedioList;
 import com.xuanxing.tc.game.bean.Vedios;
 
@@ -60,7 +61,7 @@ public interface Api {
     /**
      * 获取首页推荐列表
      *
-     * @param requestBody
+//     * @param requestBody
      * @param page        第几页,默认第1页
      * @param limit       每页几条,默认10条
      * @return
@@ -139,6 +140,25 @@ public interface Api {
      */
     @POST("api/search/mInitSearchHotKey")
     Observable<BaseBeanClass<SearchHotKeyList>> searchKey();
+
+    /**
+     * 搜索
+     * @param app_m_id      用户ID
+     * @param app_p_token   AppToken
+     * @param keyWord       关键字
+     * @param keyType       类型
+     * @param page          第几页,默认第1页
+     * @param limit         每页几条,默认10条
+     * @return
+     */
+    @POST("api/search/mGetSearch")
+    Observable<BaseBeanClass<SearchList>> search(@Query("app_m_id") String app_m_id,
+                                                 @Query("app_p_token") String app_p_token,
+                                                 @Query("keyWord") String keyWord,
+                                                 @Query("keyType") int keyType,
+                                                 @Query("page") int page,
+                                                 @Query("limit") int limit
+                                );
 
 
     @POST("xxx")

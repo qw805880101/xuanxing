@@ -24,4 +24,9 @@ public class LevelingFragment extends BaseFragment {
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
 
     }
+
+    @Override
+    protected void initLazyView() {
+
+    }
 }

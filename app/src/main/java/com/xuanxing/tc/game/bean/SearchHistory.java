@@ -1,5 +1,7 @@
 package com.xuanxing.tc.game.bean;
 
+import java.util.Date;
+
 /**
  * 搜索历史
  *
@@ -26,14 +28,17 @@ public class SearchHistory {
      */
     private String hotSearchContent;
 
+    private String mDate;
+
     private int type;
 
     public SearchHistory() {
     }
 
-    public SearchHistory(int num, String historySearchContent) {
+    public SearchHistory(int num, String historySearchContent, String mDate) {
         this.num = num;
         this.historySearchContent = historySearchContent;
+        this.mDate = mDate;
     }
 
     public SearchHistory(String historySearchContent, int num, String hotSearchContent) {
@@ -46,6 +51,14 @@ public class SearchHistory {
         this.historySearchContent = historySearchContent;
         this.num = num;
         this.type = type;
+    }
+
+    public String getDate() {
+        return mDate;
+    }
+
+    public void setDate(String date) {
+        mDate = date;
     }
 
     public int getType() {

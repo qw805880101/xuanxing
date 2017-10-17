@@ -56,6 +56,21 @@ public class FindFragment extends BaseFragment implements FindOnclick {
 
     @Override
     public void initData() {
+
+    }
+
+    @Override
+    public void onClickView(View view) {
+        switch (view.getId()) {
+            case R.id.txt_game_more:
+                Intent intent = new Intent(this.getContext(), HotGameMoreActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    @Override
+    protected void initLazyView() {
         Observable<BaseBeanClass<FindList>> findData = mXuanXingApi.findData().compose(RxUtil.<BaseBeanClass<FindList>>rxSchedulerHelper());
         mRxManager.add(findData.subscribe(new Action1<BaseBeanClass<FindList>>() {
             @Override
@@ -68,16 +83,5 @@ public class FindFragment extends BaseFragment implements FindOnclick {
                 }
             }
         }, this));
-
-    }
-
-    @Override
-    public void onClickView(View view) {
-        switch (view.getId()) {
-            case R.id.txt_game_more:
-                Intent intent = new Intent(this.getContext(), HotGameMoreActivity.class);
-                startActivity(intent);
-                break;
-        }
     }
 }

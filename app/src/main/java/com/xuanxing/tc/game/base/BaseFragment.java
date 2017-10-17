@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.psylife.wrmvplibrary.RxManager;
 import com.psylife.wrmvplibrary.base.WRBaseFragment;
+import com.psylife.wrmvplibrary.base.WRBaseLazyFragment;
 import com.psylife.wrmvplibrary.data.net.RxService;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.xuanxing.tc.game.api.Api;
@@ -16,7 +17,7 @@ import rx.functions.Action1;
  * Created by admin on 2017/8/30.
  */
 
-public abstract class BaseFragment extends WRBaseFragment implements Action1<Throwable> {
+public abstract class BaseFragment extends WRBaseLazyFragment implements Action1<Throwable> {
 
     public Api mXuanXingApi = RxService.createApi(Api.class);
 

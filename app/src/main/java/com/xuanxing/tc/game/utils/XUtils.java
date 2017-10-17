@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import com.psylife.wrmvplibrary.RxManager;
 import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
+import com.psylife.wrmvplibrary.utils.timeutils.DateUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.api.Api;
 import com.xuanxing.tc.game.bean.BaseBean;
@@ -22,7 +23,11 @@ import com.xuanxing.tc.game.bean.SearchHistory;
 import com.xuanxing.tc.game.bean.SearchList;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -133,11 +138,16 @@ public class XUtils {
             }
             for (SearchHistory s : list) {
                 if (s.getHistorySearchContent().equals(content)) {
+                    s.setDate(DateUtils.getNowData());
+                    ListSort(list);
+                    historys.setSearchHistories(list);
+                    SpUtils.putString(context, SEARCH_HISTORY, JSON.toJSONString(historys));
                     return false;
                 }
             }
             int num = list.size() + 1;
-            list.add(new SearchHistory(num, content));
+            list.add(new SearchHistory(num, content, DateUtils.getNowData()));
+            ListSort(list);
             historys.setSearchHistories(list);
             SpUtils.putString(context, SEARCH_HISTORY, JSON.toJSONString(historys));
             return true;
@@ -157,5 +167,28 @@ public class XUtils {
 
     public static void clearHistoryList(Context context) {
         SpUtils.remove(context, SEARCH_HISTORY);
+    }
+
+    public static void ListSort(List<SearchHistory> list) {
+        Collections.sort(list, new Comparator<SearchHistory>() {
+            @Override
+            public int compare(SearchHistory searchHistory, SearchHistory t1) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date dt1 = format.parse(t1.getDate());
+                    Date dt2 = format.parse(searchHistory.getDate());
+                    if (dt1.getTime() > dt2.getTime()) {
+                        return 1;
+                    } else if (dt1.getTime() < dt2.getTime()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
     }
 }

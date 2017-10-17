@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.psylife.wrmvplibrary.utils.LogUtil;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.RecommendAdapter;
@@ -67,5 +68,10 @@ public class RecommendFragment extends BaseFragment {
             }
         }, this));
 
+    }
+
+    @Override
+    protected void initLazyView() {
+        LogUtil.d("Rec_initLazyView");
     }
 }

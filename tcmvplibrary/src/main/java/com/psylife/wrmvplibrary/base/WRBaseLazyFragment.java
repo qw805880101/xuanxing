@@ -30,9 +30,9 @@ public abstract class WRBaseLazyFragment<T extends WRBasePresenter, E extends WR
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         LogUtil.d( "setUserVisibleHint() -> isVisibleToUser: " + isVisibleToUser);
-        if (rootView == null) {
-            return;
-        }
+//        if (rootView == null) {
+//            return;
+//        }
         hasCreateView = true;
         if (isVisibleToUser) {
             onFragmentVisibleChange(true);
@@ -84,7 +84,6 @@ public abstract class WRBaseLazyFragment<T extends WRBasePresenter, E extends WR
         } else {
             //        setRefresh(false);
         }
-
     }
 
 

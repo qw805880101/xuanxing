@@ -182,4 +182,9 @@ public class MyFragment extends BaseFragment implements OnClickListener {
         mTxtUserName.setText(memberInfo.getNickName());
         mTxtIntro.setText(memberInfo.getIntro());
     }
+
+    @Override
+    protected void initLazyView() {
+
+    }
 }

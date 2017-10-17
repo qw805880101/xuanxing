@@ -35,8 +35,10 @@ import com.xuanxing.tc.game.bean.SearchHistory;
 import com.xuanxing.tc.game.bean.SearchList;
 import com.xuanxing.tc.game.bean.SearchHotKey;
 import com.xuanxing.tc.game.bean.SearchHotKeyList;
-import com.xuanxing.tc.game.fragment.RecommendFragment;
-import com.xuanxing.tc.game.fragment.VideoFragment;
+import com.xuanxing.tc.game.fragment.search.AnchorFragment;
+import com.xuanxing.tc.game.fragment.search.ArticleFragment;
+import com.xuanxing.tc.game.fragment.search.UserFragment;
+import com.xuanxing.tc.game.fragment.search.VideoFragment;
 import com.xuanxing.tc.game.utils.XUtils;
 
 import java.util.ArrayList;
@@ -46,6 +48,9 @@ import java.util.List;
 import butterknife.BindView;
 import rx.Observable;
 import rx.functions.Action1;
+
+import static com.xuanxing.tc.game.bean.SearchHistory.HISTORY;
+import static com.xuanxing.tc.game.bean.SearchHistory.HOT;
 
 /**
  * Created by admin on 2017/9/15.
@@ -66,9 +71,11 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
     @BindView(R.id.lin_search_result)
     LinearLayout linSearchResult;
 
-    RecommendFragment recommendFragment;
-    VideoFragment videoFragment;
-    FragmentAdapter fragmentAdapter;
+    private ArticleFragment mArticleFragment;
+    private VideoFragment videoFragment;
+    private AnchorFragment mAnchorFragment;
+    private UserFragment mUserFragment;
+    private FragmentAdapter fragmentAdapter;
 
     private List<Fragment> mFragments = new ArrayList<>();
 
@@ -122,7 +129,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
             }
         });
 
-
+        /**
+         * 点击搜索
+         */
         etSearch.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -136,20 +145,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
                     if (newSearchKey.equals("")) {
                         return true;
                     }
-                    if (!oldSearchKey.equals(newSearchKey) && !newSearchKey.equals("") || !newSearchKey.equals("") && linSearchResult.getVisibility() != View.VISIBLE) {
-                        rvSearchList.setVisibility(View.GONE);
-                        linSearchResult.setVisibility(View.VISIBLE);
-                        initFragment();
-                        boolean isAdd = XUtils.setHistorySearch(SearchActivity.this, newSearchKey);
-                        if (isAdd)
-                            addHistory(newSearchKey);
-                        else
-                            refHistory(newSearchKey);
-                    } else if (newSearchKey.equals("")) {
-                        rvSearchList.setVisibility(View.VISIBLE);
-                        linSearchResult.setVisibility(View.GONE);
-                    }
-                    oldSearchKey = newSearchKey;
+                    search(newSearchKey, HISTORY);
                 }
                 return false;
             }
@@ -158,7 +154,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
         searchAdapter = new SearchAdapter(this, data);
         searchAdapter.setOnclick(new SearchOnclick() {
             @Override
-            public void setOnclick(View view) {
+            public void setOnclick(View view, String searchKey, int type) {
                 if (view.getId() == R.id.iv_search_hear_del) {
                     XUtils.clearHistoryList(SearchActivity.this);
                     /* 删除搜索历史 */
@@ -170,6 +166,10 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
                     }
                     searchHistoryList.getSearchHistories().clear();
                     searchAdapter.setNewData(data);
+                }
+                if (searchKey != null && !searchKey.equals("")) {
+                    search(searchKey, type);
+                    etSearch.setText(searchKey);
                 }
             }
         });
@@ -193,7 +193,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
                     data.add(hotHead);
                     for (int i = 0; i < searchHotKeyBaseBeanClass.getData().getSearchHotKeyList().size(); i++) {
                         SearchHotKey searchHotKey = searchHotKeyBaseBeanClass.getData().getSearchHotKeyList().get(i);
-                        SearchHistory searchHistory = new SearchHistory(searchHotKey.getKeyWord(), searchHotKeyBaseBeanClass.getData().getSearchHotKeyList().size(), SearchHistory.HOT);
+                        SearchHistory searchHistory = new SearchHistory(searchHotKey.getKeyWord(), searchHotKeyBaseBeanClass.getData().getSearchHotKeyList().size(), HOT);
                         SearchHead historyHeadInfo = new SearchHead(searchHistory);
                         data.add(historyHeadInfo);
                     }
@@ -225,6 +225,7 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
 
     /**
      * 更新历史搜素位置
+     *
      * @param newSearchKey
      */
     private void refHistory(String newSearchKey) {
@@ -237,6 +238,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
         addHistory(newSearchKey);
     }
 
+    /**
+     * 设置历史搜索
+     */
     private void setHistory() {
         searchHistoryList = XUtils.getHistorySearch(this);
         if (searchHistoryList.getSearchHistories() != null && searchHistoryList.getSearchHistories().size() > 0) {
@@ -254,37 +258,59 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-
-    private void initFragment() {
+    private void initFragment(String keyWord, int page) {
         mFragments.clear();
-        viewPager.removeAllViews();
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
-        if (recommendFragment != null && recommendFragment.isAdded()) {
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.remove(recommendFragment);
-            ft.commit();
-            recommendFragment = null;
-        }
-        if (videoFragment != null && videoFragment.isAdded()) {
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.remove(videoFragment);
-            ft.commit();
-            videoFragment = null;
-        }
-        if (recommendFragment == null) {
-            recommendFragment = new RecommendFragment();
-        }
-        if (videoFragment == null) {
-            videoFragment = new VideoFragment();
-        }
-        mFragments.add(recommendFragment);
+        ArticleFragment articleFragment = new ArticleFragment();
+        articleFragment.setSearch(keyWord, 1, page);
+
+        VideoFragment videoFragment = new VideoFragment();
+        videoFragment.setSearch(keyWord, 2, page);
+
+        AnchorFragment anchorFragment = new AnchorFragment();
+        anchorFragment.setSearch(keyWord, 3, page);
+
+        UserFragment userFragment = new UserFragment();
+        userFragment.setSearch(keyWord, 4, page);
+
+        mFragments.add(articleFragment);
         mFragments.add(videoFragment);
-//        mFragments.add(recommendFragment);
-//        mFragments.add(videoFragment);
+        mFragments.add(anchorFragment);
+        mFragments.add(userFragment);
         fragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(), mFragments);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(toolbarTab));
         toolbarTab.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+    }
+
+    /**
+     * 搜索
+     *
+     * @param newSearchKey 搜索关键字
+     * @param type         搜索关键字类型
+     */
+    private void search(String newSearchKey, int type) {
+        if (type == HOT) {
+            rvSearchList.setVisibility(View.GONE);
+            linSearchResult.setVisibility(View.VISIBLE);
+            initFragment(newSearchKey, 1);
+        }
+        if (type == HISTORY) {
+            if (!oldSearchKey.equals(newSearchKey) && !newSearchKey.equals("") || !newSearchKey.equals("") && linSearchResult.getVisibility() != View.VISIBLE) {
+                rvSearchList.setVisibility(View.GONE);
+                linSearchResult.setVisibility(View.VISIBLE);
+                initFragment(newSearchKey, 1);
+                boolean isAdd = XUtils.setHistorySearch(SearchActivity.this, newSearchKey);
+                if (isAdd)
+                    addHistory(newSearchKey);
+                else
+                    refHistory(newSearchKey);
+            } else if (newSearchKey.equals("")) {
+                rvSearchList.setVisibility(View.VISIBLE);
+                linSearchResult.setVisibility(View.GONE);
+            }
+            oldSearchKey = newSearchKey;
+        }
     }
 
     @Override
