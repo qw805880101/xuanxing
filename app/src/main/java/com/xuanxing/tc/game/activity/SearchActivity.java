@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import com.xuanxing.tc.game.bean.SearchHistory;
 import com.xuanxing.tc.game.bean.SearchList;
 import com.xuanxing.tc.game.bean.SearchHotKey;
 import com.xuanxing.tc.game.bean.SearchHotKeyList;
+import com.xuanxing.tc.game.fragment.RecommendFragment;
 import com.xuanxing.tc.game.fragment.search.AnchorFragment;
 import com.xuanxing.tc.game.fragment.search.ArticleFragment;
 import com.xuanxing.tc.game.fragment.search.UserFragment;
@@ -71,10 +73,6 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
     @BindView(R.id.lin_search_result)
     LinearLayout linSearchResult;
 
-    private ArticleFragment mArticleFragment;
-    private VideoFragment videoFragment;
-    private AnchorFragment mAnchorFragment;
-    private UserFragment mUserFragment;
     private FragmentAdapter fragmentAdapter;
 
     private List<Fragment> mFragments = new ArrayList<>();
@@ -83,6 +81,11 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
     private SearchAdapter searchAdapter;
 
     private String oldSearchKey = "";
+
+    private ArticleFragment mArticleFragment;
+    private VideoFragment videoFragment;
+    private AnchorFragment mAnchorFragment;
+    private UserFragment mUserFragment;
 
     private SearchHead historyHead;
 
@@ -145,6 +148,9 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
                     if (newSearchKey.equals("")) {
                         return true;
                     }
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     search(newSearchKey, HISTORY);
                 }
                 return false;
@@ -260,27 +266,89 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
 
     private void initFragment(String keyWord, int page) {
         mFragments.clear();
-        ArticleFragment articleFragment = new ArticleFragment();
-        articleFragment.setSearch(keyWord, 1, page);
-
-        VideoFragment videoFragment = new VideoFragment();
-        videoFragment.setSearch(keyWord, 2, page);
-
-        AnchorFragment anchorFragment = new AnchorFragment();
-        anchorFragment.setSearch(keyWord, 3, page);
-
-        UserFragment userFragment = new UserFragment();
-        userFragment.setSearch(keyWord, 4, page);
-
-        mFragments.add(articleFragment);
+//        ArticleFragment articleFragment = new ArticleFragment();
+//        articleFragment.setSearch(keyWord, 1, page);
+//
+//        VideoFragment videoFragment = new VideoFragment();
+//        videoFragment.setSearch(keyWord, 2, page);
+//
+//        AnchorFragment anchorFragment = new AnchorFragment();
+//        anchorFragment.setSearch(keyWord, 3, page);
+//
+//        UserFragment userFragment = new UserFragment();
+//        userFragment.setSearch(keyWord, 4, page);
+//
+//        mFragments.add(articleFragment);
+//        mFragments.add(videoFragment);
+//        mFragments.add(anchorFragment);
+//        mFragments.add(userFragment);
+//        fragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(), mFragments);
+//        viewPager.setOffscreenPageLimit(2);
+//        viewPager.setAdapter(fragmentAdapter);
+//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(toolbarTab));
+//        toolbarTab.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+        FragmentManager manager = this.getSupportFragmentManager();
+        if(mArticleFragment != null && mArticleFragment.isAdded()){
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.remove(mArticleFragment);
+            ft.commit();
+            mArticleFragment = null;
+        }
+        if(videoFragment != null && videoFragment.isAdded()){
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.remove(videoFragment);
+            ft.commit();
+            videoFragment = null;
+        }
+        if(mAnchorFragment != null && mAnchorFragment.isAdded()){
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.remove(mAnchorFragment);
+            ft.commit();
+            mAnchorFragment = null;
+        }
+        if(mUserFragment != null && mUserFragment.isAdded()){
+            FragmentTransaction ft = manager.beginTransaction();
+            ft.remove(mUserFragment);
+            ft.commit();
+            mUserFragment = null;
+        }
+//        clearFragment(manager);
+        if (mArticleFragment == null) {
+            mArticleFragment = new ArticleFragment();
+            mArticleFragment.setSearch(keyWord, 1, page);
+        }
+        if (videoFragment == null) {
+            videoFragment = new VideoFragment();
+            videoFragment.setSearch(keyWord, 1, page);
+        }
+        if (mAnchorFragment == null) {
+            mAnchorFragment = new AnchorFragment();
+            mAnchorFragment.setSearch(keyWord, 1, page);
+        }
+        if (mUserFragment == null) {
+            mUserFragment = new UserFragment();
+            mUserFragment.setSearch(keyWord, 1, page);
+        }
+        mFragments.add(mArticleFragment);
         mFragments.add(videoFragment);
-        mFragments.add(anchorFragment);
-        mFragments.add(userFragment);
-        fragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(), mFragments);
-        viewPager.setOffscreenPageLimit(1);
+        mFragments.add(mAnchorFragment);
+        mFragments.add(mUserFragment);
+        fragmentAdapter = new FragmentAdapter(manager, mFragments);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(toolbarTab));
         toolbarTab.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
+    }
+
+    private void clearFragment(FragmentManager manager){
+        for (Fragment fragment : mFragments) {
+            if(fragment.isAdded()){
+                FragmentTransaction ft = manager.beginTransaction();
+                ft.remove(fragment);
+                ft.commit();
+            }
+        }
+        mFragments.clear();
     }
 
     /**

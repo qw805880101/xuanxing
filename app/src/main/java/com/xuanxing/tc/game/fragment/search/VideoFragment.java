@@ -68,12 +68,14 @@ public class VideoFragment extends BaseFragment {
      * @param page
      */
     private void search(String keyWord, int keyType, int page) {
+        startProgressDialog(this.getContext());
         Observable<BaseBeanClass<SearchList>> search = mXuanXingApi.search(MyApplication.loginInfo.getMemberInfo().getMemberId(),
                 MyApplication.loginInfo.getP_token(), keyWord,
                 keyType, page, 10).compose(RxUtil.<BaseBeanClass<SearchList>>rxSchedulerHelper());
         mRxManager.add(search.subscribe(new Action1<BaseBeanClass<SearchList>>() {
             @Override
             public void call(BaseBeanClass<SearchList> baseBean) {
+                stopProgressDialog();
                 if (baseBean.getCode().equals("0000")) {
                     mNewsInfos = baseBean.getData().getVideoList().getItems();
                     mRecommendAdapter.setNewData(mNewsInfos);

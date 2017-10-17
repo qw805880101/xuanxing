@@ -40,6 +40,7 @@ public abstract class BaseFragment extends WRBaseLazyFragment implements Action1
     @Override
     public void call(Throwable throwable) {
         System.out.println(throwable.getMessage());
+        stopProgressDialog();
         ToastUtils.showToast(this.getContext(), "网络错误");
     }
 

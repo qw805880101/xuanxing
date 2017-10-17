@@ -24,15 +24,15 @@ public abstract class WRBaseLazyFragment<T extends WRBasePresenter, E extends WR
     /**
      * onCreateView()里返回的view，修饰为protected,所以子类继承该类时，在onCreateView里必须对该变量进行初始化
      */
-    protected View rootView;
+//    protected View rootView;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         LogUtil.d( "setUserVisibleHint() -> isVisibleToUser: " + isVisibleToUser);
-//        if (rootView == null) {
-//            return;
-//        }
+        if (rootView == null) {
+            return;
+        }
         hasCreateView = true;
         if (isVisibleToUser) {
             onFragmentVisibleChange(true);

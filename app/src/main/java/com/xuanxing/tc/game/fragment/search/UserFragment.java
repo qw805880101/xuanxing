@@ -67,13 +67,14 @@ public class UserFragment extends BaseFragment {
      * @param page
      */
     private void search(String keyWord, int keyType, int page) {
+        startProgressDialog(this.getContext());
         Observable<BaseBean> search = mXuanXingApi.search(MyApplication.loginInfo.getMemberInfo().getMemberId(),
                 MyApplication.loginInfo.getP_token(), keyWord,
                 keyType, page, 10).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         mRxManager.add(search.subscribe(new Action1<BaseBean>() {
             @Override
             public void call(BaseBean baseBean) {
-
+                stopProgressDialog();
             }
         }, this));
     }

@@ -18,6 +18,7 @@ import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.psylife.wrmvplibrary.widget.CustomProgressDialog;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -54,7 +55,7 @@ public abstract class WRBaseFragment<T extends WRBasePresenter, E extends WRBase
         }
     }
 
-    private View rootView;
+    protected View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if(this.rootView!=null){
@@ -248,4 +249,37 @@ public abstract class WRBaseFragment<T extends WRBasePresenter, E extends WRBase
     public void showLog(String msg) {
         LogUtil.i(TAG, msg);// TODO: 16/10/12 Log需要自己从新搞一下
     }
+
+    private CustomProgressDialog progressDialog = null;
+
+    /**
+     * 开始loading
+     *
+     * @param context
+     */
+    public void startProgressDialog(Context context, String hint) {
+        if (progressDialog == null) {
+            progressDialog = CustomProgressDialog.createDialog(context);
+            progressDialog.setCanceledOnTouchOutside(false);
+            // progressDialog.setCancelable(false);
+            progressDialog.setMessage(hint);
+        }
+
+        progressDialog.show();
+    }
+
+    public void startProgressDialog(Context context) {
+        startProgressDialog(context, "正在加载中...");
+    }
+
+    /**
+     * 结束loading
+     */
+    public void stopProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+
 }
