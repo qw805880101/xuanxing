@@ -5,10 +5,13 @@ import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
 import com.xuanxing.tc.game.bean.FindList;
 import com.xuanxing.tc.game.bean.LoginInfo;
+import com.xuanxing.tc.game.bean.News;
 import com.xuanxing.tc.game.bean.NewsInfo;
+import com.xuanxing.tc.game.bean.NewsList;
 import com.xuanxing.tc.game.bean.SearchHotKey;
 import com.xuanxing.tc.game.bean.SearchHotKeyList;
 import com.xuanxing.tc.game.bean.VedioList;
+import com.xuanxing.tc.game.bean.Vedios;
 
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -63,9 +66,9 @@ public interface Api {
      * @return
      */
     @POST("api/home/newsList")
-    Observable<BaseBeanListClass<NewsInfo>> getNewsList(/*@Body RequestBody requestBody,*/
+    Observable<BaseBeanClass<News>> getNewsList(/*@Body RequestBody requestBody,*/
                                                         @Query("page") String page,
-                                                        @Query("limit") String limit);
+                                                @Query("limit") String limit);
 
     /**
      * 获取首页视频列表
@@ -75,9 +78,9 @@ public interface Api {
      * @return
      */
     @POST("api/home/videoList")
-    Observable<BaseBeanClass<VedioList>> getVedioList(/*@Body RequestBody requestBody,*/
+    Observable<BaseBeanClass<Vedios>> getVedioList(/*@Body RequestBody requestBody,*/
                                                       @Query("page") String page,
-                                                      @Query("limit") String limit);
+                                                   @Query("limit") String limit);
 
     /**
      * 编辑用户信息

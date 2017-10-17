@@ -1,7 +1,5 @@
 package com.xuanxing.tc.game.bean;
 
-import com.chad.library.adapter.base.entity.SectionEntity;
-
 /**
  * 搜索历史
  *
@@ -9,6 +7,10 @@ import com.chad.library.adapter.base.entity.SectionEntity;
  */
 
 public class SearchHistory {
+
+    public static final int HOT = 0;
+    public static final int HISTORY = 1;
+
     /**
      * 搜索历史内容
      */
@@ -24,6 +26,8 @@ public class SearchHistory {
      */
     private String hotSearchContent;
 
+    private int type;
+
     public SearchHistory() {
     }
 
@@ -36,6 +40,20 @@ public class SearchHistory {
         this.historySearchContent = historySearchContent;
         this.num = num;
         this.hotSearchContent = hotSearchContent;
+    }
+
+    public SearchHistory(String historySearchContent, int num, int type) {
+        this.historySearchContent = historySearchContent;
+        this.num = num;
+        this.type = type;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public int getNum() {

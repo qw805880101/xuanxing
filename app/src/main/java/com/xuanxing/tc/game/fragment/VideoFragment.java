@@ -23,6 +23,7 @@ import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.VedioList;
+import com.xuanxing.tc.game.bean.Vedios;
 import com.xuanxing.tc.game.bean.VideoItemUtil;
 import com.xuanxing.tc.game.utils.SendEvent;
 import com.xuanxing.tc.game.utils.XUtils;
@@ -129,13 +130,13 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
 
     @Override
     public void initData() {
-        Observable<BaseBeanClass<VedioList>> vedioList = mXuanXingApi.getVedioList("1", "10")
-                .compose(RxUtil.<BaseBeanClass<VedioList>>rxSchedulerHelper());
-        mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<VedioList>>() {
+        Observable<BaseBeanClass<Vedios>> vedioList = mXuanXingApi.getVedioList("1", "10")
+                .compose(RxUtil.<BaseBeanClass<Vedios>>rxSchedulerHelper());
+        mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<Vedios>>() {
             @Override
-            public void call(BaseBeanClass<VedioList> newsListBaseBeanListClass) {
+            public void call(BaseBeanClass<Vedios> newsListBaseBeanListClass) {
                 if (newsListBaseBeanListClass.getCode().equals("0000")) {
-                    mNewsInfos = newsListBaseBeanListClass.getData().getVideoList();
+                    mNewsInfos = newsListBaseBeanListClass.getData().getVideoList().getItems() ;
                     mVideoAdapter.setNewData(mNewsInfos);
                 } else {
                     toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());

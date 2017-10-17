@@ -13,6 +13,7 @@ import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.bean.SearchHead;
 import com.xuanxing.tc.game.bean.SearchHistory;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import java.util.List;
 
@@ -24,11 +25,16 @@ public class SearchAdapter extends BaseSectionQuickAdapter<SearchHead, BaseViewH
 
     private Context context;
     private List<SearchHead> data;
+    private SearchOnclick mSearchOnclick;
 
     public SearchAdapter(Context context, @Nullable List<SearchHead> data) {
         super(R.layout.item_search_content, R.layout.item_search_head, data);
         this.context = context;
         this.data = data;
+    }
+
+    public void setOnclick(SearchOnclick mSearchOnclick){
+        this.mSearchOnclick = mSearchOnclick;
     }
 
     /**
@@ -42,6 +48,12 @@ public class SearchAdapter extends BaseSectionQuickAdapter<SearchHead, BaseViewH
 
         if (item.getHeadType().equals("101")) { //历史记录
             helper.getView(R.id.iv_search_hear_del).setVisibility(View.VISIBLE);
+            helper.getView(R.id.iv_search_hear_del).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mSearchOnclick.setOnclick(view);
+                }
+            });
             helper.setText(R.id.txt_head_title, "历史记录")
                     .setImageResource(R.id.iv_search_hear_icon, R.mipmap.lishi);
         }
@@ -81,4 +93,9 @@ public class SearchAdapter extends BaseSectionQuickAdapter<SearchHead, BaseViewH
 //            }
 //        }
     }
+
+    public interface SearchOnclick{
+        void setOnclick(View view);
+    }
+
 }

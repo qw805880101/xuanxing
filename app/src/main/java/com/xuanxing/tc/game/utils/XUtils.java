@@ -12,22 +12,25 @@ import android.widget.LinearLayout.LayoutParams;
 
 import com.alibaba.fastjson.JSON;
 import com.psylife.wrmvplibrary.RxManager;
-import com.psylife.wrmvplibrary.utils.SpUtil;
 import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
-import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.api.Api;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.LoginInfo;
+import com.xuanxing.tc.game.bean.SearchHistory;
+import com.xuanxing.tc.game.bean.SearchList;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import rx.Observable;
 import rx.functions.Action1;
 
+import static com.xuanxing.tc.game.MyApplication.SEARCH_HISTORY;
 import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
 /**
@@ -91,7 +94,7 @@ public class XUtils {
             if (entry.getKey().equals("intro")) {
                 MyApplication.loginInfo.getMemberInfo().setIntro(entry.getValue());
             }
-            if (entry.getKey().equals("followNum") && !entry.getValue().equals("")){
+            if (entry.getKey().equals("followNum") && !entry.getValue().equals("")) {
                 MyApplication.loginInfo.setAttentionNum(entry.getValue());
             }
         }
@@ -114,4 +117,45 @@ public class XUtils {
         return version;
     }
 
+    /**
+     * 存储搜索历史
+     *
+     * @param content
+     */
+    public static boolean setHistorySearch(Context context, String content) {
+        try {
+            String historyStr = SpUtils.getString(context, SEARCH_HISTORY);
+            SearchList historys = new SearchList();
+            List<SearchHistory> list = new ArrayList<>();
+            if (!historyStr.equals("")) {
+                historys = JSON.parseObject(historyStr, SearchList.class);
+                list = historys.getSearchHistories();
+            }
+            for (SearchHistory s : list) {
+                if (s.getHistorySearchContent().equals(content)) {
+                    return false;
+                }
+            }
+            int num = list.size() + 1;
+            list.add(new SearchHistory(num, content));
+            historys.setSearchHistories(list);
+            SpUtils.putString(context, SEARCH_HISTORY, JSON.toJSONString(historys));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static SearchList getHistorySearch(Context context) {
+        String historyStr = SpUtils.getString(context, SEARCH_HISTORY);
+        SearchList historys = new SearchList();
+        if (!historyStr.equals("")) {
+            historys = JSON.parseObject(historyStr, SearchList.class);
+        }
+        return historys;
+    }
+
+    public static void clearHistoryList(Context context) {
+        SpUtils.remove(context, SEARCH_HISTORY);
+    }
 }

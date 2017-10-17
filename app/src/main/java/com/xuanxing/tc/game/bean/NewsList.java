@@ -3,11 +3,10 @@ package com.xuanxing.tc.game.bean;
 import java.util.List;
 
 /**
- * Created by tianchao on 2017/10/13.
+ * Created by tianchao on 2017/10/17.
  */
 
-public class VedioList {
-
+public class NewsList {
     private int totalCount;
     private List<NewsInfo> items;
 

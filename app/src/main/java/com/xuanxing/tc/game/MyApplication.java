@@ -13,6 +13,7 @@ import com.xuanxing.tc.game.bean.LoginInfo;
 public class MyApplication extends WRCoreApp {
 
     public static final String USER_INFO = "userInfo";
+    public static final String SEARCH_HISTORY = "searchHistory";
 
     public static LoginInfo loginInfo;
 

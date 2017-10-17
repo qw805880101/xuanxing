@@ -10,8 +10,11 @@ import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.RecommendAdapter;
 import com.xuanxing.tc.game.base.BaseFragment;
+import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
+import com.xuanxing.tc.game.bean.News;
 import com.xuanxing.tc.game.bean.NewsInfo;
+import com.xuanxing.tc.game.bean.NewsList;
 import com.xuanxing.tc.game.bean.RecommendItemUtil;
 
 import java.util.ArrayList;
@@ -50,14 +53,14 @@ public class RecommendFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        Observable<BaseBeanListClass<NewsInfo>> newsList = mXuanXingApi.getNewsList("1", "10")
-                .compose(RxUtil.<BaseBeanListClass<NewsInfo>>rxSchedulerHelper());
-        mRxManager.add(newsList.subscribe(new Action1<BaseBeanListClass<NewsInfo>>() {
+        Observable<BaseBeanClass<News>> newsList = mXuanXingApi.getNewsList("1", "10")
+                .compose(RxUtil.<BaseBeanClass<News>>rxSchedulerHelper());
+        mRxManager.add(newsList.subscribe(new Action1<BaseBeanClass<News>>() {
             @Override
-            public void call(BaseBeanListClass<NewsInfo> newsListBaseBeanListClass) {
+            public void call(BaseBeanClass<News> newsListBaseBeanListClass) {
                 if (newsListBaseBeanListClass.getCode().equals("0000")){
-                    mRecommendAdapter.setNewData(newsListBaseBeanListClass.getData());
-                    System.out.println("获取信息列表成功" + newsListBaseBeanListClass.getData().size());
+                    mRecommendAdapter.setNewData(newsListBaseBeanListClass.getData().getNewsList().getItems());
+                    System.out.println("获取信息列表成功" + newsListBaseBeanListClass.getData().getNewsList().getItems().size());
                 } else {
                     toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());
                 }
