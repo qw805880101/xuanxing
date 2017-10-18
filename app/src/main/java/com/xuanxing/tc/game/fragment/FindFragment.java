@@ -3,6 +3,8 @@ package com.xuanxing.tc.game.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +40,9 @@ public class FindFragment extends BaseFragment implements FindOnclick {
     @BindView(R.id.rv_find)
     RecyclerView rvFind;
 
+    @BindView(R.id.swipe_refresh_find)
+    SwipeRefreshLayout mRefreshLayout;
+
     private FindAdapter mFindAdapter;
     private List<FindList> list = new ArrayList<>();
 
@@ -50,6 +55,14 @@ public class FindFragment extends BaseFragment implements FindOnclick {
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
         mFindAdapter = new FindAdapter(this.getContext(), list);
         mFindAdapter.setFindOnClick(this);
+
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+            }
+        });
+
         rvFind.setLayoutManager(new LinearLayoutManager(this.getContext()));
         rvFind.setAdapter(mFindAdapter);
     }
@@ -69,13 +82,14 @@ public class FindFragment extends BaseFragment implements FindOnclick {
         }
     }
 
-    @Override
-    protected void initLazyView() {
+    private void loadData() {
+        list.clear();
         Observable<BaseBeanClass<FindList>> findData = mXuanXingApi.findData().compose(RxUtil.<BaseBeanClass<FindList>>rxSchedulerHelper());
         mRxManager.add(findData.subscribe(new Action1<BaseBeanClass<FindList>>() {
             @Override
             public void call(BaseBeanClass<FindList> findListBaseBeanClass) {
-                if (findListBaseBeanClass.getCode().equals("0000")){
+                if (findListBaseBeanClass.getCode().equals("0000")) {
+                    mRefreshLayout.setRefreshing(false); //刷新完成
                     list.add(findListBaseBeanClass.getData());
                     mFindAdapter.setNewData(list);
                 } else {
@@ -83,5 +97,16 @@ public class FindFragment extends BaseFragment implements FindOnclick {
                 }
             }
         }, this));
+    }
+
+    @Override
+    public void call(Throwable throwable) {
+        super.call(throwable);
+        mRefreshLayout.setRefreshing(false); //刷新失败
+    }
+
+    @Override
+    protected void initLazyView() {
+        loadData();
     }
 }

@@ -88,14 +88,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         if (v == btRecommend) {
             recommendOrVideo(true);
-//            recommendFragment.setUserVisibleHint(false);
-//            videoFragment.setUserVisibleHint(true);
         }
 
         if (v == btVideo) {
             recommendOrVideo(false);
-//            recommendFragment.setUserVisibleHint(true);
-            videoFragment.setUserVisibleHint(true);
         }
     }
 

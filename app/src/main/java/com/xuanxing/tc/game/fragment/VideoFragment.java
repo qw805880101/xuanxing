@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
@@ -50,6 +53,9 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
     @BindView(R.id.rv_video)
     RecyclerView rvVideo;
 
+    @BindView(R.id.swipe_refresh_video)
+    SwipeRefreshLayout mRefreshLayout;
+
     private static final String URL =
             "http://dn-chunyu.qbox.me/fwb/static/images/home/video/video_aboutCY_A.mp4";
 
@@ -67,6 +73,14 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
 
     private List<NewsInfo> mNewsInfos = new ArrayList<>();
 
+    private boolean isLoadData = false;
+
+    private int total;
+    private int totalPage;
+    private int page;
+
+    private boolean isRef = false;
+
     @Override
     public View getTitleView() {
         return null;
@@ -80,8 +94,31 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
     @Override
     public void initUI(View view, @Nullable Bundle savedInstanceState) {
 
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                isRef = true;
+                page = 1;
+                loadData(page);
+            }
+        });
+
         mVideoAdapter = new VideoAdapter(this.getContext(), mNewsInfos);
         mVideoAdapter.setOnClickListener(this);
+        mVideoAdapter.setOnLoadMoreListener(new RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+//                ToastUtils.showToast(ArticleFragment.this.getContext(), "加载");
+                if (totalPage > page) {
+                    page += 1;
+                    loadData(page);
+                } else {
+                    mVideoAdapter.loadMoreEnd();//加载结束
+                }
+            }
+        });
+
+
         rvVideo.setLayoutManager(new LinearLayoutManager(this.getContext()));
         rvVideo.setAdapter(mVideoAdapter);
         rvVideo.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -154,7 +191,7 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
         final String num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) + 1);
         map.put("followNum", num);
         Observable<BaseBean> follow = mXuanXingApi.follow(MyApplication.loginInfo.getMemberInfo().getMemberId(),
-                MyApplication.loginInfo.getP_token(), /*"" + mNewsInfos.get(pos).getMemberId())*/ "123").compose(RxUtil.<BaseBean>rxSchedulerHelper());
+                MyApplication.loginInfo.getP_token(), "" + mNewsInfos.get(pos).getMemberId()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         mRxManager.add(follow.subscribe(new Action1<BaseBean>() {
             @Override
             public void call(BaseBean baseBean) {
@@ -170,21 +207,48 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
         }, this));
     }
 
-    @Override
-    protected void initLazyView() {
-        System.out.println("initLazyView");
-        Observable<BaseBeanClass<Vedios>> vedioList = mXuanXingApi.getVedioList("1", "10")
+    private void loadData(int page) {
+        isLoadData = true;
+        Observable<BaseBeanClass<Vedios>> vedioList = mXuanXingApi.getVedioList(page, 10)
                 .compose(RxUtil.<BaseBeanClass<Vedios>>rxSchedulerHelper());
         mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<Vedios>>() {
             @Override
             public void call(BaseBeanClass<Vedios> newsListBaseBeanListClass) {
+                mRefreshLayout.setRefreshing(false); //刷新完成
+                mVideoAdapter.loadMoreComplete(); //加载完成
                 if (newsListBaseBeanListClass.getCode().equals("0000")) {
-                    mNewsInfos = newsListBaseBeanListClass.getData().getVideoList().getItems() ;
+                     /* 总数-总页数 */
+                    total = newsListBaseBeanListClass.getData().getVideoList().getTotalCount();
+                    if (total % 10 > 0) {
+                        totalPage = total / 10 + 1;
+                    } else {
+                        totalPage = total / 10;
+                    }
+                    if (isRef) { //刷新
+                        isRef = false;
+                        mNewsInfos = newsListBaseBeanListClass.getData().getVideoList().getItems();
+                    } else { //加载
+                        mNewsInfos.addAll(newsListBaseBeanListClass.getData().getVideoList().getItems());
+                    }
                     mVideoAdapter.setNewData(mNewsInfos);
                 } else {
                     toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());
                 }
             }
         }, this));
+    }
+
+    @Override
+    public void call(Throwable throwable) {
+        super.call(throwable);
+        mVideoAdapter.loadMoreFail(); //加载失败
+        mRefreshLayout.setRefreshing(false); //刷新失败
+    }
+
+    @Override
+    protected void initLazyView() {
+        if (!isLoadData) {
+            loadData(1);
+        }
     }
 }

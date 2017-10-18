@@ -68,8 +68,8 @@ public interface Api {
      */
     @POST("api/home/newsList")
     Observable<BaseBeanClass<News>> getNewsList(/*@Body RequestBody requestBody,*/
-                                                        @Query("page") String page,
-                                                @Query("limit") String limit);
+                                                        @Query("page") int page,
+                                                @Query("limit") int limit);
 
     /**
      * 获取首页视频列表
@@ -80,8 +80,8 @@ public interface Api {
      */
     @POST("api/home/videoList")
     Observable<BaseBeanClass<Vedios>> getVedioList(/*@Body RequestBody requestBody,*/
-                                                      @Query("page") String page,
-                                                   @Query("limit") String limit);
+                                                      @Query("page") int page,
+                                                   @Query("limit") int limit);
 
     /**
      * 编辑用户信息

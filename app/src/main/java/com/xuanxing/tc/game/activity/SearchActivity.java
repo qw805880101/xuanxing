@@ -176,11 +176,14 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
                 if (searchKey != null && !searchKey.equals("")) {
                     search(searchKey, type);
                     etSearch.setText(searchKey);
+                    etSearch.setSelection(etSearch.length());
                 }
             }
         });
         rvSearchList.setLayoutManager(new LinearLayoutManager(this));
         rvSearchList.setAdapter(searchAdapter);
+
+        initF();
     }
 
     @Override
@@ -264,91 +267,48 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void initFragment(String keyWord, int page) {
-        mFragments.clear();
-//        ArticleFragment articleFragment = new ArticleFragment();
-//        articleFragment.setSearch(keyWord, 1, page);
-//
-//        VideoFragment videoFragment = new VideoFragment();
-//        videoFragment.setSearch(keyWord, 2, page);
-//
-//        AnchorFragment anchorFragment = new AnchorFragment();
-//        anchorFragment.setSearch(keyWord, 3, page);
-//
-//        UserFragment userFragment = new UserFragment();
-//        userFragment.setSearch(keyWord, 4, page);
-//
-//        mFragments.add(articleFragment);
-//        mFragments.add(videoFragment);
-//        mFragments.add(anchorFragment);
-//        mFragments.add(userFragment);
-//        fragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(), mFragments);
-//        viewPager.setOffscreenPageLimit(2);
-//        viewPager.setAdapter(fragmentAdapter);
-//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(toolbarTab));
-//        toolbarTab.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
-        FragmentManager manager = this.getSupportFragmentManager();
-        if(mArticleFragment != null && mArticleFragment.isAdded()){
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.remove(mArticleFragment);
-            ft.commit();
-            mArticleFragment = null;
-        }
-        if(videoFragment != null && videoFragment.isAdded()){
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.remove(videoFragment);
-            ft.commit();
-            videoFragment = null;
-        }
-        if(mAnchorFragment != null && mAnchorFragment.isAdded()){
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.remove(mAnchorFragment);
-            ft.commit();
-            mAnchorFragment = null;
-        }
-        if(mUserFragment != null && mUserFragment.isAdded()){
-            FragmentTransaction ft = manager.beginTransaction();
-            ft.remove(mUserFragment);
-            ft.commit();
-            mUserFragment = null;
-        }
-//        clearFragment(manager);
+    private void initF() {
         if (mArticleFragment == null) {
             mArticleFragment = new ArticleFragment();
-            mArticleFragment.setSearch(keyWord, 1, page);
         }
         if (videoFragment == null) {
             videoFragment = new VideoFragment();
-            videoFragment.setSearch(keyWord, 1, page);
         }
         if (mAnchorFragment == null) {
             mAnchorFragment = new AnchorFragment();
-            mAnchorFragment.setSearch(keyWord, 1, page);
         }
         if (mUserFragment == null) {
             mUserFragment = new UserFragment();
-            mUserFragment.setSearch(keyWord, 1, page);
         }
         mFragments.add(mArticleFragment);
         mFragments.add(videoFragment);
         mFragments.add(mAnchorFragment);
         mFragments.add(mUserFragment);
-        fragmentAdapter = new FragmentAdapter(manager, mFragments);
-        viewPager.setOffscreenPageLimit(2);
+        fragmentAdapter = new FragmentAdapter(this.getSupportFragmentManager(), mFragments);
+        viewPager.setOffscreenPageLimit(mFragments.size());
         viewPager.setAdapter(fragmentAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(toolbarTab));
         toolbarTab.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
     }
 
-    private void clearFragment(FragmentManager manager){
-        for (Fragment fragment : mFragments) {
-            if(fragment.isAdded()){
-                FragmentTransaction ft = manager.beginTransaction();
-                ft.remove(fragment);
-                ft.commit();
-            }
+    private void startSearch(String keyWord, int page){
+//        viewPager.setCurrentItem(0);
+        mArticleFragment.setSearch(keyWord, 1, page, false);
+        videoFragment.setSearch(keyWord, 2, page, false);
+        mAnchorFragment.setSearch(keyWord, 3, page, false);
+        mUserFragment.setSearch(keyWord, 4, page, false);
+        if (mArticleFragment.getUserVisibleHint()){
+            mArticleFragment.setUserVisibleHint(true);
         }
-        mFragments.clear();
+        if (videoFragment.getUserVisibleHint()){
+            videoFragment.setUserVisibleHint(true);
+        }
+        if (mAnchorFragment.getUserVisibleHint()){
+            mAnchorFragment.setUserVisibleHint(true);
+        }
+        if (mUserFragment.getUserVisibleHint()){
+            mUserFragment.setUserVisibleHint(true);
+        }
     }
 
     /**
@@ -361,13 +321,13 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
         if (type == HOT) {
             rvSearchList.setVisibility(View.GONE);
             linSearchResult.setVisibility(View.VISIBLE);
-            initFragment(newSearchKey, 1);
+            startSearch(newSearchKey, 1);
         }
         if (type == HISTORY) {
             if (!oldSearchKey.equals(newSearchKey) && !newSearchKey.equals("") || !newSearchKey.equals("") && linSearchResult.getVisibility() != View.VISIBLE) {
                 rvSearchList.setVisibility(View.GONE);
                 linSearchResult.setVisibility(View.VISIBLE);
-                initFragment(newSearchKey, 1);
+                startSearch(newSearchKey, 1);
                 boolean isAdd = XUtils.setHistorySearch(SearchActivity.this, newSearchKey);
                 if (isAdd)
                     addHistory(newSearchKey);
