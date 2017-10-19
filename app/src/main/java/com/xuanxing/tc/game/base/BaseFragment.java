@@ -1,5 +1,6 @@
 package com.xuanxing.tc.game.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.psylife.wrmvplibrary.base.WRBaseFragment;
 import com.psylife.wrmvplibrary.base.WRBaseLazyFragment;
 import com.psylife.wrmvplibrary.data.net.RxService;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.api.Api;
 
 import rx.functions.Action1;
@@ -34,6 +36,10 @@ public abstract class BaseFragment extends WRBaseLazyFragment implements Action1
      * @param msg
      */
     public void toastMessage(String code, String msg){
+        if (code.equals("1006")){
+            Intent intent = new Intent(this.getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
         ToastUtils.showToast(this.getContext(), msg);
     }
 

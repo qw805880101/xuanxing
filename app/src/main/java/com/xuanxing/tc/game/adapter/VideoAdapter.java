@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -28,9 +29,11 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
 
-    public static final int FOLLOW = 0;
+    public static final int CANCER_FOLLOW = 0;
 
-    public static final int SHARE = 1;
+    public static final int FOLLOW = 1;
+
+    public static final int SHARE = 2;
 
     private Context context;
 
@@ -54,6 +57,7 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
         CircleImageView circleImageView = helper.getView(R.id.iv_video_head);
         //TODO 添加照片
         Glide.with(mContext).load(item.getTopicPic()).into(circleImageView);
+        helper.setText(R.id.bt_video_follow, item.getIsAttention()==0?"关注":"取消关注");
         helper.setText(R.id.txt_video_name, item.getMemberName());
         try{
             if(DateUtils.IsToday(item.getCreateTime())){
@@ -78,10 +82,14 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
         /**
          * 关注
          */
-        helper.setOnClickListener(R.id.bt_video_follow, new OnClickListener() {
+        final Button bt = helper.getView(R.id.bt_video_follow);
+        bt.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnClickListener.setOnClick(view, FOLLOW, helper.getLayoutPosition());
+                if (bt.getText().toString().equals("关注"))
+                    mOnClickListener.setOnClick(view, FOLLOW, helper.getLayoutPosition());
+                if (bt.getText().toString().equals("取消关注"))
+                    mOnClickListener.setOnClick(view, CANCER_FOLLOW, helper.getLayoutPosition());
             }
         });
 

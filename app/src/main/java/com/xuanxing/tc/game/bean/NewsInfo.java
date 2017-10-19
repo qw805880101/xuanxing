@@ -19,6 +19,7 @@ public class NewsInfo {
      playNum (integer, optional),
      status (integer, optional),
      createTime (string, optional)
+     isAttention
      */
 
     private int id; //id
@@ -33,6 +34,15 @@ public class NewsInfo {
     private int playNum; //
     private int status; //
     private String createTime; //创建时间
+    private int isAttention; //是否关注
+
+    public int getIsAttention() {
+        return isAttention;
+    }
+
+    public void setIsAttention(int isAttention) {
+        this.isAttention = isAttention;
+    }
 
     public int getId() {
         return id;

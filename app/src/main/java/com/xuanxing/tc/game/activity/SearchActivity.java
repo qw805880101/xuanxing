@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -109,6 +111,26 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
     public void initView(Bundle savedInstanceState) {
         txtCancel.setOnClickListener(this);
         XUtils.setIndicator(toolbarTab, 20, 20);
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>0){
+                    txtCancel.setText("搜索");
+                } else {
+                    txtCancel.setText("取消");
+                }
+            }
+        });
         etSearch.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -344,7 +366,23 @@ public class SearchActivity extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == txtCancel) {
+            if (txtCancel.getText().toString().equals("取消"))
             this.finish();
+            else {
+                if (MyApplication.loginInfo == null) {
+                    Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+                String newSearchKey = etSearch.getText().toString().trim();
+                if (newSearchKey.equals("")) {
+                    return;
+                }
+                ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(SearchActivity.this.getCurrentFocus()
+                                .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                search(newSearchKey, HISTORY);
+            }
         }
     }
 }

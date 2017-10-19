@@ -27,6 +27,7 @@ public class FindAdapter extends BaseQuickAdapter<FindList, BaseViewHolder> {
     private Context context;
     private RecommendInfo recommendInfo;
     private FindOnclick mFindOnclick;
+    private boolean isInitUi = false;
 
     public FindAdapter(Context context, List<FindList> list) {
         super(R.layout.item_find, list);
@@ -41,8 +42,10 @@ public class FindAdapter extends BaseQuickAdapter<FindList, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, FindList item) {
         RecyclerView rvHotGame = helper.getView(R.id.rv_hot_game);
         rvHotGame.setLayoutManager(new GridLayoutManager(context, 3));
+        if (!isInitUi)
         rvHotGame.addItemDecoration(new SpaceItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.bottom_10)));
         rvHotGame.setAdapter(new HotGameAdapter(context, item.getHotGameList()));
+        isInitUi = true;
 
         RecyclerView rvAnchor = helper.getView(R.id.rv_anchor);
         rvAnchor.setLayoutManager(new LinearLayoutManager(context));

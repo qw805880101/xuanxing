@@ -122,9 +122,10 @@ public interface Api {
      * @param newsMemberId
      * @return
      */
-    @POST("api/relation/addAttention")
+    @POST("api/relation/mIsAttention")
     Observable<BaseBean> follow(@Query("app_m_id") String app_m_id,
                                   @Query("app_p_token") String app_p_token,
+                                  @Query("isAttention") int isAttention,
                                   @Query("newsMemberId") String newsMemberId);
 
     /**

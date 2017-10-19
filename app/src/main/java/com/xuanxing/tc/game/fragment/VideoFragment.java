@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Button;
 
 import com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
@@ -43,6 +44,8 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import rx.Observable;
 import rx.functions.Action1;
+
+import static com.xuanxing.tc.game.adapter.VideoAdapter.FOLLOW;
 
 /**
  * Created by tc on 2017/8/24.
@@ -171,40 +174,62 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
     }
 
     @Override
-    public void setOnClick(View view, int type, int pos) {
-        if (type == mVideoAdapter.FOLLOW) {
-            follow(pos);
-        }
-        if (type == mVideoAdapter.SHARE) {
-
-        }
-    }
-
-    private void follow(int pos) {
+    public void setOnClick(View view, int isAttention, int pos) {
         if (MyApplication.loginInfo == null) {
             Intent intent = new Intent(this.getContext(), LoginActivity.class);
             startActivity(intent);
             ToastUtils.showToast(this.getContext(), "未登录，请先登录");
             return;
         }
-        final Map map = new LinkedHashMap();
-        final String num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) + 1);
-        map.put("followNum", num);
+        if (isAttention == mVideoAdapter.FOLLOW || isAttention == mVideoAdapter.CANCER_FOLLOW){
+            follow((Button) view, isAttention, pos);
+        }
+        if (isAttention == mVideoAdapter.SHARE){
+
+        }
+    }
+
+    /**
+     * 关注
+     * @param bt
+     * @param isAttention
+     * @param pos
+     */
+    private void follow(final Button bt, final int isAttention, int pos){
         Observable<BaseBean> follow = mXuanXingApi.follow(MyApplication.loginInfo.getMemberInfo().getMemberId(),
-                MyApplication.loginInfo.getP_token(), "" + mNewsInfos.get(pos).getMemberId()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+                MyApplication.loginInfo.getP_token(), isAttention, "" + mNewsInfos.get(pos).getMemberId()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         mRxManager.add(follow.subscribe(new Action1<BaseBean>() {
             @Override
             public void call(BaseBean baseBean) {
                 if (baseBean.getCode().equals("0000")) {
                     ToastUtils.showToast(VideoFragment.this.getContext(), "关注成功");
-                    //事件发送
-                    EventBus.getDefault().post(new SendEvent("followNum", num));
-                    XUtils.modUserInfo(VideoFragment.this.getContext(), map);
+                    followResult(bt, isAttention);
                 } else {
                     toastMessage(baseBean.getCode(), baseBean.getMsg());
                 }
             }
         }, this));
+    }
+
+    /**
+     * 关注结果
+     * @param isAttention 0 取消关注 1 关注
+     */
+    private void followResult(Button bt, int isAttention){
+        Map map = new LinkedHashMap();
+        String num = "";
+        if (isAttention == mVideoAdapter.FOLLOW){
+            bt.setText("取消关注");
+            num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) + 1);
+        }
+        if (isAttention == mVideoAdapter.CANCER_FOLLOW){
+            bt.setText("关注");
+            num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) - 1);
+        }
+        map.put("followNum", num);
+        //事件发送
+        EventBus.getDefault().post(new SendEvent("followNum", num));
+        XUtils.modUserInfo(VideoFragment.this.getContext(), map);
     }
 
     private void loadData(int page) {
