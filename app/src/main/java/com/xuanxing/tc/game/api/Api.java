@@ -4,6 +4,7 @@ import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
 import com.xuanxing.tc.game.bean.FindList;
+import com.xuanxing.tc.game.bean.GameMoreList;
 import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.News;
 import com.xuanxing.tc.game.bean.NewsInfo;
@@ -134,6 +135,16 @@ public interface Api {
      */
     @POST("api/found/index")
     Observable<BaseBeanClass<FindList>> findData();
+
+    /**
+     * 更多热门游戏
+     * @param page
+     * @param limit
+     * @return
+     */
+    @POST("api/found/moreGames")
+    Observable<BaseBeanClass<GameMoreList>> gameMore(@Query("page") int page,
+                                                     @Query("limit") int limit);
 
     /**
      * 获取热门搜索
