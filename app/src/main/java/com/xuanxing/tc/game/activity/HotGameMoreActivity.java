@@ -108,7 +108,7 @@ public class HotGameMoreActivity extends BaseActivity{
     public void initdata() {
         //TODO 添加查看更多热门游戏数据
         startProgressDialog(this);
-        Observable<BaseBeanClass<GameMoreList>> game = mXuanXingApi.gameMore(page, 9)
+        Observable<BaseBeanClass<GameMoreList>> game = mXuanXingApi.gameMore(page, 20)
                 .compose(RxUtil.<BaseBeanClass<GameMoreList>>rxSchedulerHelper());
         mRxManager.add(game.subscribe(new Action1<BaseBeanClass<GameMoreList>>() {
             @Override
@@ -118,10 +118,10 @@ public class HotGameMoreActivity extends BaseActivity{
                 mHotGameAdapter.loadMoreComplete(); //加载完成
                 if (gameMoreListBaseBeanClass.getCode().equals("0000")){
                     total = gameMoreListBaseBeanClass.getData().getGameList().getTotalCount();
-                    if (total % 9 > 0){
-                        totalPage = total/9+1;
+                    if (total % 21 > 0){
+                        totalPage = total/21+1;
                     } else {
-                        totalPage = total/9;
+                        totalPage = total/21;
                     }
 
                     if (isRefresh){
@@ -131,7 +131,7 @@ public class HotGameMoreActivity extends BaseActivity{
                         hotGameList.addAll(gameMoreListBaseBeanClass.getData().getGameList().getItems());
                     }
                     mHotGameAdapter.setNewData(hotGameList);
-                    mHotGameAdapter.disableLoadMoreIfNotFullPage();
+//                    mHotGameAdapter.disableLoadMoreIfNotFullPage();
                 }
             }
         },this));

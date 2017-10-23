@@ -147,6 +147,21 @@ public interface Api {
                                                      @Query("limit") int limit);
 
     /**
+     * 更多主播
+     * @param app_m_id
+     * @param app_p_token
+     * @param gameCategoryId
+     * @param page
+     * @param limit
+     * @return
+     */
+    Observable<BaseBean> anchorMore(@Query("app_m_id") String app_m_id,
+                                    @Query("app_p_token") String app_p_token,
+                                    @Query("gameCategoryId") String gameCategoryId,
+                                    @Query("page") int page,
+                                    @Query("limit") int limit);
+
+    /**
      * 获取热门搜索
      * @return
      */
