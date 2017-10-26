@@ -59,6 +59,7 @@ public class PhotoActivity extends BaseActivity {
                         sendEvent.setCode(DEL);
                         sendEvent.setPosition(position);
                         EventBus.getDefault().post(sendEvent);
+                        finish();
                     }
                 });
         return mTitleBuilder.build();

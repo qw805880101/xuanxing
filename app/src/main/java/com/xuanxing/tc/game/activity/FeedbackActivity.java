@@ -23,9 +23,11 @@ import com.bumptech.glide.Glide;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.FeedbackAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.utils.DialogUtil;
 import com.xuanxing.tc.game.utils.FeedbackSpaceItemDecoration;
 import com.xuanxing.tc.game.utils.SendEvent;
@@ -41,6 +43,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.RequestBody;
+import rx.Observable;
+import rx.functions.Action1;
 
 import static android.os.Build.VERSION_CODES.M;
 
@@ -74,6 +79,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
     private String path;
 
     private int feedbackType = -1; //反馈类型
+
+    private String feedbackName = ""; //反馈类型名称
 
     private List<String> photoPaths = new ArrayList<>();
 
@@ -134,18 +141,21 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
     public void onClick(View view) {
         if (view == mBtFeedbackType01) {
             feedbackType = 1;
+            feedbackName = "功能建议";
             mBtFeedbackType01.setSelected(true);
             mBtFeedbackType02.setSelected(false);
             mBtFeedbackType03.setSelected(false);
         }
         if (view == mBtFeedbackType02) {
             feedbackType = 2;
+            feedbackName = "闪退崩溃";
             mBtFeedbackType01.setSelected(false);
             mBtFeedbackType02.setSelected(true);
             mBtFeedbackType03.setSelected(false);
         }
         if (view == mBtFeedbackType03) {
             feedbackType = 3;
+            feedbackName = "其他";
             mBtFeedbackType01.setSelected(false);
             mBtFeedbackType02.setSelected(false);
             mBtFeedbackType03.setSelected(true);
@@ -165,6 +175,39 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
                 DialogUtil.showTakePhotoDialog(this);
             }
         }
+    }
+
+    private void submit(){
+
+        String contactPhone = mEtFeedbackLink.getText().toString().trim();
+        String feedbackDesc = mEtFeedbackMsg.getText().toString().trim();
+
+        if (feedbackType <= -1){
+            ToastUtils.showToast(this, "请选择反馈类型!");
+            return;
+        }
+        if (feedbackDesc.equals("")){
+            ToastUtils.showToast(this, "请填写反馈信息!");
+            return;
+        }
+        if (contactPhone.equals("")){
+            ToastUtils.showToast(this, "请填写联系方式!");
+            return;
+        }
+
+        startProgressDialog(this);
+
+//        RequestBody requestBody =
+
+        Observable<BaseBean> submit = mXuanXingApi.feedBack(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token(),
+                                                            feedbackType, feedbackName, contactPhone, feedbackDesc, null);
+
+        mRxManager.add(submit.subscribe(new Action1<BaseBean>() {
+            @Override
+            public void call(BaseBean baseBean) {
+
+            }
+        }, this));
     }
 
     @Override

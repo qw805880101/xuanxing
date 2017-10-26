@@ -89,7 +89,6 @@ public class InitActivity extends BaseActivity {
         if (userInfo != null && !userInfo.equals("")) {
             LoginInfo loginInfo = JSON.parseObject(userInfo, LoginInfo.class);
             MyApplication.loginInfo = loginInfo;
-            MyApplication.loginInfo.getMemberInfo().setHeadIcon("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4250696313,681315509&fm=27&gp=0.jpg");
             return loginInfo;
         }
         return null;

@@ -5,6 +5,7 @@ import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
 import com.xuanxing.tc.game.bean.FindList;
 import com.xuanxing.tc.game.bean.GameMoreList;
+import com.xuanxing.tc.game.bean.HeadInfo;
 import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.News;
 import com.xuanxing.tc.game.bean.NewsInfo;
@@ -15,9 +16,12 @@ import com.xuanxing.tc.game.bean.SearchList;
 import com.xuanxing.tc.game.bean.VedioList;
 import com.xuanxing.tc.game.bean.Vedios;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -107,6 +111,20 @@ public interface Api {
                                      @Query("intro") String intro);
 
     /**
+     * 上传头像
+     * @param app_m_id
+     * @param app_p_token
+     * @param file
+     * @return
+     */
+    @POST("api/member/mEditHeadIcon ")
+    @Multipart
+    Observable<BaseBeanClass<HeadInfo>> uploadHead(@Query("app_m_id") String app_m_id,
+                                                   @Query("app_p_token") String app_p_token,
+                                                   @Part("headIcon\"; filename=\"pic.png\"") RequestBody file
+                                    );
+
+    /**
      * 退出登录
      * @param app_m_id
      * @param app_p_token
@@ -155,6 +173,7 @@ public interface Api {
      * @param limit
      * @return
      */
+    @POST("api/found/moreRecAnchor ")
     Observable<BaseBean> anchorMore(@Query("app_m_id") String app_m_id,
                                     @Query("app_p_token") String app_p_token,
                                     @Query("gameCategoryId") String gameCategoryId,
@@ -198,13 +217,14 @@ public interface Api {
      * @param feedbackPic   反馈图片(多文件数组)
      * @return
      */
+    @POST("api/feedback/mAdd ")
     Observable<BaseBean> feedBack(@Query("app_m_id") String app_m_id,
                                   @Query("app_p_token") String app_p_token,
                                   @Query("typeId") int typeId,
                                   @Query("typeName") String typeName,
                                   @Query("contactPhone") String contactPhone,
                                   @Query("feedbackDesc") String feedbackDesc,
-                                  @Query("feedbackPic") int feedbackPic
+                                  @Query("feedbackPic") RequestBody feedbackPic
                                   );
 
     @POST("xxx")

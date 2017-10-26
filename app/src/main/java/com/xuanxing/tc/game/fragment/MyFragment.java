@@ -154,6 +154,9 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     @Subscribe
     public void onEventMainThread(SendEvent event) {
         if (event != null) {
+            if (event.getKey().equals("headicon") && !event.getValue().equals("")) {
+                Glide.with(mContext).load(event.getValue()).into(mIvHead);
+            }
             if (event.getKey().equals("nickname") && !event.getValue().equals("")) {
                 mTxtUserName.setText(event.getValue());
             }

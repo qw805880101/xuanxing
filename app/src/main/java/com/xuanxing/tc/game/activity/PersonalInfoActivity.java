@@ -18,22 +18,34 @@ import com.bumptech.glide.Glide;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.BaseBean;
+import com.xuanxing.tc.game.bean.BaseBeanClass;
+import com.xuanxing.tc.game.bean.HeadInfo;
 import com.xuanxing.tc.game.bean.MemberInfo;
 import com.xuanxing.tc.game.utils.DialogUtil;
 import com.xuanxing.tc.game.utils.SendEvent;
 import com.xuanxing.tc.game.utils.TakePhotosDispose;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import rx.Observable;
+import rx.functions.Action1;
 
 import static android.os.Build.VERSION_CODES.M;
 import static com.xuanxing.tc.game.MyApplication.USER_INFO;
@@ -207,16 +219,46 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
                     break;
             }
             System.out.println("path = " + path);
+            uploadHead();
 //            Glide.with(this).load(new File(path))
 //                    .placeholder(R.mipmap.wellcom) //设置占位图
 //                    .error(R.mipmap.wellcom) //设置错误图片
 //                    .crossFade() //设置淡入淡出效果，默认300ms，可以传参
 //                    .transform(new GlideCircleTransform(context)).into(mIvHead);
-            Glide.with(this).load(new File(path))
-                    .crossFade() //设置淡入淡出效果，默认300ms，可以传参
-                    .into(mIvHead);
-
         }
+    }
+
+    /**
+     * 上传头像
+     */
+    private void uploadHead(){
+        startProgressDialog(this);
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        File file = new File(path);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
+        builder.addFormDataPart("photo", file.getName(), requestBody);
+        Observable<BaseBeanClass<HeadInfo>> uploadHead = mXuanXingApi.uploadHead(MyApplication.loginInfo.getMemberInfo().getMemberId(),
+                                                                    MyApplication.loginInfo.getP_token(), requestBody).compose(RxUtil.<BaseBeanClass<HeadInfo>>rxSchedulerHelper());
+        mRxManager.add(uploadHead.subscribe(new Action1<BaseBeanClass<HeadInfo>>() {
+            @Override
+            public void call(BaseBeanClass<HeadInfo> baseBean) {
+                stopProgressDialog();
+                if (baseBean.getCode().equals("0000")){
+                    final Map<String, String> map = new LinkedHashMap();
+                    map.put("headicon", baseBean.getData().getHeadIcon());
+                    //事件发送 通知我的界面更新头像
+                    EventBus.getDefault().post(new SendEvent("headicon", baseBean.getData().getHeadIcon()));
+                    XUtils.modUserInfo(PersonalInfoActivity.this, map);
+                    Glide.with(PersonalInfoActivity.this).load(new File(path))
+                            .crossFade() //设置淡入淡出效果，默认300ms，可以传参
+                            .into(mIvHead);
+
+                } else {
+                    ToastUtils.showToast(PersonalInfoActivity.this, baseBean.getMsg());
+                }
+            }
+        }, this));
     }
 
     @Override
