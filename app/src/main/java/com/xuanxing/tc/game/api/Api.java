@@ -187,6 +187,25 @@ public interface Api {
                                                  @Query("limit") int limit
                                 );
 
+    /**
+     * 意见反馈
+     * @param app_m_id      用户ID
+     * @param app_p_token   AppToken
+     * @param typeId        反馈类型ID
+     * @param typeName      反馈类型名称
+     * @param contactPhone  联系方式
+     * @param feedbackDesc  反馈信息
+     * @param feedbackPic   反馈图片(多文件数组)
+     * @return
+     */
+    Observable<BaseBean> feedBack(@Query("app_m_id") String app_m_id,
+                                  @Query("app_p_token") String app_p_token,
+                                  @Query("typeId") int typeId,
+                                  @Query("typeName") String typeName,
+                                  @Query("contactPhone") String contactPhone,
+                                  @Query("feedbackDesc") String feedbackDesc,
+                                  @Query("feedbackPic") int feedbackPic
+                                  );
 
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);

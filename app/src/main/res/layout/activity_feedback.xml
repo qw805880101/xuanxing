@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,167 +10,176 @@
         android:background="@color/bg_f4f4f4"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_marginTop="10dp"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="反馈类型"
-            android:textSize="15sp"
-            android:paddingTop="15dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="15dp"
-            android:textColor="@color/txt_bg_333333"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/lin_e6e6e6"
-            />
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:orientation="horizontal"
-            >
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/anchor_bg"
-                android:text="功能建议"
-                android:textColor="@color/txt_bg_333333"
-                android:textSize="14sp"
-                />
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/anchor_bg"
-                android:layout_marginLeft="10dp"
-                android:text="闪退崩溃"
-                android:textColor="@color/txt_bg_333333"
-                android:textSize="14sp"
-                />
-
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/feedback_bg"
-                android:layout_marginLeft="10dp"
-                android:text="其他"
-                android:textColor="@color/title_bg_e83646"
-                android:textSize="14sp"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_marginTop="10dp"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="问题描述"
-            android:textSize="15sp"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:textColor="@color/txt_bg_333333"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/lin_e6e6e6"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:orientation="vertical"
-            >
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:gravity="top"
-                android:background="@null"
-                android:textSize="14sp"
-                android:hint="请填写反馈信息"
-                />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/tupian"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_marginTop="10dp"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="联系方式"
-            android:textSize="15sp"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:textColor="@color/txt_bg_333333"
-            />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/lin_e6e6e6"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:orientation="horizontal"
-            >
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
-                android:background="@null"
-                android:textSize="14sp"
-                android:hint="请填写联系方式（手机号、QQ、邮箱等）"
-                />
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:text="反馈类型"
+                android:textColor="@color/txt_bg_333333"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/lin_e6e6e6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
+
+                <Button
+                    android:id="@+id/bt_feedback_type_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/feedback_type"
+                    android:text="功能建议"
+                    android:textColor="@drawable/feedback_color_type"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/bt_feedback_type_02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/feedback_type"
+                    android:text="闪退崩溃"
+                    android:textColor="@drawable/feedback_color_type"
+                    android:textSize="14sp" />
+
+
+                <Button
+                    android:id="@+id/bt_feedback_type_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/feedback_type"
+                    android:text="其他"
+                    android:textColor="@drawable/feedback_color_type"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="问题描述"
+                android:textColor="@color/txt_bg_333333"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/lin_e6e6e6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
+
+                <EditText
+                    android:id="@+id/et_feedback_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="请填写反馈信息"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_feedback_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/iv_take_feedback"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="1"
+                        android:src="@mipmap/tupian" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:text="联系方式"
+                android:textColor="@color/txt_bg_333333"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/lin_e6e6e6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp">
+
+                <EditText
+                    android:id="@+id/et_feedback_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top"
+                    android:hint="请填写联系方式（手机号、QQ、邮箱等）"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
