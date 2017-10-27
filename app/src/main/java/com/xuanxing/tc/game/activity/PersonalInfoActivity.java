@@ -233,11 +233,8 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
      */
     private void uploadHead(){
         startProgressDialog(this);
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM);
         File file = new File(path);
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
-        builder.addFormDataPart("photo", file.getName(), requestBody);
         Observable<BaseBeanClass<HeadInfo>> uploadHead = mXuanXingApi.uploadHead(MyApplication.loginInfo.getMemberInfo().getMemberId(),
                                                                     MyApplication.loginInfo.getP_token(), requestBody).compose(RxUtil.<BaseBeanClass<HeadInfo>>rxSchedulerHelper());
         mRxManager.add(uploadHead.subscribe(new Action1<BaseBeanClass<HeadInfo>>() {

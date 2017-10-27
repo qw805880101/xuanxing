@@ -18,11 +18,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.FeedbackAdapter;
@@ -39,10 +41,14 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.Observable;
 import rx.functions.Action1;
@@ -106,7 +112,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
                 .setRightOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        submit();
                     }
                 })
                 .build();
@@ -177,35 +183,51 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void submit(){
-
+    /**
+     * 提交反馈
+     */
+    private void submit() {
         String contactPhone = mEtFeedbackLink.getText().toString().trim();
         String feedbackDesc = mEtFeedbackMsg.getText().toString().trim();
 
-        if (feedbackType <= -1){
+        if (feedbackType <= -1) {
             ToastUtils.showToast(this, "请选择反馈类型!");
             return;
         }
-        if (feedbackDesc.equals("")){
+        if (feedbackDesc.equals("")) {
             ToastUtils.showToast(this, "请填写反馈信息!");
             return;
         }
-        if (contactPhone.equals("")){
+        if (contactPhone.equals("")) {
             ToastUtils.showToast(this, "请填写联系方式!");
             return;
         }
 
         startProgressDialog(this);
-
-//        RequestBody requestBody =
-
-        Observable<BaseBean> submit = mXuanXingApi.feedBack(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token(),
-                                                            feedbackType, feedbackName, contactPhone, feedbackDesc, null);
-
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        builder.addFormDataPart("app_m_id", MyApplication.loginInfo.getMemberInfo().getMemberId());
+        builder.addFormDataPart("app_p_token", MyApplication.loginInfo.getP_token());
+        builder.addFormDataPart("typeId", "" + feedbackType);
+        builder.addFormDataPart("typeName", feedbackName);
+        builder.addFormDataPart("contactPhone", contactPhone);
+        builder.addFormDataPart("feedbackDesc", feedbackDesc);
+        if (photoPaths.size() > 0) {
+            for (int i = 0; i < photoPaths.size(); i++) {
+                File file = new File(path);
+                RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
+                builder.addFormDataPart("feedbackPic", "pic_" + i, fileBody);
+            }
+        }
+        Observable<BaseBean> submit = mXuanXingApi.feedBack(builder.build()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         mRxManager.add(submit.subscribe(new Action1<BaseBean>() {
             @Override
             public void call(BaseBean baseBean) {
-
+                stopProgressDialog();
+                if (baseBean.getCode().equals("0000"))
+                    finish();
+                else
+                    ToastUtils.showToast(FeedbackActivity.this, baseBean.getMsg());
             }
         }, this));
     }

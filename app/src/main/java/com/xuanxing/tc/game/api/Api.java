@@ -16,12 +16,15 @@ import com.xuanxing.tc.game.bean.SearchList;
 import com.xuanxing.tc.game.bean.VedioList;
 import com.xuanxing.tc.game.bean.Vedios;
 
+import java.util.Map;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -208,23 +211,10 @@ public interface Api {
 
     /**
      * 意见反馈
-     * @param app_m_id      用户ID
-     * @param app_p_token   AppToken
-     * @param typeId        反馈类型ID
-     * @param typeName      反馈类型名称
-     * @param contactPhone  联系方式
-     * @param feedbackDesc  反馈信息
-     * @param feedbackPic   反馈图片(多文件数组)
      * @return
      */
     @POST("api/feedback/mAdd ")
-    Observable<BaseBean> feedBack(@Query("app_m_id") String app_m_id,
-                                  @Query("app_p_token") String app_p_token,
-                                  @Query("typeId") int typeId,
-                                  @Query("typeName") String typeName,
-                                  @Query("contactPhone") String contactPhone,
-                                  @Query("feedbackDesc") String feedbackDesc,
-                                  @Query("feedbackPic") RequestBody feedbackPic
+    Observable<BaseBean> feedBack(@Body MultipartBody file
                                   );
 
     @POST("xxx")
