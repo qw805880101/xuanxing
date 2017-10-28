@@ -2,21 +2,14 @@ package com.xuanxing.tc.game.api;
 
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
-import com.xuanxing.tc.game.bean.BaseBeanListClass;
 import com.xuanxing.tc.game.bean.FindList;
 import com.xuanxing.tc.game.bean.GameMoreList;
 import com.xuanxing.tc.game.bean.HeadInfo;
 import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.News;
-import com.xuanxing.tc.game.bean.NewsInfo;
-import com.xuanxing.tc.game.bean.NewsList;
-import com.xuanxing.tc.game.bean.SearchHotKey;
 import com.xuanxing.tc.game.bean.SearchHotKeyList;
 import com.xuanxing.tc.game.bean.SearchList;
-import com.xuanxing.tc.game.bean.VedioList;
 import com.xuanxing.tc.game.bean.Vedios;
-
-import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -24,7 +17,6 @@ import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -214,8 +206,38 @@ public interface Api {
      * @return
      */
     @POST("api/feedback/mAdd ")
-    Observable<BaseBean> feedBack(@Body MultipartBody file
+    Observable<BaseBean> feedBack(@Body MultipartBody file);
+
+    /**
+     * 发现-游戏列表-最新，攻略
+     * @param page              第几页,默认第1页
+     * @param limit             每页几条,默认10条
+     * @param gameCategoryCode  游戏分类Code
+     * @param newsType          视频分类(最新传0,攻略传3)
+     * @return
+     */
+    @POST("api/found/getNewestNews")
+    Observable<BaseBeanClass<News>> gameNews(@Query("page") int page,
+                                                       @Query("limit") int limit,
+                                                       @Query("gameCategoryCode") String gameCategoryCode,
+                                                       @Query("newsType") int newsType
                                   );
+
+    /**
+     * 发现-游戏列表-视频
+     *
+     * @param page
+     * @param limit
+     * @return
+     */
+    @POST("api/found/getGameVideoList")
+    Observable<BaseBeanClass<Vedios>> getGameVideoList(/*@Body RequestBody requestBody,*/
+                                                   @Query("app_m_id") String app_m_id,
+                                                   @Query("app_p_token") String app_p_token,
+                                                   @Query("page") int page,
+                                                   @Query("limit") int limit,
+                                                   @Query("gameCategoryCode") String gameCategoryCode,
+                                                   @Query("newsType") int newsType);
 
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);

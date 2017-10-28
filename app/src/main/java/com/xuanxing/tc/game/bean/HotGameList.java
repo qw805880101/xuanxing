@@ -1,13 +1,16 @@
 package com.xuanxing.tc.game.bean;
 
+import java.io.Serializable;
+
 /**
  * 热门游戏列表
  *
  * Created by tianchao on 2017/10/16.
  */
 
-public class HotGameList {
+public class HotGameList implements Serializable {
 
+    private static final long serialVersionUID = 3220847594181341319L;
     /**
      * "id": 1,
      "categoryName": "王者荣耀",

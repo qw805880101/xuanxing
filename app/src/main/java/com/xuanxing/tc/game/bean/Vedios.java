@@ -8,6 +8,16 @@ public class Vedios {
 
     private VedioList videoList;
 
+    private VedioList gameVideoList;
+
+    public VedioList getGameVideoList() {
+        return gameVideoList;
+    }
+
+    public void setGameVideoList(VedioList gameVideoList) {
+        this.gameVideoList = gameVideoList;
+    }
+
     public VedioList getVideoList() {
         return videoList;
     }

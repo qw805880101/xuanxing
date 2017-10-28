@@ -67,6 +67,8 @@
 
         <activity android:name=".activity.PhotoActivity" />
 
+        <activity android:name=".activity.HotGameNewActivity" />
+
     </application>
 
 </manifest>

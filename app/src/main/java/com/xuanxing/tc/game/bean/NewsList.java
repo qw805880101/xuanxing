@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public class NewsList {
+
     private int totalCount;
     private List<NewsInfo> items;
 

@@ -1,13 +1,16 @@
 package com.xuanxing.tc.game.bean;
 
+import java.io.Serializable;
+
 /**
  * 游戏信息
  *
  * Created by tianchao on 2017/10/16.
  */
 
-public class GameInfo {
+public class GameInfo implements Serializable{
 
+    private static final long serialVersionUID = -4841301189620492500L;
     /**"gameCategoryId": 10,
      "gameCategoryCode": "CT1000010",
      "gameCategoryName": "王者荣耀",
