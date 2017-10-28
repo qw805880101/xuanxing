@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.HotGameNewActivity;
+import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.bean.HotGameList;
 import com.xuanxing.tc.game.bean.RecommendInfo;
 import com.xuanxing.tc.game.bean.RecommendItemUtil;
@@ -20,6 +22,8 @@ import com.xuanxing.tc.game.bean.RecommendItemUtil;
 import java.util.List;
 
 /**
+ * 热门游戏
+ *
  * Created by tianchao on 2017/10/16.
  */
 
@@ -38,6 +42,11 @@ public class HotGameAdapter extends BaseQuickAdapter<HotGameList, BaseViewHolder
         helper.getView(R.id.rl_hot_game).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (MyApplication.loginInfo == null){
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                    return;
+                }
                 Intent intent = new Intent(context, HotGameNewActivity.class);
                 intent.putExtra("gameInfo", item);
                 context.startActivity(intent);

@@ -4,10 +4,14 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\android word\xuanxing\app\app.iml" filepath="C:\android word\xuanxing\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bottomtabbar/bottomtabbar.iml" filepath="$PROJECT_DIR$/bottomtabbar/bottomtabbar.iml" />
       <module fileurl="file://C:\android word\xuanxing\bottomtabbar\bottomtabbar.iml" filepath="C:\android word\xuanxing\bottomtabbar\bottomtabbar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bottomtabbar/bottomtabbar.iml" filepath="$PROJECT_DIR$/bottomtabbar/bottomtabbar.iml" />
       <module fileurl="file://$PROJECT_DIR$/tcmvplibrary/tcmvplibrary.iml" filepath="$PROJECT_DIR$/tcmvplibrary/tcmvplibrary.iml" />
       <module fileurl="file://C:\android word\xuanxing\tcmvplibrary\tcmvplibrary.iml" filepath="C:\android word\xuanxing\tcmvplibrary\tcmvplibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tcmvplibrary/tcmvplibrary.iml" filepath="$PROJECT_DIR$/tcmvplibrary/tcmvplibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xuanxing.iml" filepath="$PROJECT_DIR$/xuanxing.iml" />
       <module fileurl="file://$PROJECT_DIR$/xuanxing.iml" filepath="$PROJECT_DIR$/xuanxing.iml" />
       <module fileurl="file://C:\android word\xuanxing\xuanxing.iml" filepath="C:\android word\xuanxing\xuanxing.iml" />
     </modules>
