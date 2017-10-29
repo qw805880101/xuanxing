@@ -14,15 +14,12 @@ import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.CommentAdapter;
 import com.xuanxing.tc.game.adapter.NewsAdapter;
-import com.xuanxing.tc.game.adapter.RecommendAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
-import com.xuanxing.tc.game.bean.NewsInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 资讯详情
