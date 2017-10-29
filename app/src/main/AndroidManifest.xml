@@ -69,6 +69,8 @@
 
         <activity android:name=".activity.HotGameNewActivity" />
 
+        <activity android:name=".activity.NewsDetailsActivity" />
+
     </application>
 
 </manifest>

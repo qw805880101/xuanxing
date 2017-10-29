@@ -1,12 +1,15 @@
 package com.xuanxing.tc.game.adapter;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.activity.NewsDetailsActivity;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.RecommendInfo;
 
@@ -78,6 +81,14 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
                     setImageResource(R.id.iv_total, R.mipmap.bofangshu).
                     setText(R.id.txt_content, item.getShortContent());
         }
+
+        helper.getView(R.id.lin_news).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 }

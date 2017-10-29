@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/iv_head"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/touxiang"
+            app:border_color="#FF000000"
+            app:border_overlay="false"
+            app:border_width="0dp" />
+
+        <TextView
+            android:id="@+id/txt_comment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="17sp"
+            android:textColor="@color/tx_e83545"
+            android:text="小雨"
+            />
+        <TextView
+            android:id="@+id/txt_comment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/bt_bg_c8c8c8"
+            android:textSize="12sp"
+            android:text="19:00"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_comment_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:textColor="@color/txt_bg_333333"
+        android:layout_marginRight="10dp"
+        android:textSize="17sp"
+        android:text="相思懂啊睡觉滴哦啊就是低哦啊睡觉都爱上几滴哦啊手机掉手机掉手机滴哦啊涉及到司机到 is 近代史大家哦阿斯"
+        />
+
+    <LinearLayout
+        android:id="@+id/lin_comment_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:background="@color/bg_f4f4f4"
+        android:padding="10dp"
+        android:layout_marginTop="15dp"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_comment_reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lin_comment"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/lin_e6e6e6"
+        />
+
+
+</LinearLayout>

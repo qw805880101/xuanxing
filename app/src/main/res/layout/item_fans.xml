@@ -63,7 +63,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/bt_bg_read"
+                    android:background="@drawable/bt_bg_red"
                     android:textColor="@color/tx_e83545"
                     />
 
