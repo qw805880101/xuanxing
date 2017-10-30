@@ -3,7 +3,6 @@ package com.xuanxing.tc.game.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,9 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.AnchorMoreActivity;
-import com.xuanxing.tc.game.activity.HotGameMoreActivity;
 import com.xuanxing.tc.game.bean.GameAnchorList;
-import com.xuanxing.tc.game.bean.RecommendInfo;
 
 import java.util.List;
 
@@ -44,13 +41,14 @@ public class AnchorAdapter extends BaseQuickAdapter<GameAnchorList, BaseViewHold
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new AnchorInfoAdapter(context, data.get(helper.getLayoutPosition()).getAnchorList()));
+        recyclerView.setAdapter(new FindAnchorAdapter(context, data.get(helper.getLayoutPosition()).getAnchorList()));
 
         helper.getView(R.id.txt_anchor_game_more).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, AnchorMoreActivity.class);
                 intent.putExtra("gameName", item.getGameInfo().getGameCategoryName());
+                intent.putExtra("gameId", item.getGameInfo().getGameCategoryCode());
                 context.startActivity(intent);
             }
         });

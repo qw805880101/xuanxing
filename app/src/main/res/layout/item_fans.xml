@@ -22,11 +22,14 @@
                 android:gravity="center_vertical"
                 >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@mipmap/touxiang"
-                />
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/iv_head"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/touxiang"
+                    app:border_color="#FF000000"
+                    app:border_overlay="false"
+                    app:border_width="0dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -37,6 +40,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/txt_anchor_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="小魚"
@@ -44,6 +48,7 @@
                     android:textSize="17sp"
                     />
                 <TextView
+                    android:id="@+id/txt_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="为代练而生！！！"
@@ -54,7 +59,7 @@
             </LinearLayout>
 
                 <Button
-                    android:id="@+id/bt_video_follow"
+                    android:id="@+id/bt_anchor_follow"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:text="关注"
@@ -63,8 +68,8 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/bt_bg_red"
-                    android:textColor="@color/tx_e83545"
+                    android:background="@drawable/follow_type"
+                    android:textColor="@drawable/follow_color_type"
                     />
 
             </LinearLayout>

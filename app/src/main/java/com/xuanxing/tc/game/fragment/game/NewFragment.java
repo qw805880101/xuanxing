@@ -40,7 +40,6 @@ public class NewFragment extends BaseFragment {
     @BindView(R.id.lin_search_null)
     LinearLayout mLinSearchNull;
 
-
     private RecommendAdapter mRecommendAdapter;
 
     private List<NewsInfo> mNewsInfos = new ArrayList<>();

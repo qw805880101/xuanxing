@@ -1,41 +1,25 @@
 package com.xuanxing.tc.game.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.xuanxing.tc.bottomtabbar.BottomTabBar;
 import com.xuanxing.tc.bottomtabbar.CustomFragmentTabHost;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
-import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.fragment.FindFragment;
 import com.xuanxing.tc.game.fragment.HomeFragment;
-import com.xuanxing.tc.game.fragment.LevelingFragment;
 import com.xuanxing.tc.game.fragment.MyFragment;
-import com.xuanxing.tc.game.fragment.PayFragment;
-import com.xuanxing.tc.game.fragment.VideoFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
 /**
  * 首页

@@ -1,44 +1,29 @@
 package com.xuanxing.tc.game.bean;
 
+import java.util.List;
+
 /**
- * 主播列表
- *
- * Created by tianchao on 2017/10/16.
+ * Created by sandlovechao on 2017/10/30.
  */
 
 public class AnchorList {
 
-    /**
-     * "anchorId": 2,
-     "anchorName": "150****0914_gh",
-     "anchorPic": "http://ouhxa0s50.bkt.clouddn.com/dev/character/info/PEdSZXYfAk1504188680882.png"
-     */
+    private int totalCount;
+    private List<AnchorInfo> items;
 
-    private int anchorId;
-    private String anchorName;
-    private String anchorPic;
-
-    public int getAnchorId() {
-        return anchorId;
+    public int getTotalCount() {
+        return totalCount;
     }
 
-    public void setAnchorId(int anchorId) {
-        this.anchorId = anchorId;
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 
-    public String getAnchorName() {
-        return anchorName;
+    public List<AnchorInfo> getItems() {
+        return items;
     }
 
-    public void setAnchorName(String anchorName) {
-        this.anchorName = anchorName;
-    }
-
-    public String getAnchorPic() {
-        return anchorPic;
-    }
-
-    public void setAnchorPic(String anchorPic) {
-        this.anchorPic = anchorPic;
+    public void setItems(List<AnchorInfo> items) {
+        this.items = items;
     }
 }

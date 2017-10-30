@@ -9,7 +9,7 @@ import java.util.List;
 public class GameAnchorList {
 
     private GameInfo gameInfo;
-    private List<AnchorList> anchorList;
+    private List<AnchorInfo> anchorList;
 
     public GameInfo getGameInfo() {
         return gameInfo;
@@ -19,11 +19,11 @@ public class GameAnchorList {
         this.gameInfo = gameInfo;
     }
 
-    public List<AnchorList> getAnchorList() {
+    public List<AnchorInfo> getAnchorList() {
         return anchorList;
     }
 
-    public void setAnchorList(List<AnchorList> anchorList) {
+    public void setAnchorList(List<AnchorInfo> anchorList) {
         this.anchorList = anchorList;
     }
 }

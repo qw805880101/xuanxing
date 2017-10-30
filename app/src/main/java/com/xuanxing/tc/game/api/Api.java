@@ -1,7 +1,9 @@
 package com.xuanxing.tc.game.api;
 
+import com.xuanxing.tc.game.bean.AnchorList;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
+import com.xuanxing.tc.game.bean.BaseList;
 import com.xuanxing.tc.game.bean.FindList;
 import com.xuanxing.tc.game.bean.GameMoreList;
 import com.xuanxing.tc.game.bean.HeadInfo;
@@ -169,11 +171,11 @@ public interface Api {
      * @return
      */
     @POST("api/found/moreRecAnchor ")
-    Observable<BaseBean> anchorMore(@Query("app_m_id") String app_m_id,
-                                    @Query("app_p_token") String app_p_token,
-                                    @Query("gameCategoryId") String gameCategoryId,
-                                    @Query("page") int page,
-                                    @Query("limit") int limit);
+    Observable<BaseBeanClass<BaseList>> anchorMore(@Query("app_m_id") String app_m_id,
+                                                   @Query("app_p_token") String app_p_token,
+                                                   @Query("gameCategoryId") String gameCategoryId,
+                                                   @Query("page") int page,
+                                                   @Query("limit") int limit);
 
     /**
      * 获取热门搜索
