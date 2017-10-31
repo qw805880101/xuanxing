@@ -139,11 +139,44 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="评论"
+                        android:text="评论:"
                         android:textColor="@color/txt_bg_333333"
                         android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/txt_comment_list_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/txt_bg_333333"
+                        android:textSize="15sp"
+                        android:text="0"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_comment_none"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_none_record"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15sp"
+                        android:textColor="@color/bt_bg_c8c8c8"
+                        android:text="暂无评论"
+                        />
 
                 </LinearLayout>
 
@@ -153,27 +186,35 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp" />
-
-                <View
+                    android:paddingRight="10dp"
+                    android:visibility="visible"
+                    />
+                <LinearLayout
+                    android:id="@+id/lin_more_comment"
                     android:layout_width="match_parent"
-                    android:layout_height="2px"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_marginTop="10dp"
-                    android:background="@color/lin_e6e6e6" />
+                    >
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/lin_e6e6e6" />
 
-                <TextView
-                    android:id="@+id/txt_comment_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:drawablePadding="5dp"
-                    android:drawableRight="@mipmap/gengduo"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:text="查看全部评论"
-                    android:textColor="@color/txt_969696"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/txt_comment_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@mipmap/gengduo"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="查看全部评论"
+                        android:textColor="@color/txt_969696"
+                        android:textSize="15sp" />
 
+                </LinearLayout>
 
             </LinearLayout>
 

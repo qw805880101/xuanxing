@@ -7,6 +7,15 @@ package com.xuanxing.tc.game.bean;
 public class BaseList {
 
     private AnchorList anchorList;
+    private FansList fansList;
+
+    public FansList getFansList() {
+        return fansList;
+    }
+
+    public void setFansList(FansList fansList) {
+        this.fansList = fansList;
+    }
 
     public AnchorList getAnchorList() {
         return anchorList;

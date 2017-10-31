@@ -9,6 +9,7 @@ import com.xuanxing.tc.game.bean.GameMoreList;
 import com.xuanxing.tc.game.bean.HeadInfo;
 import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.News;
+import com.xuanxing.tc.game.bean.NewsDetailInfo;
 import com.xuanxing.tc.game.bean.SearchHotKeyList;
 import com.xuanxing.tc.game.bean.SearchList;
 import com.xuanxing.tc.game.bean.Vedios;
@@ -276,12 +277,27 @@ public interface Api {
      * @return
      */
     @POST("api/newsDetail/mGetNewsDetail")
-    Observable<BaseBean> getNewsDetail(@Query("app_m_id") String app_m_id,
-                                       @Query("app_p_token") String app_p_token,
-                                       @Query("newsId") String newsId,
-                                       @Query("categoryCode") String categoryCode,
-                                       @Query("newsType") int newsType
+    Observable<BaseBeanClass<NewsDetailInfo>> getNewsDetail(@Query("app_m_id") String app_m_id,
+                                             @Query("app_p_token") String app_p_token,
+                                             @Query("newsId") String newsId,
+                                             @Query("categoryCode") String categoryCode,
+                                             @Query("newsType") int newsType
                                        );
+
+    /**
+     * 获取用户粉丝列表
+     * @param app_m_id
+     * @param app_p_token
+     * @param page          第几页,默认第1页
+     * @param limit         每页几条,默认10条
+     * @return
+     */
+    @POST("api/relation/mGetFansList")
+    Observable<BaseBeanClass<BaseList>> getFansList(@Query("app_m_id") String app_m_id,
+                                     @Query("app_p_token") String app_p_token,
+                                     @Query("page") int page,
+                                     @Query("limit") int limit
+                                     );
 
 
     @POST("xxx")

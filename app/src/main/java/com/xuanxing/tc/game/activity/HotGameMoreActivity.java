@@ -95,7 +95,11 @@ public class HotGameMoreActivity extends BaseActivity{
                     page += 1;
                     initdata();
                 } else {
-                    mHotGameAdapter.loadMoreEnd();//加载结束
+                    try{
+                        mHotGameAdapter.loadMoreEnd();//加载结束
+                    } catch (Exception e){
+                        
+                    }
                 }
             }
         }, rvHotGame);
@@ -106,7 +110,6 @@ public class HotGameMoreActivity extends BaseActivity{
 
     @Override
     public void initdata() {
-        //TODO 添加查看更多热门游戏数据
         startProgressDialog(this);
         Observable<BaseBeanClass<GameMoreList>> game = mXuanXingApi.gameMore(page, 20)
                 .compose(RxUtil.<BaseBeanClass<GameMoreList>>rxSchedulerHelper());

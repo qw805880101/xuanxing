@@ -114,6 +114,7 @@ public class MyWebView {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                take.onPageFinished();
             }
         });
     }
@@ -128,6 +129,8 @@ public class MyWebView {
         void setTitle(String title);
 
         void getUrl(String url);
+
+        void onPageFinished();
 
     }
 }
