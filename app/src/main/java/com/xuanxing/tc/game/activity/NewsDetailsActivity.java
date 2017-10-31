@@ -1,9 +1,12 @@
 package com.xuanxing.tc.game.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,15 +14,22 @@ import android.widget.TextView;
 
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
+import com.psylife.wrmvplibrary.utils.helper.RxUtil;
+import com.psylife.wrmvplibrary.webview.MyWebView;
+import com.psylife.wrmvplibrary.webview.MyWebView.Take;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.CommentAdapter;
 import com.xuanxing.tc.game.adapter.NewsAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
+import com.xuanxing.tc.game.bean.BaseBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * 资讯详情
@@ -51,7 +61,13 @@ public class NewsDetailsActivity extends BaseActivity {
     private CommentAdapter commentAdapter;
     private NewsAdapter newsAdapter;
 
+    private MyWebView myWebView;
+
     private List<String> list = new ArrayList<String>();
+
+    private String newsId;       //咨询ID
+    private String categoryCode; //游戏分类
+    private int newsType;        //资讯类型
 
 
     public void setStatusBarColor() {
@@ -87,10 +103,13 @@ public class NewsDetailsActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        myWebView = new MyWebView(this, wvNews);
+        myWebView.webSetting();
+        myWebView.loadUrl("https://ds.bypay.cn/qbiz/mobile/html/message/info.html?Android&001&184&20171030184058&H1001&8a02b15c5e88a26c2ff47caad8d5d53a&524811cef189470299f3609ffc50a29e");
+
         list.add("1");
         list.add("1");
         list.add("1");
-        wvNews.loadUrl("http://120.27.18.127:10086/gamehelp_admin/h5/gameArticleDetails.html");
         commentAdapter = new CommentAdapter(this, list);
         newsAdapter = new NewsAdapter(this, list);
         rvComment.setLayoutManager(new LinearLayoutManager(this));
@@ -101,6 +120,23 @@ public class NewsDetailsActivity extends BaseActivity {
 
     @Override
     public void initdata() {
+        Intent intent = this.getIntent();
+        newsId = intent.getStringExtra("newsId");
+        categoryCode = intent.getStringExtra("categoryCode");
+        newsType = intent.getIntExtra("newsType", 0);
+        getNewsDetail();
+    }
+
+    private void getNewsDetail() {
+        Observable<BaseBean> newsDetail = mXuanXingApi.getNewsDetail(MyApplication.loginInfo.getMemberInfo().getMemberId(),
+                MyApplication.loginInfo.getP_token(), newsId, categoryCode, newsType).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+        mRxManager.add(newsDetail.subscribe(new Action1<BaseBean>() {
+            @Override
+            public void call(BaseBean baseBean) {
+
+            }
+        }, this));
 
     }
+
 }

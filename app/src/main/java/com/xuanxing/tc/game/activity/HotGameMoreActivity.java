@@ -98,7 +98,7 @@ public class HotGameMoreActivity extends BaseActivity{
                     mHotGameAdapter.loadMoreEnd();//加载结束
                 }
             }
-        });
+        }, rvHotGame);
         rvHotGame.setLayoutManager(new GridLayoutManager(this, 3));
         rvHotGame.addItemDecoration(new SpaceItemDecoration(this.getResources().getDimensionPixelSize(R.dimen.bottom_10)));
         rvHotGame.setAdapter(mHotGameAdapter);

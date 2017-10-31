@@ -81,7 +81,7 @@ public class NewFragment extends BaseFragment {
                     mRecommendAdapter.loadMoreEnd();//加载结束
                 }
             }
-        });
+        }, mRvRecommend);
 
         mSwipeRefreshRecommend.setOnRefreshListener(new OnRefreshListener() {
             @Override

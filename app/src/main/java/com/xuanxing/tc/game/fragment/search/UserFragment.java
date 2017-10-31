@@ -83,7 +83,7 @@ public class UserFragment extends BaseFragment {
                     mRecommendAdapter.loadMoreEnd();//加载结束
                 }
             }
-        });
+        }, rvRecommend);
 
         mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override

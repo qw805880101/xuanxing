@@ -69,7 +69,7 @@ public class RecommendFragment extends BaseFragment {
                     mRecommendAdapter.loadMoreEnd();//加载结束
                 }
             }
-        });
+        }, rvRecommend);
 
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override

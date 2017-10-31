@@ -119,7 +119,7 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
                     mVideoAdapter.loadMoreEnd();//加载结束
                 }
             }
-        });
+        }, rvVideo);
 
 
         rvVideo.setLayoutManager(new LinearLayoutManager(this.getContext()));

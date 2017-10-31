@@ -52,7 +52,7 @@ public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapte
 
     private String gameId;
 
-    private int page;
+    private int page = 1;
     private int totalPage;
     private int total;
 
@@ -98,10 +98,10 @@ public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapte
                     page += 1;
                     getLoadData();
                 } else {
-//                    moreAnchorAdapter.loadMoreEnd();//加载结束
+                    moreAnchorAdapter.loadMoreEnd();//加载结束
                 }
             }
-        });
+        }, rvMoreAnchor);
 
         moreAnchorAdapter.setFollowOnclick(this);
 
@@ -110,6 +110,7 @@ public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapte
             public void onRefresh() {
                 isRef = true;
                 page = 1;
+                moreAnchorAdapter.setEnableLoadMore(false);
                 getLoadData();
             }
         });
@@ -133,9 +134,9 @@ public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapte
         mRxManager.add(anchorMore.subscribe(new Action1<BaseBeanClass<BaseList>>() {
             @Override
             public void call(BaseBeanClass<BaseList> baseBean) {
-
+                moreAnchorAdapter.setEnableLoadMore(true);
                 mSwipeRefreshRecommend.setRefreshing(false); //刷新完成
-                moreAnchorAdapter.loadMoreComplete(); //加载完成
+//                moreAnchorAdapter.loadMoreComplete(); //加载完成
                 if (baseBean.getCode().equals("0000")) {
                     /* 总数-总页数 */
                     total = baseBean.getData().getAnchorList().getTotalCount();

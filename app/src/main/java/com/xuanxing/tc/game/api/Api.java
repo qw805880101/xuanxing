@@ -240,6 +240,49 @@ public interface Api {
                                                    @Query("limit") int limit,
                                                    @Query("gameCategoryCode") String gameCategoryCode,
                                                    @Query("newsType") int newsType);
+    /**
+     * 获取评论
+     * @return
+     */
+    Observable<BaseBean> getComment();
+
+    /**
+     * 添加评论
+     * @param app_m_id          用户ID
+     * @param app_p_token       AppToken
+     * @param newsId            资讯ID
+     * @param newsType          资讯类型
+     * @param content           评论内容
+     * @param toMid             对某人ID评论
+     * @param parentId          评论根级ID
+     * @return
+     */
+    Observable<BaseBean> addComment(@Query("app_m_id") String app_m_id,
+                                    @Query("app_p_token") String app_p_token,
+                                    @Query("newsId") String newsId,
+                                    @Query("newsType") int newsType,
+                                    @Query("app_p_token") String content,
+                                    @Query("toMid") String toMid,
+                                    @Query("parentId") String parentId
+                                    );
+
+    /**
+     * 获取资讯详情
+     * @param app_m_id          用户ID
+     * @param app_p_token       AppToken
+     * @param newsId            资讯ID
+     * @param categoryCode      游戏分类
+     * @param newsType          资讯类型
+     * @return
+     */
+    @POST("api/newsDetail/mGetNewsDetail")
+    Observable<BaseBean> getNewsDetail(@Query("app_m_id") String app_m_id,
+                                       @Query("app_p_token") String app_p_token,
+                                       @Query("newsId") String newsId,
+                                       @Query("categoryCode") String categoryCode,
+                                       @Query("newsType") int newsType
+                                       );
+
 
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);

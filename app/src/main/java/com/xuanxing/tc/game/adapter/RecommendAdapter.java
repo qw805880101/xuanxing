@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.activity.NewsDetailsActivity;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.RecommendInfo;
@@ -26,7 +28,7 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, NewsInfo item) {
+    protected void convert(BaseViewHolder helper, final NewsInfo item) {
 
         helper.setText(R.id.txt_heading, item.getTitle())
                 .setText(R.id.txt_author_time, item.getMemberName() + "  " + item.getCreateTime());
@@ -85,7 +87,15 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
         helper.getView(R.id.lin_news).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (MyApplication.loginInfo == null) {
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(intent);
+                    return;
+                }
                 Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                intent.putExtra("newsId", "" + item.getId());
+                intent.putExtra("categoryCode", item.getCategoryCode());
+                intent.putExtra("newsType", item.getTopicType());
                 mContext.startActivity(intent);
             }
         });
