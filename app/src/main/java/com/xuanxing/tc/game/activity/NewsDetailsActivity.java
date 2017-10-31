@@ -105,7 +105,7 @@ public class NewsDetailsActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
         myWebView = new MyWebView(this, wvNews);
         myWebView.webSetting();
-        myWebView.loadUrl("https://ds.bypay.cn/qbiz/mobile/html/message/info.html?Android&001&184&20171030184058&H1001&8a02b15c5e88a26c2ff47caad8d5d53a&524811cef189470299f3609ffc50a29e");
+        myWebView.loadUrl("http://120.27.18.127:10086/gamehelp_admin/h5/gameArticleDetails.html");
 
         list.add("1");
         list.add("1");
