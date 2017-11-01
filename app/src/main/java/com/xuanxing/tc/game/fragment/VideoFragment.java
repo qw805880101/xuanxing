@@ -19,6 +19,7 @@ import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.HomeActivity;
 import com.xuanxing.tc.game.activity.LoginActivity;
+import com.xuanxing.tc.game.activity.NewsDetailsActivity;
 import com.xuanxing.tc.game.adapter.VideoAdapter;
 import com.xuanxing.tc.game.adapter.VideoAdapter.MyOnClickListener;
 import com.xuanxing.tc.game.base.BaseFragment;
@@ -181,28 +182,33 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
             ToastUtils.showToast(this.getContext(), "未登录，请先登录");
             return;
         }
-        if (isAttention == mVideoAdapter.FOLLOW || isAttention == mVideoAdapter.CANCER_FOLLOW){
+        if (isAttention == mVideoAdapter.FOLLOW || isAttention == mVideoAdapter.CANCER_FOLLOW) {
             follow((Button) view, isAttention, pos);
         }
-        if (isAttention == mVideoAdapter.SHARE){
+        if (isAttention == mVideoAdapter.SHARE) {
 
         }
     }
 
     /**
      * 关注
+     *
      * @param bt
      * @param isAttention
      * @param pos
      */
-    private void follow(final Button bt, final int isAttention, int pos){
+    private void follow(final Button bt, final int isAttention, int pos) {
         Observable<BaseBean> follow = mXuanXingApi.follow(MyApplication.loginInfo.getMemberInfo().getMemberId(),
-                MyApplication.loginInfo.getP_token(), isAttention, "" + mNewsInfos.get(pos).getMemberId()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+                MyApplication.loginInfo.getP_token(), isAttention, "" + mNewsInfos.get(pos).getId()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         mRxManager.add(follow.subscribe(new Action1<BaseBean>() {
             @Override
             public void call(BaseBean baseBean) {
                 if (baseBean.getCode().equals("0000")) {
-                    ToastUtils.showToast(VideoFragment.this.getContext(), "关注成功");
+                    if (isAttention == 1) {
+                        ToastUtils.showToast(VideoFragment.this.getContext(), "关注成功");
+                    } else {
+                        ToastUtils.showToast(VideoFragment.this.getContext(), "取消关注");
+                    }
                     followResult(bt, isAttention);
                 } else {
                     toastMessage(baseBean.getCode(), baseBean.getMsg());
@@ -213,16 +219,17 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
 
     /**
      * 关注结果
+     *
      * @param isAttention 0 取消关注 1 关注
      */
-    private void followResult(Button bt, int isAttention){
+    private void followResult(Button bt, int isAttention) {
         Map map = new LinkedHashMap();
         String num = "";
-        if (isAttention == mVideoAdapter.FOLLOW){
+        if (isAttention == mVideoAdapter.FOLLOW) {
             bt.setText("取消关注");
             num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) + 1);
         }
-        if (isAttention == mVideoAdapter.CANCER_FOLLOW){
+        if (isAttention == mVideoAdapter.CANCER_FOLLOW) {
             bt.setText("关注");
             num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) - 1);
         }

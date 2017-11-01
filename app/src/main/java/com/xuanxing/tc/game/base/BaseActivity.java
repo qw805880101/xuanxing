@@ -1,6 +1,8 @@
 package com.xuanxing.tc.game.base;
 
 
+import android.content.Intent;
+
 import com.psylife.wrmvplibrary.RxManager;
 import com.psylife.wrmvplibrary.base.WRBaseActivity;
 import com.psylife.wrmvplibrary.data.net.RxService;
@@ -28,6 +30,10 @@ public abstract class BaseActivity extends WRBaseActivity implements Action1<Thr
      * @param msg
      */
     public void toastMessage(String code, String msg){
+        if (code.equals("1006")){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
         ToastUtils.showToast(this, msg);
     }
 

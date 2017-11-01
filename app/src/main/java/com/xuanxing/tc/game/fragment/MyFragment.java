@@ -166,6 +166,9 @@ public class MyFragment extends BaseFragment implements OnClickListener {
             if (event.getKey().equals("followNum")){
                 mTxtAttentionNum.setText(event.getValue());
             }
+            if (event.getKey().equals("collectionNum")){
+                mTxtCollectNum.setText(event.getValue());
+            }
         }
     }
 

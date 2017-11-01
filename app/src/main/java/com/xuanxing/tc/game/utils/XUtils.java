@@ -102,6 +102,9 @@ public class XUtils {
             if (entry.getKey().equals("followNum") && !entry.getValue().equals("")) {
                 MyApplication.loginInfo.setAttentionNum(entry.getValue());
             }
+            if (entry.getKey().equals("collectionNum") && !entry.getValue().equals("")) {
+                MyApplication.loginInfo.setCollectNum(entry.getValue());
+            }
         }
         SpUtils.putString(context, USER_INFO, JSON.toJSONString(MyApplication.loginInfo));
     }

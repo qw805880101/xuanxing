@@ -136,7 +136,8 @@ public interface Api {
      * 关注用户
      * @param app_m_id
      * @param app_p_token
-     * @param newsMemberId
+     * @param isAttention   是否关注(1:关注,0:取消关注)
+     * @param newsMemberId  发表新闻用户ID或者其他用户ID
      * @return
      */
     @POST("api/relation/mIsAttention")
@@ -298,6 +299,35 @@ public interface Api {
                                      @Query("page") int page,
                                      @Query("limit") int limit
                                      );
+
+    /**
+     * 获取用户收藏列表
+     * @param app_m_id
+     * @param app_p_token
+     * @param page          第几页,默认第1页
+     * @param limit         每页几条,默认10条
+     * @return
+     */
+    @POST("api/collect/mGetList")
+    Observable<BaseBeanClass<BaseList>> getCollectionList(@Query("app_m_id") String app_m_id,
+                                           @Query("app_p_token") String app_p_token,
+                                           @Query("page") int page,
+                                           @Query("limit") int limit);
+
+    /**
+     * 用户收藏资讯-收藏/取消收藏
+     * @param app_m_id
+     * @param app_p_token
+     * @param isCollect         是否收藏(1:收藏,0:取消收藏)
+     * @param newsId            资讯ID
+     * @return
+     */
+    @POST("api/collect/mIsCollect")
+    Observable<BaseBean> mIsCollect(@Query("app_m_id") String app_m_id,
+                                    @Query("app_p_token") String app_p_token,
+                                    @Query("isCollect") int isCollect,
+                                    @Query("newsId") String newsId
+                                    );
 
 
     @POST("xxx")

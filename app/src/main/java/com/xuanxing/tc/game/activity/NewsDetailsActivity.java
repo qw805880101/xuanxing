@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -29,9 +30,15 @@ import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.NewsDetailInfo;
 import com.xuanxing.tc.game.bean.NewsInfo;
+import com.xuanxing.tc.game.utils.SendEvent;
+import com.xuanxing.tc.game.utils.XUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import rx.Observable;
@@ -43,7 +50,7 @@ import rx.functions.Action1;
  * Created by sandlovechao on 2017/10/29.
  */
 
-public class NewsDetailsActivity extends BaseActivity implements Take {
+public class NewsDetailsActivity extends BaseActivity implements OnClickListener, Take {
 
     @BindView(R.id.wv_news)
     WebView wvNews;
@@ -81,6 +88,8 @@ public class NewsDetailsActivity extends BaseActivity implements Take {
     private String newsId;       //咨询ID
     private String categoryCode; //游戏分类
     private int newsType;        //资讯类型
+    private int isCollect = 0; // 0取消收藏 1收藏
+    private NewsDetailInfo mNewsDetailInfo;
 
 
     public void setStatusBarColor() {
@@ -116,10 +125,10 @@ public class NewsDetailsActivity extends BaseActivity implements Take {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        ivCollection.setOnClickListener(this);
         myWebView = new MyWebView(this, wvNews, this);
         myWebView.webSetting();
         myWebView.loadUrl("http://120.27.18.127:10086/gamehelp_admin/h5/gameArticleDetails.html");
-
         commentAdapter = new CommentAdapter(this, list);
         recommendAdapter = new RecommendAdapter(newsInfoList);
         rvComment.setLayoutManager(new LinearLayoutManager(this));
@@ -135,6 +144,13 @@ public class NewsDetailsActivity extends BaseActivity implements Take {
         categoryCode = intent.getStringExtra("categoryCode");
         newsType = intent.getIntExtra("newsType", 0);
         getNewsDetail();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == ivCollection) {
+            addCollection();
+        }
     }
 
     /**
@@ -154,18 +170,54 @@ public class NewsDetailsActivity extends BaseActivity implements Take {
                         if (baseBean.getData().getCommentList().size() < 3) {
                             linMoreComment.setVisibility(View.GONE);
                         }
+                        txtCommentNum.setText(baseBean.getData().getCommentList().size());
                     } else {
+                        txtCollection.setVisibility(View.GONE);
+                        txtCommentNum.setVisibility(View.GONE);
                         linMoreComment.setVisibility(View.GONE);
                         linCommentNone.setVisibility(View.VISIBLE);
                         rvComment.setVisibility(View.GONE);
                     }
+                    mNewsDetailInfo = baseBean.getData();
+                    isCollect = mNewsDetailInfo.getIsCollect();
                     newsInfoList = baseBean.getData().getRelateGameNewsList();
                 } else {
                     toastMessage(baseBean.getCode(), baseBean.getMsg());
                 }
             }
         }, this));
+    }
 
+    /**
+     * 添加收藏
+     */
+    private void addCollection() {
+        Observable<BaseBean> collection = mXuanXingApi.mIsCollect(MyApplication.loginInfo.getMemberInfo().getMemberId(),
+                MyApplication.loginInfo.getP_token(), isCollect == 0 ? 1 : 0, newsId).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+        mRxManager.add(collection.subscribe(new Action1<BaseBean>() {
+            @Override
+            public void call(BaseBean baseBean) {
+                if (baseBean.getCode().equals("0000")) {
+                    final Map<String, String> map = new LinkedHashMap();
+                    if (isCollect == 1) {
+                        isCollect = 0;
+                        ToastUtils.showToast(NewsDetailsActivity.this, "取消收藏");
+                        map.put("collectionNum", "" + (Integer.parseInt(MyApplication.loginInfo.getCollectNum()) - 1));
+                        //事件发送 通知我的界面更新收藏
+                        EventBus.getDefault().post(new SendEvent("collectionNum", "" + (Integer.parseInt(MyApplication.loginInfo.getCollectNum()) - 1)));
+                    } else {
+                        isCollect = 1;
+                        ToastUtils.showToast(NewsDetailsActivity.this, "收藏成功");
+                        map.put("collectionNum", "" + (Integer.parseInt(MyApplication.loginInfo.getCollectNum()) + 1));
+                        //事件发送 通知我的界面更新收藏
+                        EventBus.getDefault().post(new SendEvent("collectionNum", "" + (Integer.parseInt(MyApplication.loginInfo.getCollectNum()) + 1)));
+                    }
+                    XUtils.modUserInfo(NewsDetailsActivity.this, map);
+                } else {
+                    toastMessage(baseBean.getCode(), baseBean.getMsg());
+                }
+            }
+        }, this));
     }
 
     @Override
