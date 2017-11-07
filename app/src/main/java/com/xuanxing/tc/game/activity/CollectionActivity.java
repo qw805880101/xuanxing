@@ -123,7 +123,7 @@ public class CollectionActivity extends BaseActivity {
             public void call(BaseBeanClass<BaseList> baseBean) {
                 mCollectionAdapter.setEnableLoadMore(true);
                 mSwipeRefreshFans.setRefreshing(false); //刷新完成
-//                moreAnchorAdapter.loadMoreComplete(); //加载完成
+                mCollectionAdapter.loadMoreComplete(); //加载完成
                 if (baseBean.getCode().equals("0000")) {
                     /* 总数-总页数 */
                     total = baseBean.getData().getCollectList().getTotalCount();

@@ -9,6 +9,15 @@ public class BaseList {
     private AnchorList anchorList;
     private FansList fansList;
     private CollectList collectList;
+    private NoticeList noticeList;
+
+    public NoticeList getNoticeList() {
+        return noticeList;
+    }
+
+    public void setNoticeList(NoticeList noticeList) {
+        this.noticeList = noticeList;
+    }
 
     public CollectList getCollectList() {
         return collectList;

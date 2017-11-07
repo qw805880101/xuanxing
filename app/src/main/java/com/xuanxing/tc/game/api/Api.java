@@ -329,6 +329,20 @@ public interface Api {
                                     @Query("newsId") String newsId
                                     );
 
+    /**
+     * 获取用户通知列表
+     * @param app_m_id
+     * @param app_p_token
+     * @param page
+     * @param limit
+     * @return
+     */
+    @POST("api/notice/mGetNoticeList")
+    Observable<BaseBeanClass<BaseList>> getNoticeList(@Query("app_m_id") String app_m_id,
+                                   @Query("app_p_token") String app_p_token,
+                                   @Query("page") int page,
+                                   @Query("limit") int limit);
+
 
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);
