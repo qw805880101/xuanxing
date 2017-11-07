@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
+import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
@@ -142,6 +143,28 @@ public class MessageActivity extends BaseActivity {
                         } else { //加载
                             data.addAll(baseBean.getData().getNoticeList().getItems());
                         }
+                        messageAdapter.setNewData(data);
+                    }
+                } else {
+                    toastMessage(baseBean.getCode(), baseBean.getMsg());
+                }
+            }
+        }, this));
+    }
+
+    public void delNotice(String noticeId, final int pos) {
+        Observable<BaseBean> delNotice = mXuanXingApi.delNotice(MyApplication.loginInfo.getMemberInfo().getMemberId(),
+                MyApplication.loginInfo.getP_token(), noticeId).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+        mRxManager.add(delNotice.subscribe(new Action1<BaseBean>() {
+            @Override
+            public void call(BaseBean baseBean) {
+                if (baseBean.getCode().equals("0000")) {
+                    ToastUtils.showToast(MessageActivity.this, "删除成功");
+                    data.remove(pos);
+                    if (data.size() <= 0) {
+                        rvMessage.setVisibility(View.GONE);
+                        mLinSearchNull.setVisibility(View.VISIBLE);
+                    } else {
                         messageAdapter.setNewData(data);
                     }
                 } else {

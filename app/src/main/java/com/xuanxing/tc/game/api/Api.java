@@ -344,6 +344,20 @@ public interface Api {
                                    @Query("limit") int limit);
 
 
+    /**
+     * 删除通知
+     * @param app_m_id
+     * @param app_p_token
+     * @param noticeId      通知ID
+     * @return
+     */
+    @POST("api/notice/mDelNotice")
+    Observable<BaseBean> delNotice(@Query("app_m_id") String app_m_id,
+                                   @Query("app_p_token") String app_p_token,
+                                   @Query("noticeId") String noticeId);
+
+
+
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);
 
