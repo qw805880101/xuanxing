@@ -33,6 +33,7 @@ public abstract class BaseActivity extends WRBaseActivity implements Action1<Thr
         if (code.equals("1006")){
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            this.finish();
         }
         ToastUtils.showToast(this, msg);
     }

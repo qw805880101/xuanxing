@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,11 +15,13 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
+import com.psylife.wrmvplibrary.utils.timeutils.DateUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
@@ -26,6 +29,7 @@ import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.HeadInfo;
 import com.xuanxing.tc.game.bean.MemberInfo;
+import com.xuanxing.tc.game.utils.DateUtils;
 import com.xuanxing.tc.game.utils.DialogUtil;
 import com.xuanxing.tc.game.utils.SendEvent;
 import com.xuanxing.tc.game.utils.TakePhotosDispose;
@@ -35,6 +39,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -83,6 +90,8 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
 
     private String path;
 
+    private String birthday;
+
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
     }
@@ -124,6 +133,7 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
         mMemberInfo = (MemberInfo) intent.getSerializableExtra(USER_INFO);
         mTxtUserName.setText(mMemberInfo.getNickName());
         mTxtBirthday.setText(mMemberInfo.getBirthdayStr() != null && !mMemberInfo.getBirthdayStr().equals("") ? mMemberInfo.getBirthdayStr() : "1991-01-01");
+        birthday = mTxtBirthday.getText().toString().trim();
         mTxtInterest.setText(mMemberInfo.getNickName());
         mTxtIntro.setText(mMemberInfo.getIntro());
         //TODO 添加照片
@@ -155,7 +165,40 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
         }
 
         if (v == linBirthday) {
-
+            try {
+                Calendar selectedDate = Calendar.getInstance();
+                Date date = DateUtils.getDateFormat().parse(birthday);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                TimePickerView pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {//选中事件回调
+                        birthday = DateUtils.getDateFormat().format(date);
+                        mTxtBirthday.setText(birthday);
+                        XUtils.modName("", birthday, "", "", "", "", mXuanXingApi, mRxManager, mAction1, PersonalInfoActivity.this);
+                    }
+                })
+//                    .setType(new boolean[]{true, true, true})// 默认全部显示
+                        .setCancelText("取消")//取消按钮文字
+                        .setSubmitText("完成")//确认按钮文字
+                        .setContentSize(18)//滚轮文字大小
+                        .setTitleSize(20)//标题文字大小
+                        .setOutSideCancelable(false)//点击屏幕，点在控件外部范围时，是否取消显示
+                        .isCyclic(false)//是否循环滚动
+                        .setSubmitColor(this.getResources().getColor(R.color.tx_e83545))//确定按钮文字颜色
+                        .setCancelColor(this.getResources().getColor(R.color.tx_e83545))//取消按钮文字颜色
+                        .setTitleBgColor(this.getResources().getColor(R.color.white))//标题背景颜色 Night mode
+                        .setBgColor(this.getResources().getColor(R.color.bg_f4f4f4))//滚轮背景颜色 Night mode
+                        .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+//                    .setRangDate(startDate,endDate)//起始终止年月日设定
+//                    .setLabel("年","月","日","","","")//默认设置为年月日时分秒
+                        .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                        .isDialog(false)//是否显示为对话框样式
+                        .build();
+                pvTime.show();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
         if (v == linInterest) {
@@ -231,17 +274,17 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
     /**
      * 上传头像
      */
-    private void uploadHead(){
+    private void uploadHead() {
         startProgressDialog(this);
         File file = new File(path);
         RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/from-data"), file);
         Observable<BaseBeanClass<HeadInfo>> uploadHead = mXuanXingApi.uploadHead(MyApplication.loginInfo.getMemberInfo().getMemberId(),
-                                                                    MyApplication.loginInfo.getP_token(), requestBody).compose(RxUtil.<BaseBeanClass<HeadInfo>>rxSchedulerHelper());
+                MyApplication.loginInfo.getP_token(), requestBody).compose(RxUtil.<BaseBeanClass<HeadInfo>>rxSchedulerHelper());
         mRxManager.add(uploadHead.subscribe(new Action1<BaseBeanClass<HeadInfo>>() {
             @Override
             public void call(BaseBeanClass<HeadInfo> baseBean) {
                 stopProgressDialog();
-                if (baseBean.getCode().equals("0000")){
+                if (baseBean.getCode().equals("0000")) {
                     final Map<String, String> map = new LinkedHashMap();
                     map.put("headicon", baseBean.getData().getHeadIcon());
                     //事件发送 通知我的界面更新头像
@@ -257,6 +300,22 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
             }
         }, this));
     }
+
+    Action1<BaseBean> mAction1 = new Action1<BaseBean>() {
+        @Override
+        public void call(BaseBean baseBean) {
+            if (baseBean.getCode().equals("0000")) {
+                final Map<String, String> map = new LinkedHashMap();
+                map.put("birthday", birthday);
+                //事件发送
+                XUtils.modUserInfo(PersonalInfoActivity.this, map);
+                ToastUtils.showToast(PersonalInfoActivity.this, baseBean.getMsg());
+                finish();
+            } else {
+                toastMessage(baseBean.getCode(), baseBean.getMsg());
+            }
+        }
+    };
 
     @Override
     public void onDestroy() {
