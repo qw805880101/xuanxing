@@ -137,7 +137,7 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
         mTxtInterest.setText(mMemberInfo.getNickName());
         mTxtIntro.setText(mMemberInfo.getIntro());
         //TODO 添加照片
-        Glide.with(mContext).load(mMemberInfo.getHeadIcon()).into(mIvHead);
+        XUtils.loadHeadIcon(mContext, mMemberInfo.getHeadIcon(), mIvHead);
     }
 
     @Override
@@ -290,9 +290,7 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
                     //事件发送 通知我的界面更新头像
                     EventBus.getDefault().post(new SendEvent("headicon", baseBean.getData().getHeadIcon()));
                     XUtils.modUserInfo(PersonalInfoActivity.this, map);
-                    Glide.with(PersonalInfoActivity.this).load(new File(path))
-                            .crossFade() //设置淡入淡出效果，默认300ms，可以传参
-                            .into(mIvHead);
+                    XUtils.loadHeadIcon(mContext, new File(path), mIvHead);
 
                 } else {
                     ToastUtils.showToast(PersonalInfoActivity.this, baseBean.getMsg());

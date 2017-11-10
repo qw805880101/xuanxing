@@ -14,6 +14,7 @@ import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.AnchorActivity;
 import com.xuanxing.tc.game.activity.PersonalInfoActivity;
 import com.xuanxing.tc.game.bean.AnchorInfo;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import java.io.File;
 import java.util.List;
@@ -66,8 +67,7 @@ public class MoreAnchorAdapter extends BaseQuickAdapter<AnchorInfo, BaseViewHold
         helper.setText(R.id.txt_content, ""+item.getAnchorId());
 
         CircleImageView circleImageView = helper.getView(R.id.iv_head);
-        Glide.with(context).load(item.getAnchorPic()).crossFade() //设置淡入淡出效果，默认300ms，可以传参
-                .into(circleImageView);
+        XUtils.loadHeadIcon(mContext, item.getAnchorPic(), circleImageView);
     }
 
     public interface FollowOnclick{

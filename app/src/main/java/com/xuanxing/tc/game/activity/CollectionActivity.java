@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
+import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
@@ -19,13 +20,20 @@ import com.xuanxing.tc.game.adapter.MoreAnchorAdapter;
 import com.xuanxing.tc.game.adapter.RecommendAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.AnchorInfo;
+import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseList;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.RecommendItemUtil;
+import com.xuanxing.tc.game.utils.SendEvent;
+import com.xuanxing.tc.game.utils.XUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import rx.Observable;
@@ -82,7 +90,7 @@ public class CollectionActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        mCollectionAdapter = new CollectionAdapter(data);
+        mCollectionAdapter = new CollectionAdapter(this, data);
         mCollectionAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -117,7 +125,6 @@ public class CollectionActivity extends BaseActivity {
     private void getLoadData() {
         Observable<BaseBeanClass<BaseList>> anchorMore = mXuanXingApi.getCollectionList(MyApplication.loginInfo.getMemberInfo().getMemberId(),
                 MyApplication.loginInfo.getP_token(), page, 10).compose(RxUtil.<BaseBeanClass<BaseList>>rxSchedulerHelper());
-
         mRxManager.add(anchorMore.subscribe(new Action1<BaseBeanClass<BaseList>>() {
             @Override
             public void call(BaseBeanClass<BaseList> baseBean) {
@@ -152,4 +159,30 @@ public class CollectionActivity extends BaseActivity {
             }
         }, this));
     }
+
+    /**
+     * 删除收藏
+     */
+    public void delCollection(String newsId, final int position) {
+        Observable<BaseBean> collection = mXuanXingApi.mIsCollect(MyApplication.loginInfo.getMemberInfo().getMemberId(),
+                MyApplication.loginInfo.getP_token(), 0, newsId).compose(RxUtil.<BaseBean>rxSchedulerHelper());
+        mRxManager.add(collection.subscribe(new Action1<BaseBean>() {
+            @Override
+            public void call(BaseBean baseBean) {
+                if (baseBean.getCode().equals("0000")) {
+                    data.remove(position);
+                    final Map<String, String> map = new LinkedHashMap();
+                    ToastUtils.showToast(CollectionActivity.this, "取消收藏");
+                    map.put("collectionNum", "" + (Integer.parseInt(MyApplication.loginInfo.getCollectNum()) - 1));
+                    //事件发送 通知我的界面更新收藏
+                    EventBus.getDefault().post(new SendEvent("collectionNum", "" + (Integer.parseInt(MyApplication.loginInfo.getCollectNum()) - 1)));
+                    XUtils.modUserInfo(CollectionActivity.this, map);
+                    mCollectionAdapter.setNewData(data);
+                } else {
+                    toastMessage(baseBean.getCode(), baseBean.getMsg());
+                }
+            }
+        }, this));
+    }
+
 }

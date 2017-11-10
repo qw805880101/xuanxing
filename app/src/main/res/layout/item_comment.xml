@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:paddingTop="5dp"
         android:gravity="center_vertical"
         >
 
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
         android:background="@color/bg_f4f4f4"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
         android:layout_marginTop="15dp"
         >
 

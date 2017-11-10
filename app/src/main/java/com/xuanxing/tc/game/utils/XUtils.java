@@ -4,18 +4,26 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.support.design.widget.TabLayout;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.psylife.wrmvplibrary.RxManager;
 import com.psylife.wrmvplibrary.utils.SpUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
-import com.psylife.wrmvplibrary.utils.timeutils.DateUtil;
 import com.xuanxing.tc.game.MyApplication;
+import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.api.Api;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.LoginInfo;
@@ -32,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -194,4 +203,41 @@ public class XUtils {
             }
         });
     }
+
+    /**
+     * 打开软键盘
+     *
+     * @param mEditText
+     * @param mContext
+     */
+    public static void openKeybord(EditText mEditText, Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
+                InputMethodManager.HIDE_IMPLICIT_ONLY);
+    }
+
+    /**
+     * 关闭软键盘
+     *
+     * @param mEditText 输入框
+     * @param mContext  上下文
+     */
+    public static void closeKeybord(EditText mEditText, Context mContext) {
+        InputMethodManager imm = (InputMethodManager) mContext
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+    }
+
+    public static <T> void loadHeadIcon(Context context, T model, ImageView imageView) {
+        Glide.with(context.getApplicationContext()).load(model)
+                .dontAnimate()
+                .placeholder(R.mipmap.morentouxiang) //设置占位图
+//                .error(R.mipmap.touxiang) //设置错误图片
+//                .crossFade() //设置淡入淡出效果，默认300ms，可以传参
+                .into(imageView);
+
+    }
+
 }

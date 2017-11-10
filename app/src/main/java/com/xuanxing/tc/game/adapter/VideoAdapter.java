@@ -15,6 +15,7 @@ import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.VideoInfo;
 import com.xuanxing.tc.game.utils.DateUtils;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -56,7 +57,7 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
     protected void convert(final BaseViewHolder helper, NewsInfo item) {
         CircleImageView circleImageView = helper.getView(R.id.iv_video_head);
         //TODO 添加照片
-        Glide.with(mContext).load(item.getTopicPic()).into(circleImageView);
+        XUtils.loadHeadIcon(mContext, item.getTopicPic(), circleImageView);
         helper.setText(R.id.bt_video_follow, item.getIsAttention()==0?"关注":"取消关注");
         helper.setText(R.id.txt_video_name, item.getMemberName());
         try{

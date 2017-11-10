@@ -259,11 +259,12 @@ public interface Api {
      * @param parentId          评论根级ID
      * @return
      */
+    @POST("api/newsDetail/addComment")
     Observable<BaseBean> addComment(@Query("app_m_id") String app_m_id,
                                     @Query("app_p_token") String app_p_token,
                                     @Query("newsId") String newsId,
                                     @Query("newsType") int newsType,
-                                    @Query("app_p_token") String content,
+                                    @Query("content") String content,
                                     @Query("toMid") String toMid,
                                     @Query("parentId") String parentId
                                     );

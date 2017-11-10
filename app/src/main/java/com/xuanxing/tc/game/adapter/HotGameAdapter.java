@@ -18,6 +18,7 @@ import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.bean.HotGameList;
 import com.xuanxing.tc.game.bean.RecommendInfo;
 import com.xuanxing.tc.game.bean.RecommendItemUtil;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class HotGameAdapter extends BaseQuickAdapter<HotGameList, BaseViewHolder
     @Override
     protected void convert(BaseViewHolder helper, final HotGameList item) {
         helper.setText(R.id.txt_game_name_01, item.getCategoryName());
-        Glide.with(mContext).load(item.getCategoryPic()).into((ImageView) helper.getView(R.id.iv_game_photo_01));
+        XUtils.loadHeadIcon(mContext, item.getCategoryPic(), (ImageView) helper.getView(R.id.iv_game_photo_01));
         helper.getView(R.id.rl_hot_game).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

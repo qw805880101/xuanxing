@@ -12,6 +12,7 @@
         android:orientation="horizontal"
         android:background="@color/white"
         android:gravity="center"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         >
         <ImageView
@@ -59,7 +60,7 @@
             android:id="@+id/iv_banner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/timg"
+            android:src="@mipmap/init"
             android:scaleType="fitXY"
             />
 
@@ -68,6 +69,7 @@
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:text="5  跳过"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:layout_alignParentRight="true"
             android:layout_marginTop="35dp"

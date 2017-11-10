@@ -268,15 +268,6 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener {
             if (photoPaths.size() >= 3) {
                 mIvTakeFeedback.setVisibility(View.GONE);
             }
-//            Glide.with(this).load(new File(path))
-//                    .placeholder(R.mipmap.wellcom) //设置占位图
-//                    .error(R.mipmap.wellcom) //设置错误图片
-//                    .crossFade() //设置淡入淡出效果，默认300ms，可以传参
-//                    .transform(new GlideCircleTransform(context)).into(mIvHead);
-//            Glide.with(this).load(new File(path))
-//                    .crossFade() //设置淡入淡出效果，默认300ms，可以传参
-//                    .into(mIvHead);
-
         }
     }
 

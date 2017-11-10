@@ -12,6 +12,7 @@ import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.utils.SendEvent;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -79,7 +80,7 @@ public class PhotoActivity extends BaseActivity {
     public void initdata() {
         Intent intent = this.getIntent();
         position = intent.getIntExtra("position", 0);
-        Glide.with(mContext).load(new File(intent.getStringExtra("path"))).into(mPhoto);
+        XUtils.loadHeadIcon(mContext, new File(intent.getStringExtra("path")), mPhoto);
         mTitleBuilder.setLeftText(position + 1 + "/" + intent.getIntExtra("total", 1));
     }
 }

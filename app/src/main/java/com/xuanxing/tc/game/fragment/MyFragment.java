@@ -30,9 +30,12 @@ import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.MemberInfo;
 import com.xuanxing.tc.game.utils.SendEvent;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,7 +108,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
         mTxtUserName.setText(memberInfo.getNickName());
         mTxtIntro.setText(memberInfo.getIntro());
         //TODO 添加照片
-        Glide.with(mContext).load(memberInfo.getHeadIcon()).into(mIvHead);
+        XUtils.loadHeadIcon(mContext, memberInfo.getHeadIcon(), mIvHead);
     }
 
     @Override
@@ -155,7 +158,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     public void onEventMainThread(SendEvent event) {
         if (event != null) {
             if (event.getKey().equals("headicon") && !event.getValue().equals("")) {
-                Glide.with(mContext).load(event.getValue()).into(mIvHead);
+                XUtils.loadHeadIcon(mContext, event.getValue(), mIvHead);
             }
             if (event.getKey().equals("nickname") && !event.getValue().equals("")) {
                 mTxtUserName.setText(event.getValue());

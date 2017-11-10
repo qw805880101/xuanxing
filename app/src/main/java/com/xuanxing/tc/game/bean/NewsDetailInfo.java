@@ -13,7 +13,16 @@ public class NewsDetailInfo {
     private int isAttention;
     private int isCollect;
     private int detailInfo;
+    private int collectNum;
     private List<NewsInfo> relateGameNewsList;
+
+    public int getCollectNum() {
+        return collectNum;
+    }
+
+    public void setCollectNum(int collectNum) {
+        this.collectNum = collectNum;
+    }
 
     public List<CommentList> getCommentList() {
         return commentList;

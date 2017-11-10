@@ -3,6 +3,7 @@ package com.xuanxing.tc.game.adapter;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -10,10 +11,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.activity.CollectionActivity;
 import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.activity.NewsDetailsActivity;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.RecommendInfo;
+import com.xuanxing.tc.game.utils.XUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -23,12 +26,16 @@ import java.util.List;
  */
 
 public class CollectionAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
-    public CollectionAdapter(@Nullable List<NewsInfo> data) {
+
+    private CollectionActivity collectionActivity;
+
+    public CollectionAdapter(CollectionActivity collectionActivity, @Nullable List<NewsInfo> data) {
         super(R.layout.item_collection, data);
+        this.collectionActivity = collectionActivity;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final NewsInfo item) {
+    protected void convert(final BaseViewHolder helper, final NewsInfo item) {
 
         helper.setText(R.id.txt_heading, item.getTitle())
                 .setText(R.id.txt_author_time, item.getMemberName() + "  " + item.getCreateTime());
@@ -51,7 +58,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder
         } else {
             ImageView imageView = helper.getView(R.id.iv_recommend);
             //TODO 添加照片
-            Glide.with(mContext).load(item.getTopicPic()).into(imageView);
+            XUtils.loadHeadIcon(mContext, item.getTopicPic(), imageView);
             helper.setVisible(R.id.iv_recommend, true).
                     setVisible(R.id.iv_video_icon, false).
                     setVisible(R.id.item_lin, true).
@@ -63,7 +70,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder
         if (item.getTopicType() == 1) { //带图片
             ImageView imageView = helper.getView(R.id.iv_recommend);
             //TODO 添加照片
-            Glide.with(mContext).load(item.getTopicPic()).into(imageView);
+            XUtils.loadHeadIcon(mContext, item.getTopicPic(), imageView);
             helper.setVisible(R.id.iv_recommend, true).
                     setVisible(R.id.iv_video_icon, false).
                     setVisible(R.id.item_lin, true).
@@ -75,7 +82,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder
         if (item.getTopicType() == 2) { //视频
             ImageView imageView = helper.getView(R.id.iv_recommend);
             //TODO 添加照片
-            Glide.with(mContext).load(item.getTopicPic()).into(imageView);
+            XUtils.loadHeadIcon(mContext, item.getTopicPic(), imageView);
             helper.setVisible(R.id.iv_recommend, true).
                     setVisible(R.id.iv_video_icon, true).
                     setVisible(R.id.item_lin, true).
@@ -84,7 +91,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder
                     setText(R.id.txt_content, item.getShortContent());
         }
 
-        helper.getView(R.id.lin_news).setOnClickListener(new View.OnClickListener() {
+        helper.getView(R.id.content).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (MyApplication.loginInfo == null) {
@@ -97,6 +104,13 @@ public class CollectionAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder
                 intent.putExtra("categoryCode", item.getCategoryCode());
                 intent.putExtra("newsType", item.getTopicType());
                 mContext.startActivity(intent);
+            }
+        });
+
+        helper.getView(R.id.right).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                collectionActivity.delCollection("" + item.getId(), helper.getLayoutPosition());
             }
         });
     }
