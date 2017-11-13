@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.activity.AttentionActivity;
 import com.xuanxing.tc.game.activity.AuthActivity;
 import com.xuanxing.tc.game.activity.CollectionActivity;
 import com.xuanxing.tc.game.activity.FansActivity;
@@ -97,6 +98,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
         linPersonalInfo.setOnClickListener(this);
         linCollection.setOnClickListener(this);
         linFans.setOnClickListener(this);
+        linFollow.setOnClickListener(this);
     }
 
     @Override
@@ -140,6 +142,10 @@ public class MyFragment extends BaseFragment implements OnClickListener {
         }
         if (v == linFans) {
             Intent intent = new Intent(this.getContext(), FansActivity.class);
+            startActivity(intent);
+        }
+        if (v == linFollow) {
+            Intent intent = new Intent(this.getContext(), AttentionActivity.class);
             startActivity(intent);
         }
         if (v == linAuth) {

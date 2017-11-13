@@ -69,8 +69,8 @@ public abstract class WRBaseActivity<T extends WRBasePresenter, E extends WRBase
     private void init(Bundle savedInstanceState) {
         TAG = getClass().getSimpleName();
 
-        setTheme(ThemeUtil.themeArr[SpUtil.getThemeIndex(this)][
-                SpUtil.getNightModel(this) ? 1 : 0]);
+//        setTheme(ThemeUtil.themeArr[SpUtil.getThemeIndex(this)][
+//                SpUtil.getNightModel(this) ? 1 : 0]);
         this.setContentView(this.getLayoutId());
         binder = ButterKnife.bind(this);
         mContext = this;

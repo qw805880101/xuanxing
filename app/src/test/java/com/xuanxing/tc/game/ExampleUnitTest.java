@@ -6,6 +6,9 @@ import com.xuanxing.tc.game.bean.MemberInfo;
 
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -31,5 +34,15 @@ public class ExampleUnitTest {
         String ss = JSON.toJSONString(loginInfo);
         System.out.println(ss);
         LoginInfo loginInfos = (LoginInfo) JSON.parseObject(ss, LoginInfo.class);
+    }
+
+    @Test
+    public void testDate(){
+        String s = "";
+        SimpleDateFormat sdf= new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        //前面的lSysTime是秒数，先乘1000得到毫秒数，再转为java.util.Date类型
+        java.util.Date dt = new Date(Long.parseLong("1504345756000"));
+        String sDateTime = sdf.format(dt);  //得到精确到秒的表示：08/31/2006 21:08:00
+        System.out.println(sDateTime);
     }
 }

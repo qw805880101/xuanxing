@@ -36,7 +36,7 @@ public class InitActivity extends BaseActivity {
     @BindView(R.id.rl_banner)
     RelativeLayout rlBanner;
 
-    int a = 5;
+    int a = 3;
 
     public void setStatusBarColor() {
         StatusBarUtil.setTranslucent(this, 1);

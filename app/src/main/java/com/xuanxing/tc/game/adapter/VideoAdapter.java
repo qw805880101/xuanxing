@@ -18,6 +18,8 @@ import com.xuanxing.tc.game.utils.DateUtils;
 import com.xuanxing.tc.game.utils.XUtils;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,7 +47,7 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
         this.context = context;
     }
 
-    public void setOnClickListener(MyOnClickListener mOnClickListener){
+    public void setOnClickListener(MyOnClickListener mOnClickListener) {
         this.mOnClickListener = mOnClickListener;
     }
 
@@ -58,17 +60,18 @@ public class VideoAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder> {
         CircleImageView circleImageView = helper.getView(R.id.iv_video_head);
         //TODO 添加照片
         XUtils.loadHeadIcon(mContext, item.getTopicPic(), circleImageView);
-        helper.setText(R.id.bt_video_follow, item.getIsAttention()==0?"关注":"取消关注");
+        helper.setText(R.id.bt_video_follow, item.getIsAttention() == 0 ? "关注" : "取消关注");
         helper.setText(R.id.txt_video_name, item.getMemberName());
-        try{
-            if(DateUtils.IsToday(item.getCreateTime())){
-                helper.setText(R.id.txt_video_time, "今天"+item.getCreateTime().substring(11, 12) + "点");
-            } else if(DateUtils.IsYesterday(item.getCreateTime())){
-                helper.setText(R.id.txt_video_time, "昨天"+item.getCreateTime().substring(11, 12) + "点");
+        try {
+            String dateStr = DateUtils.getDate(item.getCreateTimeStr());
+            if (DateUtils.IsToday(dateStr)) {
+                helper.setText(R.id.txt_video_time, "今天" + dateStr.substring(11, 12) + "点");
+            } else if (DateUtils.IsYesterday(dateStr)) {
+                helper.setText(R.id.txt_video_time, "昨天" + dateStr.substring(11, 12) + "点");
             } else {
-                helper.setText(R.id.txt_video_time, item.getCreateTime());
+                helper.setText(R.id.txt_video_time, dateStr);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         helper.setText(R.id.txt_video_heading, item.getTitle());

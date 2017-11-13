@@ -10,6 +10,15 @@ public class BaseList {
     private FansList fansList;
     private CollectList collectList;
     private NoticeList noticeList;
+    private AttentionList attentionList;
+
+    public AttentionList getAttentionList() {
+        return attentionList;
+    }
+
+    public void setAttentionList(AttentionList attentionList) {
+        this.attentionList = attentionList;
+    }
 
     public NoticeList getNoticeList() {
         return noticeList;

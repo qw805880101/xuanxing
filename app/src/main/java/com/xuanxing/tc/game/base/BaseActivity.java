@@ -2,6 +2,8 @@ package com.xuanxing.tc.game.base;
 
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 
 import com.psylife.wrmvplibrary.RxManager;
 import com.psylife.wrmvplibrary.base.WRBaseActivity;

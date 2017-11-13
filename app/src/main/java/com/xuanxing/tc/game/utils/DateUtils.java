@@ -80,4 +80,12 @@ public class DateUtils {
         return df.format(new Date());
     }
 
+    public static String getDate(String longDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date dt = new Date(Long.parseLong(longDate));
+        String sDateTime = sdf.format(dt);
+        return sDateTime;
+    }
+
+
 }

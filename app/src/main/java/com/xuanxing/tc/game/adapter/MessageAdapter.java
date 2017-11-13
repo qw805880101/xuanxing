@@ -12,6 +12,7 @@ import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.MessageActivity;
 import com.xuanxing.tc.game.bean.NoticeInfo;
 import com.xuanxing.tc.game.bean.RecommendInfo;
+import com.xuanxing.tc.game.utils.DateUtils;
 import com.xuanxing.tc.game.utils.XUtils;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class MessageAdapter extends BaseQuickAdapter<NoticeInfo, BaseViewHolder>
                     .setText(R.id.txt_message_content, item.getNoticeContent());
 
         }
-        helper.setText(R.id.txt_message_time, item.getCreateTimeStr());
+        helper.setText(R.id.txt_message_time, DateUtils.getDate(item.getCreateTimeStr()));
 
         helper.getView(R.id.right).setOnClickListener(new View.OnClickListener() {
             @Override

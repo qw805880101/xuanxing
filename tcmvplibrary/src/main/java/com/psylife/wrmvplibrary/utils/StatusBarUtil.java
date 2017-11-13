@@ -40,31 +40,30 @@ public class StatusBarUtil {
      * @param color    状态栏颜色值
      */
     public static void setColor(Activity activity, @ColorInt int color) {
-        if(Build.VERSION.SDK_INT > 19) {
+        if (Build.VERSION.SDK_INT > 19) {
             setColor(activity, color, DEFAULT_STATUS_BAR_ALPHA);
         }
     }
 
     /**
-             *
-             * @param activity
-             * @param dark
-             */
-        public static void setStatusBarLightMode(Activity activity, boolean dark){
+     * @param activity
+     * @param dark
+     */
+    public static void setStatusBarLightMode(Activity activity, boolean dark) {
 
-            switch (getSystem()){
-                case SYS_MIUI:
-                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
-                        DefaultsetStatusBarLightMode(activity,dark);
-                    }else {
-                        MIUISetStatusBarLightMode(activity.getWindow(),dark);
-                    }
-                    break;
-                case SYS_FLYME:
-                    FlymesetStatusBarLightMode(activity,dark);
-                    break;
+        switch (getSystem()) {
+            case SYS_MIUI:
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    DefaultsetStatusBarLightMode(activity, dark);
+                } else {
+                    MIUISetStatusBarLightMode(activity.getWindow(), dark);
+                }
+                break;
+            case SYS_FLYME:
+                FlymesetStatusBarLightMode(activity, dark);
+                break;
             default:
-                DefaultsetStatusBarLightMode(activity,dark);
+                DefaultsetStatusBarLightMode(activity, dark);
                 break;
         }
 
@@ -586,10 +585,10 @@ public class StatusBarUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            if("samsung".equals(SystemUtil.getDeviceBrand())){
-            if(isHaveNavigationBar(activity)){
+            if (isHaveNavigationBar(activity)) {
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            }else{
+            } else {
                 activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             }
@@ -671,13 +670,12 @@ public class StatusBarUtil {
     }
 
 
-
     /**
      * 设置状态栏字体图标为深色，需要MIUIV6以上
-     * @param window 需要设置的窗口
-     * @param dark 是否把状态栏字体及图标颜色设置为深色
-     * @return  boolean 成功执行返回true
      *
+     * @param window 需要设置的窗口
+     * @param dark   是否把状态栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
      */
     public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
         boolean result = false;
@@ -689,13 +687,13 @@ public class StatusBarUtil {
                 Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
                 darkModeFlag = field.getInt(layoutParams);
                 Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-                if(dark){
-                    extraFlagField.invoke(window,darkModeFlag,darkModeFlag);//状态栏透明且黑色字体
-                }else{
+                if (dark) {
+                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
+                } else {
                     extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
                 }
-                result=true;
-            }catch (Exception e){
+                result = true;
+            } catch (Exception e) {
 
             }
         }
@@ -765,23 +763,24 @@ public class StatusBarUtil {
     private static final String KEY_EMUI_VERSION = "ro.build.version.emui";
     private static final String KEY_EMUI_CONFIG_HW_SYS_VERSION = "ro.confg.hw_systemversion";
 
-    public static String getSystem(){
+    public static String getSystem() {
         String SYS = "";
         try {
-            Properties prop= new Properties();
+            Properties prop = new Properties();
             prop.load(new FileInputStream(new File(Environment.getRootDirectory(), "build.prop")));
-            if(prop.getProperty(KEY_MIUI_VERSION_CODE, null) != null
+            if (prop.getProperty(KEY_MIUI_VERSION_CODE, null) != null
                     || prop.getProperty(KEY_MIUI_VERSION_NAME, null) != null
-                    || prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null){
+                    || prop.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null) {
                 SYS = SYS_MIUI;//小米
-            }else if(prop.getProperty(KEY_EMUI_API_LEVEL, null) != null
-                    ||prop.getProperty(KEY_EMUI_VERSION, null) != null
-                    ||prop.getProperty(KEY_EMUI_CONFIG_HW_SYS_VERSION, null) != null){
+            } else if (prop.getProperty(KEY_EMUI_API_LEVEL, null) != null
+                    || prop.getProperty(KEY_EMUI_VERSION, null) != null
+                    || prop.getProperty(KEY_EMUI_CONFIG_HW_SYS_VERSION, null) != null) {
                 SYS = SYS_EMUI;//华为
-            }else if(getMeizuFlymeOSFlag().toLowerCase().contains("flyme")){
+            } else if (getMeizuFlymeOSFlag().toLowerCase().contains("flyme")) {
                 SYS = SYS_FLYME;//魅族
-            };
-        } catch (IOException e){
+            }
+            ;
+        } catch (IOException e) {
             e.printStackTrace();
             return SYS;
         }
@@ -796,7 +795,7 @@ public class StatusBarUtil {
         try {
             Class<?> clz = Class.forName("android.os.SystemProperties");
             Method get = clz.getMethod("get", String.class, String.class);
-            return (String)get.invoke(clz, key, defaultValue);
+            return (String) get.invoke(clz, key, defaultValue);
         } catch (Exception e) {
         }
         return defaultValue;

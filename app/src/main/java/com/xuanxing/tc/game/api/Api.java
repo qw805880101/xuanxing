@@ -63,15 +63,16 @@ public interface Api {
 
     /**
      * 获取首页推荐列表
+     * <p>
+     * //     * @param requestBody
      *
-//     * @param requestBody
-     * @param page        第几页,默认第1页
-     * @param limit       每页几条,默认10条
+     * @param page  第几页,默认第1页
+     * @param limit 每页几条,默认10条
      * @return
      */
     @POST("api/home/newsList")
     Observable<BaseBeanClass<News>> getNewsList(/*@Body RequestBody requestBody,*/
-                                                        @Query("page") int page,
+                                                @Query("page") int page,
                                                 @Query("limit") int limit);
 
     /**
@@ -83,11 +84,12 @@ public interface Api {
      */
     @POST("api/home/videoList")
     Observable<BaseBeanClass<Vedios>> getVedioList(/*@Body RequestBody requestBody,*/
-                                                      @Query("page") int page,
+                                                   @Query("page") int page,
                                                    @Query("limit") int limit);
 
     /**
      * 编辑用户信息
+     *
      * @param app_m_id
      * @param app_p_token
      * @param nickname
@@ -110,6 +112,7 @@ public interface Api {
 
     /**
      * 上传头像
+     *
      * @param app_m_id
      * @param app_p_token
      * @param file
@@ -120,34 +123,37 @@ public interface Api {
     Observable<BaseBeanClass<HeadInfo>> uploadHead(@Query("app_m_id") String app_m_id,
                                                    @Query("app_p_token") String app_p_token,
                                                    @Part("headIcon\"; filename=\"pic.png\"") RequestBody file
-                                    );
+    );
 
     /**
      * 退出登录
+     *
      * @param app_m_id
      * @param app_p_token
      * @return
      */
     @POST("api/member/mLogout")
     Observable<BaseBean> loginOut(@Query("app_m_id") String app_m_id,
-                                     @Query("app_p_token") String app_p_token);
+                                  @Query("app_p_token") String app_p_token);
 
     /**
      * 关注用户
+     *
      * @param app_m_id
      * @param app_p_token
-     * @param isAttention   是否关注(1:关注,0:取消关注)
-     * @param newsMemberId  发表新闻用户ID或者其他用户ID
+     * @param isAttention  是否关注(1:关注,0:取消关注)
+     * @param newsMemberId 发表新闻用户ID或者其他用户ID
      * @return
      */
     @POST("api/relation/mIsAttention")
     Observable<BaseBean> follow(@Query("app_m_id") String app_m_id,
-                                  @Query("app_p_token") String app_p_token,
-                                  @Query("isAttention") int isAttention,
-                                  @Query("newsMemberId") String newsMemberId);
+                                @Query("app_p_token") String app_p_token,
+                                @Query("isAttention") int isAttention,
+                                @Query("newsMemberId") String newsMemberId);
 
     /**
      * 获取发现数据
+     *
      * @return
      */
     @POST("api/found/index")
@@ -155,6 +161,7 @@ public interface Api {
 
     /**
      * 更多热门游戏
+     *
      * @param page
      * @param limit
      * @return
@@ -165,6 +172,7 @@ public interface Api {
 
     /**
      * 更多主播
+     *
      * @param app_m_id
      * @param app_p_token
      * @param gameCategoryId
@@ -181,6 +189,7 @@ public interface Api {
 
     /**
      * 获取热门搜索
+     *
      * @return
      */
     @POST("api/search/mInitSearchHotKey")
@@ -188,12 +197,13 @@ public interface Api {
 
     /**
      * 搜索
-     * @param app_m_id      用户ID
-     * @param app_p_token   AppToken
-     * @param keyWord       关键字
-     * @param keyType       类型
-     * @param page          第几页,默认第1页
-     * @param limit         每页几条,默认10条
+     *
+     * @param app_m_id    用户ID
+     * @param app_p_token AppToken
+     * @param keyWord     关键字
+     * @param keyType     类型
+     * @param page        第几页,默认第1页
+     * @param limit       每页几条,默认10条
      * @return
      */
     @POST("api/search/mGetSearch")
@@ -203,10 +213,11 @@ public interface Api {
                                                  @Query("keyType") int keyType,
                                                  @Query("page") int page,
                                                  @Query("limit") int limit
-                                );
+    );
 
     /**
      * 意见反馈
+     *
      * @return
      */
     @POST("api/feedback/mAdd ")
@@ -214,18 +225,19 @@ public interface Api {
 
     /**
      * 发现-游戏列表-最新，攻略
-     * @param page              第几页,默认第1页
-     * @param limit             每页几条,默认10条
-     * @param gameCategoryCode  游戏分类Code
-     * @param newsType          视频分类(最新传0,攻略传3)
+     *
+     * @param page             第几页,默认第1页
+     * @param limit            每页几条,默认10条
+     * @param gameCategoryCode 游戏分类Code
+     * @param newsType         视频分类(最新传0,攻略传3)
      * @return
      */
     @POST("api/found/getNewestNews")
     Observable<BaseBeanClass<News>> gameNews(@Query("page") int page,
-                                                       @Query("limit") int limit,
-                                                       @Query("gameCategoryCode") String gameCategoryCode,
-                                                       @Query("newsType") int newsType
-                                  );
+                                             @Query("limit") int limit,
+                                             @Query("gameCategoryCode") String gameCategoryCode,
+                                             @Query("newsType") int newsType
+    );
 
     /**
      * 发现-游戏列表-视频
@@ -236,27 +248,30 @@ public interface Api {
      */
     @POST("api/found/getGameVideoList")
     Observable<BaseBeanClass<Vedios>> getGameVideoList(/*@Body RequestBody requestBody,*/
-                                                   @Query("app_m_id") String app_m_id,
-                                                   @Query("app_p_token") String app_p_token,
-                                                   @Query("page") int page,
-                                                   @Query("limit") int limit,
-                                                   @Query("gameCategoryCode") String gameCategoryCode,
-                                                   @Query("newsType") int newsType);
+                                                       @Query("app_m_id") String app_m_id,
+                                                       @Query("app_p_token") String app_p_token,
+                                                       @Query("page") int page,
+                                                       @Query("limit") int limit,
+                                                       @Query("gameCategoryCode") String gameCategoryCode,
+                                                       @Query("newsType") int newsType);
+
     /**
      * 获取评论
+     *
      * @return
      */
     Observable<BaseBean> getComment();
 
     /**
      * 添加评论
-     * @param app_m_id          用户ID
-     * @param app_p_token       AppToken
-     * @param newsId            资讯ID
-     * @param newsType          资讯类型
-     * @param content           评论内容
-     * @param toMid             对某人ID评论
-     * @param parentId          评论根级ID
+     *
+     * @param app_m_id    用户ID
+     * @param app_p_token AppToken
+     * @param newsId      资讯ID
+     * @param newsType    资讯类型
+     * @param content     评论内容
+     * @param toMid       对某人ID评论
+     * @param parentId    评论根级ID
      * @return
      */
     @POST("api/newsDetail/addComment")
@@ -267,60 +282,81 @@ public interface Api {
                                     @Query("content") String content,
                                     @Query("toMid") String toMid,
                                     @Query("parentId") String parentId
-                                    );
+    );
 
     /**
      * 获取资讯详情
-     * @param app_m_id          用户ID
-     * @param app_p_token       AppToken
-     * @param newsId            资讯ID
-     * @param categoryCode      游戏分类
-     * @param newsType          资讯类型
+     *
+     * @param app_m_id     用户ID
+     * @param app_p_token  AppToken
+     * @param newsId       资讯ID
+     * @param categoryCode 游戏分类
+     * @param newsType     资讯类型
      * @return
      */
     @POST("api/newsDetail/mGetNewsDetail")
     Observable<BaseBeanClass<NewsDetailInfo>> getNewsDetail(@Query("app_m_id") String app_m_id,
-                                             @Query("app_p_token") String app_p_token,
-                                             @Query("newsId") String newsId,
-                                             @Query("categoryCode") String categoryCode,
-                                             @Query("newsType") int newsType
-                                       );
+                                                            @Query("app_p_token") String app_p_token,
+                                                            @Query("newsId") String newsId,
+                                                            @Query("categoryCode") String categoryCode,
+                                                            @Query("newsType") int newsType
+    );
 
     /**
      * 获取用户粉丝列表
+     *
      * @param app_m_id
      * @param app_p_token
-     * @param page          第几页,默认第1页
-     * @param limit         每页几条,默认10条
+     * @param page        第几页,默认第1页
+     * @param limit       每页几条,默认10条
      * @return
      */
     @POST("api/relation/mGetFansList")
     Observable<BaseBeanClass<BaseList>> getFansList(@Query("app_m_id") String app_m_id,
-                                     @Query("app_p_token") String app_p_token,
-                                     @Query("page") int page,
-                                     @Query("limit") int limit
-                                     );
+                                                    @Query("app_p_token") String app_p_token,
+                                                    @Query("page") int page,
+                                                    @Query("limit") int limit
+    );
 
     /**
      * 获取用户收藏列表
+     *
      * @param app_m_id
      * @param app_p_token
-     * @param page          第几页,默认第1页
-     * @param limit         每页几条,默认10条
+     * @param page        第几页,默认第1页
+     * @param limit       每页几条,默认10条
      * @return
      */
     @POST("api/collect/mGetList")
     Observable<BaseBeanClass<BaseList>> getCollectionList(@Query("app_m_id") String app_m_id,
-                                           @Query("app_p_token") String app_p_token,
-                                           @Query("page") int page,
-                                           @Query("limit") int limit);
+                                                          @Query("app_p_token") String app_p_token,
+                                                          @Query("page") int page,
+                                                          @Query("limit") int limit);
+
+    /**
+     * 获取用户关注列表
+     *
+     * @param app_m_id
+     * @param app_p_token
+     * @param page        第几页,默认第1页
+     * @param limit       每页几条,默认10条
+     * @return
+     */
+    @POST("api/relation/mGetAttentionList")
+    Observable<BaseBeanClass<BaseList>> getAttentionList(@Query("app_m_id") String app_m_id,
+                                                         @Query("app_p_token") String app_p_token,
+                                                         @Query("page") int page,
+                                                         @Query("limit") int limit
+    );
+
 
     /**
      * 用户收藏资讯-收藏/取消收藏
+     *
      * @param app_m_id
      * @param app_p_token
-     * @param isCollect         是否收藏(1:收藏,0:取消收藏)
-     * @param newsId            资讯ID
+     * @param isCollect   是否收藏(1:收藏,0:取消收藏)
+     * @param newsId      资讯ID
      * @return
      */
     @POST("api/collect/mIsCollect")
@@ -328,10 +364,11 @@ public interface Api {
                                     @Query("app_p_token") String app_p_token,
                                     @Query("isCollect") int isCollect,
                                     @Query("newsId") String newsId
-                                    );
+    );
 
     /**
      * 获取用户通知列表
+     *
      * @param app_m_id
      * @param app_p_token
      * @param page
@@ -340,16 +377,17 @@ public interface Api {
      */
     @POST("api/notice/mGetNoticeList")
     Observable<BaseBeanClass<BaseList>> getNoticeList(@Query("app_m_id") String app_m_id,
-                                   @Query("app_p_token") String app_p_token,
-                                   @Query("page") int page,
-                                   @Query("limit") int limit);
+                                                      @Query("app_p_token") String app_p_token,
+                                                      @Query("page") int page,
+                                                      @Query("limit") int limit);
 
 
     /**
      * 删除通知
+     *
      * @param app_m_id
      * @param app_p_token
-     * @param noticeId      通知ID
+     * @param noticeId    通知ID
      * @return
      */
     @POST("api/notice/mDelNotice")
@@ -358,6 +396,67 @@ public interface Api {
                                    @Query("noticeId") String noticeId);
 
 
+    /**
+     * 获取其他用户粉丝列表
+     *
+     * @param app_m_id
+     * @param app_p_token
+     * @param page        第几页,默认第1页
+     * @param limit       每页几条,默认10条
+     * @return
+     */
+    @POST("api/relation/mGetOtherMemberFansList")
+    Observable<BaseBeanClass<BaseList>> getOtherFansList(@Query("app_m_id") String app_m_id,
+                                                         @Query("app_p_token") String app_p_token,
+                                                         @Query("page") int page,
+                                                         @Query("limit") int limit,
+                                                         @Query("newsMemberId") String newsMemberId
+    );
+
+    /**
+     * 获取其他用户关注列表
+     *
+     * @param app_m_id
+     * @param app_p_token
+     * @param page        第几页,默认第1页
+     * @param limit       每页几条,默认10条
+     * @return
+     */
+    @POST("api/relation/mGetOtherMemberAttentionList")
+    Observable<BaseBeanClass<BaseList>> getOtherAttentionList(@Query("app_m_id") String app_m_id,
+                                                              @Query("app_p_token") String app_p_token,
+                                                              @Query("page") int page,
+                                                              @Query("limit") int limit,
+                                                              @Query("newsMemberId") String newsMemberId
+    );
+
+    /**
+     * 获取其他用户的信息，粉丝数、关注数
+     *
+     * @param app_m_id
+     * @param app_p_token
+     * @return
+     */
+    @POST("api/relation/mGetOtherMemberInfo")
+    Observable<BaseBeanClass<BaseList>> getOtherMemberInfo(@Query("app_m_id") String app_m_id,
+                                                           @Query("app_p_token") String app_p_token,
+                                                           @Query("newsMemberId") String newsMemberId
+    );
+
+    /**
+     * 获取其他用户的文章视频列表
+     * @param app_m_id
+     * @param app_p_token
+     * @param newsMemberId  其他用户ID
+     * @param type          1：文章或攻略 2视频
+     * @return
+     */
+    @POST("api/relation/mGetOtherMemberNewsList")
+    Observable<BaseBeanClass<BaseList>> getOtherMemberNewsList(@Query("app_m_id") String app_m_id,
+                                                               @Query("app_p_token") String app_p_token,
+                                                               @Query("newsMemberId") String newsMemberId,
+                                                               @Query("type") int type
+    );
 
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);

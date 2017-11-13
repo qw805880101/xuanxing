@@ -8,15 +8,19 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.psylife.wrmvplibrary.utils.timeutils.DateUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.activity.NewsDetailsActivity;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.RecommendInfo;
+import com.xuanxing.tc.game.utils.DateUtils;
 import com.xuanxing.tc.game.utils.XUtils;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,7 +36,7 @@ public class RecommendAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder>
     protected void convert(BaseViewHolder helper, final NewsInfo item) {
 
         helper.setText(R.id.txt_heading, item.getTitle())
-                .setText(R.id.txt_author_time, item.getMemberName() + "  " + item.getCreateTime());
+                .setText(R.id.txt_author_time, item.getMemberName() + "  " + DateUtils.getDate(item.getCreateTimeStr()));
 
         if (item.getPlayNum() > 1000) {
             DecimalFormat df = new DecimalFormat("######0.00");

@@ -33,7 +33,7 @@ public class NewsInfo {
     private String shortContent; //内容简介
     private int playNum; //
     private int status; //
-    private String createTime; //创建时间
+    private String createTimeStr; //创建时间
     private int isAttention; //是否关注
 
     public int getIsAttention() {
@@ -132,11 +132,11 @@ public class NewsInfo {
         this.status = status;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getCreateTimeStr() {
+        return createTimeStr;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
     }
 }

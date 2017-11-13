@@ -16,9 +16,12 @@ import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.activity.NewsDetailsActivity;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.RecommendInfo;
+import com.xuanxing.tc.game.utils.DateUtils;
 import com.xuanxing.tc.game.utils.XUtils;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +41,7 @@ public class CollectionAdapter extends BaseQuickAdapter<NewsInfo, BaseViewHolder
     protected void convert(final BaseViewHolder helper, final NewsInfo item) {
 
         helper.setText(R.id.txt_heading, item.getTitle())
-                .setText(R.id.txt_author_time, item.getMemberName() + "  " + item.getCreateTime());
+                .setText(R.id.txt_author_time, item.getMemberName() + "  " + DateUtils.getDate(item.getCreateTimeStr()));
 
         if (item.getPlayNum() > 1000) {
             DecimalFormat df = new DecimalFormat("######0.00");
