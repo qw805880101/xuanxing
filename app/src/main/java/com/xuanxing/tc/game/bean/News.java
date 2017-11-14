@@ -10,6 +10,16 @@ public class News {
 
     private NewsList newestNewsList;
 
+    private VideoList videoList;
+
+    public VideoList getVideoList() {
+        return videoList;
+    }
+
+    public void setVideoList(VideoList videoList) {
+        this.videoList = videoList;
+    }
+
     public NewsList getNewestNewsList() {
         return newestNewsList;
     }

@@ -9,8 +9,10 @@ import android.view.View.OnClickListener;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.AnchorActivity;
+import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.bean.AnchorInfo;
 import com.xuanxing.tc.game.utils.XUtils;
 
@@ -20,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 主播详细列表
- *
+ * <p>
  * Created by admin on 2017/8/31.
  */
 
@@ -34,7 +36,7 @@ public class FindAnchorAdapter extends BaseQuickAdapter<AnchorInfo, BaseViewHold
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, AnchorInfo item) {
+    protected void convert(BaseViewHolder helper, final AnchorInfo item) {
 
         helper.setText(R.id.txt_anchor_name, item.getAnchorName());
         XUtils.loadHeadIcon(mContext, item.getAnchorPic(), (CircleImageView) helper.getView(R.id.iv_anchor_head));
@@ -42,7 +44,13 @@ public class FindAnchorAdapter extends BaseQuickAdapter<AnchorInfo, BaseViewHold
         helper.getView(R.id.lin_anchor).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (MyApplication.loginInfo == null) {
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(intent);
+                    return;
+                }
                 Intent intent = new Intent(context, AnchorActivity.class);
+                intent.putExtra("anchorId", item.getAnchorId());
                 context.startActivity(intent);
             }
         });

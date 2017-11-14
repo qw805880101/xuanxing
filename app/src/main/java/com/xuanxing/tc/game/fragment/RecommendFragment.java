@@ -7,19 +7,26 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener;
 import com.psylife.wrmvplibrary.utils.LogUtil;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
+import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.RecommendAdapter;
 import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseBeanListClass;
+import com.xuanxing.tc.game.bean.HotGameList;
 import com.xuanxing.tc.game.bean.News;
 import com.xuanxing.tc.game.bean.NewsInfo;
 import com.xuanxing.tc.game.bean.NewsList;
 import com.xuanxing.tc.game.bean.RecommendItemUtil;
+import com.xuanxing.tc.game.fragment.game.NewFragment;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +41,12 @@ import rx.functions.Action1;
 
 public class RecommendFragment extends BaseFragment {
 
+    @BindView(R.id.lin_search_null)
+    LinearLayout linNull;
+    @BindView(R.id.txt_null_hint)
+    TextView txtNull;
     @BindView(R.id.rv_recommend)
     RecyclerView rvRecommend;
-
     @BindView(R.id.swipe_refresh_recommend)
     SwipeRefreshLayout mRefreshLayout;
 
@@ -49,6 +59,19 @@ public class RecommendFragment extends BaseFragment {
     private int page;
 
     private boolean isRef = false;
+
+    private int type = 0; // 1:AnchorActivity 主播界面 视频 文章
+
+    private String newsMemberId;
+
+    public static RecommendFragment getRecommendFragment(String newsMemberId, int type) {
+        Bundle bundle = new Bundle();
+        bundle.putString("newsMemberId", newsMemberId);
+        bundle.putInt("type", type);
+        RecommendFragment fragment = new RecommendFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public int getLayoutId() {
@@ -84,8 +107,14 @@ public class RecommendFragment extends BaseFragment {
     }
 
     private void loadData(int page) {
-        Observable<BaseBeanClass<News>> newsList = mXuanXingApi.getNewsList(page, 10)
-                .compose(RxUtil.<BaseBeanClass<News>>rxSchedulerHelper());
+        Observable<BaseBeanClass<News>> newsList = null;
+        if (type == 1) { //主播界面获取他人文章视频列表
+            newsList = mXuanXingApi.getOtherMemberNewsList(page, 10,
+                    newsMemberId, 1).compose(RxUtil.<BaseBeanClass<News>>rxSchedulerHelper());
+        } else {
+            newsList = mXuanXingApi.getNewsList(page, 10)
+                    .compose(RxUtil.<BaseBeanClass<News>>rxSchedulerHelper());
+        }
         mRxManager.add(newsList.subscribe(new Action1<BaseBeanClass<News>>() {
             @Override
             public void call(BaseBeanClass<News> newsListBaseBeanListClass) {
@@ -94,6 +123,13 @@ public class RecommendFragment extends BaseFragment {
                 if (newsListBaseBeanListClass.getCode().equals("0000")) {
                     /* 总数-总页数 */
                     total = newsListBaseBeanListClass.getData().getNewsList().getTotalCount();
+                    if (total <= 0) {
+                        linNull.setVisibility(View.VISIBLE);
+                        rvRecommend.setVisibility(View.GONE);
+                    } else {
+                        linNull.setVisibility(View.GONE);
+                        rvRecommend.setVisibility(View.VISIBLE);
+                    }
                     if (total % 10 > 0) {
                         totalPage = total / 10 + 1;
                     } else {
@@ -122,6 +158,12 @@ public class RecommendFragment extends BaseFragment {
 
     @Override
     public void initData() {
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            newsMemberId = bundle.getString("newsMemberId");
+            type = bundle.getInt("type");
+        }
         loadData(1);
     }
 

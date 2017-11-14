@@ -6,7 +6,7 @@ import java.util.List;
  * Created by tianchao on 2017/10/13.
  */
 
-public class VedioList {
+public class VideoList {
 
     private int totalCount;
     private List<NewsInfo> items;

@@ -11,6 +11,15 @@ public class BaseList {
     private CollectList collectList;
     private NoticeList noticeList;
     private AttentionList attentionList;
+    private MemberInfo otherMemberInfo;
+
+    public MemberInfo getOtherMemberInfo() {
+        return otherMemberInfo;
+    }
+
+    public void setOtherMemberInfo(MemberInfo otherMemberInfo) {
+        this.otherMemberInfo = otherMemberInfo;
+    }
 
     public AttentionList getAttentionList() {
         return attentionList;

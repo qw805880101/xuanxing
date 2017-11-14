@@ -1,4 +1,4 @@
-package com.xuanxing.tc.game.fragment.game;
+package com.xuanxing.tc.game.fragment;
 
 import android.content.Intent;
 import android.graphics.Rect;
@@ -10,8 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter.RequestLoadMoreListener;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
@@ -19,23 +19,15 @@ import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.LoginActivity;
-import com.xuanxing.tc.game.adapter.VideoAdapter;
-import com.xuanxing.tc.game.adapter.VideoAdapter.MyOnClickListener;
+import com.xuanxing.tc.game.adapter.AnchorVideoAdapter;
+import com.xuanxing.tc.game.adapter.AnchorVideoAdapter.MyOnClickListener;
 import com.xuanxing.tc.game.base.BaseFragment;
-import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
-import com.xuanxing.tc.game.bean.HotGameList;
+import com.xuanxing.tc.game.bean.News;
 import com.xuanxing.tc.game.bean.NewsInfo;
-import com.xuanxing.tc.game.bean.Videos;
-import com.xuanxing.tc.game.utils.SendEvent;
-import com.xuanxing.tc.game.utils.XUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
@@ -44,19 +36,20 @@ import rx.Observable;
 import rx.functions.Action1;
 
 /**
- * 热门游戏-视频
- * Created by tianchao on 2017/10/28.
+ * Created by tc on 2017/8/24.
  */
 
-public class VideoFragment extends BaseFragment implements MyOnClickListener {
+public class AnchorVideoFragment extends BaseFragment implements MyOnClickListener {
+
+    @BindView(R.id.lin_search_null)
+    LinearLayout linNull;
+    @BindView(R.id.txt_null_hint)
+    TextView txtNull;
     @BindView(R.id.rv_video)
     RecyclerView rvVideo;
 
     @BindView(R.id.swipe_refresh_video)
     SwipeRefreshLayout mRefreshLayout;
-
-    @BindView(R.id.lin_search_null)
-    LinearLayout mLinSearchNull;
 
     private static final String URL =
             "http://dn-chunyu.qbox.me/fwb/static/images/home/video/video_aboutCY_A.mp4";
@@ -71,24 +64,24 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
 
     private JCVideoPlayerStandard currPlayer;
 
-    private VideoAdapter mVideoAdapter;
+    private AnchorVideoAdapter mVideoAdapter;
 
     private List<NewsInfo> mNewsInfos = new ArrayList<>();
-
-    private HotGameList gameInfo;
 
     private boolean isLoadData = false;
 
     private int total;
     private int totalPage;
-    private int page;
+    private int page = 1;
 
     private boolean isRef = false;
 
-    public static VideoFragment getInstance(HotGameList gameInfo){
+    private String newsMemberId;
+
+    public static AnchorVideoFragment getVideoFragment(String newsMemberId) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("gameInfo", gameInfo);
-        VideoFragment fragment = new VideoFragment();
+        bundle.putString("newsMemberId", newsMemberId);
+        AnchorVideoFragment fragment = new AnchorVideoFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -111,11 +104,11 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
             public void onRefresh() {
                 isRef = true;
                 page = 1;
-                loadData(page);
+                loadData();
             }
         });
 
-        mVideoAdapter = new VideoAdapter(this.getContext(), mNewsInfos);
+        mVideoAdapter = new AnchorVideoAdapter(mNewsInfos);
         mVideoAdapter.setOnClickListener(this);
         mVideoAdapter.setOnLoadMoreListener(new RequestLoadMoreListener() {
             @Override
@@ -123,7 +116,7 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
 //                ToastUtils.showToast(ArticleFragment.this.getContext(), "加载");
                 if (totalPage > page) {
                     page += 1;
-                    loadData(page);
+                    loadData();
                 } else {
                     mVideoAdapter.loadMoreEnd();//加载结束
                 }
@@ -180,7 +173,9 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
     @Override
     public void initData() {
         Bundle bundle = this.getArguments();
-        gameInfo = (HotGameList) bundle.getSerializable("gameInfo");
+        if (bundle != null) {
+            newsMemberId = bundle.getString("newsMemberId");
+        }
     }
 
     @Override
@@ -191,93 +186,42 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
             ToastUtils.showToast(this.getContext(), "未登录，请先登录");
             return;
         }
-        if (isAttention == mVideoAdapter.FOLLOW || isAttention == mVideoAdapter.CANCER_FOLLOW) {
-            follow((Button) view, isAttention, pos);
-        }
         if (isAttention == mVideoAdapter.SHARE) {
 
         }
     }
 
-    /**
-     * 关注
-     *
-     * @param bt
-     * @param isAttention
-     * @param pos
-     */
-    private void follow(final Button bt, final int isAttention, int pos) {
-        Observable<BaseBean> follow = mXuanXingApi.follow(MyApplication.loginInfo.getMemberInfo().getMemberId(),
-                MyApplication.loginInfo.getP_token(), isAttention, "" + mNewsInfos.get(pos).getMemberId()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
-        mRxManager.add(follow.subscribe(new Action1<BaseBean>() {
-            @Override
-            public void call(BaseBean baseBean) {
-                if (baseBean.getCode().equals("0000")) {
-                    ToastUtils.showToast(VideoFragment.this.getContext(), "关注成功");
-                    followResult(bt, isAttention);
-                } else {
-                    toastMessage(baseBean.getCode(), baseBean.getMsg());
-                }
-            }
-        }, this));
-    }
-
-    /**
-     * 关注结果
-     *
-     * @param isAttention 0 取消关注 1 关注
-     */
-    private void followResult(Button bt, int isAttention) {
-        Map map = new LinkedHashMap();
-        String num = "";
-        if (isAttention == mVideoAdapter.FOLLOW) {
-            bt.setText("取消关注");
-            num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) + 1);
-        }
-        if (isAttention == mVideoAdapter.CANCER_FOLLOW) {
-            bt.setText("关注");
-            num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) - 1);
-        }
-        map.put("followNum", num);
-        //事件发送
-        EventBus.getDefault().post(new SendEvent("followNum", num));
-        XUtils.modUserInfo(VideoFragment.this.getContext(), map);
-    }
-
-    private void loadData(int page) {
+    private void loadData() {
         isLoadData = true;
-        Observable<BaseBeanClass<Videos>> vedioList = mXuanXingApi.getGameVideoList(MyApplication.loginInfo.getMemberInfo().getMemberId(),
-                MyApplication.loginInfo.getP_token(), page, 10, gameInfo.getCategoryCode(), 2)
-                .compose(RxUtil.<BaseBeanClass<Videos>>rxSchedulerHelper());
-        mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<Videos>>() {
+        Observable<BaseBeanClass<News>> videoList = mXuanXingApi.getOtherMemberNewsList(page, 10,
+                newsMemberId, 2).compose(RxUtil.<BaseBeanClass<News>>rxSchedulerHelper());
+        mRxManager.add(videoList.subscribe(new Action1<BaseBeanClass<News>>() {
             @Override
-            public void call(BaseBeanClass<Videos> newsListBaseBeanListClass) {
+            public void call(BaseBeanClass<News> newsListBaseBeanListClass) {
                 mRefreshLayout.setRefreshing(false); //刷新完成
                 mVideoAdapter.loadMoreComplete(); //加载完成
                 if (newsListBaseBeanListClass.getCode().equals("0000")) {
                      /* 总数-总页数 */
-                    total = newsListBaseBeanListClass.getData().getGameVideoList().getTotalCount();
+                    total = newsListBaseBeanListClass.getData().getNewsList().getTotalCount();
+                    if (total <= 0) {
+                        linNull.setVisibility(View.VISIBLE);
+                        rvVideo.setVisibility(View.GONE);
+                    } else {
+                        linNull.setVisibility(View.GONE);
+                        rvVideo.setVisibility(View.VISIBLE);
+                    }
                     if (total % 10 > 0) {
                         totalPage = total / 10 + 1;
                     } else {
                         totalPage = total / 10;
                     }
-
-                    if (newsListBaseBeanListClass.getData().getGameVideoList().getItems().size() <= 0) {
-                        rvVideo.setVisibility(View.GONE);
-                        mLinSearchNull.setVisibility(View.VISIBLE);
-                    } else {
-                        mLinSearchNull.setVisibility(View.GONE);
-                        rvVideo.setVisibility(View.VISIBLE);
-                        if (isRef) { //刷新
-                            isRef = false;
-                            mNewsInfos = newsListBaseBeanListClass.getData().getGameVideoList().getItems();
-                        } else { //加载
-                            mNewsInfos.addAll(newsListBaseBeanListClass.getData().getGameVideoList().getItems());
-                        }
-                        mVideoAdapter.setNewData(mNewsInfos);
+                    if (isRef) { //刷新
+                        isRef = false;
+                        mNewsInfos = newsListBaseBeanListClass.getData().getNewsList().getItems();
+                    } else { //加载
+                        mNewsInfos.addAll(newsListBaseBeanListClass.getData().getNewsList().getItems());
                     }
-
+                    mVideoAdapter.setNewData(mNewsInfos);
                 } else {
                     toastMessage(newsListBaseBeanListClass.getCode(), newsListBaseBeanListClass.getMsg());
                 }
@@ -295,7 +239,7 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
     @Override
     protected void initLazyView() {
         if (!isLoadData) {
-            loadData(1);
+            loadData();
         }
     }
 }

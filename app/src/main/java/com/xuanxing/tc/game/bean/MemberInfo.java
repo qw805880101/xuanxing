@@ -21,6 +21,24 @@ public class MemberInfo implements Serializable {
     private String status; // 用户级别
     private String intro; // 用户简介
     private String createTimeStr; // 用户创建时间
+    private int attentionNum; //关注数
+    private int fansNum; //粉丝数
+
+    public int getAttentionNum() {
+        return attentionNum;
+    }
+
+    public void setAttentionNum(int attentionNum) {
+        this.attentionNum = attentionNum;
+    }
+
+    public int getFansNum() {
+        return fansNum;
+    }
+
+    public void setFansNum(int fansNum) {
+        this.fansNum = fansNum;
+    }
 
     public String getNickName() {
         return nickName;

@@ -10,7 +10,7 @@ public class SearchList {
 
     private List<SearchHistory> mSearchHistories;
     private NewsList newsList;
-    private VedioList videoList;
+    private VideoList videoList;
 
     public NewsList getNewsList() {
         return newsList;
@@ -20,11 +20,11 @@ public class SearchList {
         this.newsList = newsList;
     }
 
-    public VedioList getVideoList() {
+    public VideoList getVideoList() {
         return videoList;
     }
 
-    public void setVideoList(VedioList videoList) {
+    public void setVideoList(VideoList videoList) {
         this.videoList = videoList;
     }
 

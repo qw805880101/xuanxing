@@ -1,6 +1,5 @@
 package com.xuanxing.tc.game.api;
 
-import com.xuanxing.tc.game.bean.AnchorList;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseList;
@@ -12,7 +11,7 @@ import com.xuanxing.tc.game.bean.News;
 import com.xuanxing.tc.game.bean.NewsDetailInfo;
 import com.xuanxing.tc.game.bean.SearchHotKeyList;
 import com.xuanxing.tc.game.bean.SearchList;
-import com.xuanxing.tc.game.bean.Vedios;
+import com.xuanxing.tc.game.bean.Videos;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -83,7 +82,7 @@ public interface Api {
      * @return
      */
     @POST("api/home/videoList")
-    Observable<BaseBeanClass<Vedios>> getVedioList(/*@Body RequestBody requestBody,*/
+    Observable<BaseBeanClass<Videos>> getVideoList(/*@Body RequestBody requestBody,*/
                                                    @Query("page") int page,
                                                    @Query("limit") int limit);
 
@@ -247,7 +246,7 @@ public interface Api {
      * @return
      */
     @POST("api/found/getGameVideoList")
-    Observable<BaseBeanClass<Vedios>> getGameVideoList(/*@Body RequestBody requestBody,*/
+    Observable<BaseBeanClass<Videos>> getGameVideoList(/*@Body RequestBody requestBody,*/
                                                        @Query("app_m_id") String app_m_id,
                                                        @Query("app_p_token") String app_p_token,
                                                        @Query("page") int page,
@@ -445,17 +444,18 @@ public interface Api {
 
     /**
      * 获取其他用户的文章视频列表
-     * @param app_m_id
-     * @param app_p_token
-     * @param newsMemberId  其他用户ID
-     * @param type          1：文章或攻略 2视频
+     *
+     * @param page
+     * @param limit
+     * @param newsMemberId 其他用户ID
+     * @param type         1：文章或攻略 2视频
      * @return
      */
     @POST("api/relation/mGetOtherMemberNewsList")
-    Observable<BaseBeanClass<BaseList>> getOtherMemberNewsList(@Query("app_m_id") String app_m_id,
-                                                               @Query("app_p_token") String app_p_token,
-                                                               @Query("newsMemberId") String newsMemberId,
-                                                               @Query("type") int type
+    Observable<BaseBeanClass<News>> getOtherMemberNewsList(@Query("page") int page,
+                                                           @Query("limit") int limit,
+                                                           @Query("newsMemberId") String newsMemberId,
+                                                           @Query("type") int type
     );
 
     @POST("xxx")

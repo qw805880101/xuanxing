@@ -17,19 +17,14 @@ import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
-import com.xuanxing.tc.game.activity.HomeActivity;
 import com.xuanxing.tc.game.activity.LoginActivity;
-import com.xuanxing.tc.game.activity.NewsDetailsActivity;
 import com.xuanxing.tc.game.adapter.VideoAdapter;
 import com.xuanxing.tc.game.adapter.VideoAdapter.MyOnClickListener;
 import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
-import com.xuanxing.tc.game.bean.BaseBeanListClass;
 import com.xuanxing.tc.game.bean.NewsInfo;
-import com.xuanxing.tc.game.bean.VedioList;
-import com.xuanxing.tc.game.bean.Vedios;
-import com.xuanxing.tc.game.bean.VideoItemUtil;
+import com.xuanxing.tc.game.bean.Videos;
 import com.xuanxing.tc.game.utils.SendEvent;
 import com.xuanxing.tc.game.utils.XUtils;
 
@@ -45,8 +40,6 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import rx.Observable;
 import rx.functions.Action1;
-
-import static com.xuanxing.tc.game.adapter.VideoAdapter.FOLLOW;
 
 /**
  * Created by tc on 2017/8/24.
@@ -241,11 +234,11 @@ public class VideoFragment extends BaseFragment implements MyOnClickListener {
 
     private void loadData(int page) {
         isLoadData = true;
-        Observable<BaseBeanClass<Vedios>> vedioList = mXuanXingApi.getVedioList(page, 10)
-                .compose(RxUtil.<BaseBeanClass<Vedios>>rxSchedulerHelper());
-        mRxManager.add(vedioList.subscribe(new Action1<BaseBeanClass<Vedios>>() {
+        Observable<BaseBeanClass<Videos>> videoList = mXuanXingApi.getVideoList(page, 10)
+                .compose(RxUtil.<BaseBeanClass<Videos>>rxSchedulerHelper());
+        mRxManager.add(videoList.subscribe(new Action1<BaseBeanClass<Videos>>() {
             @Override
-            public void call(BaseBeanClass<Vedios> newsListBaseBeanListClass) {
+            public void call(BaseBeanClass<Videos> newsListBaseBeanListClass) {
                 mRefreshLayout.setRefreshing(false); //刷新完成
                 mVideoAdapter.loadMoreComplete(); //加载完成
                 if (newsListBaseBeanListClass.getCode().equals("0000")) {

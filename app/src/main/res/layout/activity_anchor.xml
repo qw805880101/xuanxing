@@ -1,27 +1,27 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_f4f4f4"
-    >
+    android:background="@color/bg_f4f4f4">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:visibility="visible">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             app:contentScrim="@color/title_bg_e83646"
-            app:expandedTitleMarginEnd="-20dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:fitsSystemWindows="true">
+            app:expandedTitleGravity="center"
+            app:expandedTitleMarginBottom="20dp"
+            app:expandedTitleMarginTop="40dp"
+            app:expandedTitleTextAppearance="@style/txt"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <LinearLayout
                 android:id="@+id/login_layout"
@@ -37,25 +37,26 @@
                     android:id="@+id/head_img"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_marginTop="60dp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginBottom="10dp"
                     android:src="@mipmap/touxiang"
                     app:border_color="@android:color/white"
-                    app:border_width="1dp"
-                    />
+                    app:border_width="1dp" />
+
                 <TextView
                     android:id="@+id/nick_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:gravity="center"
-                    android:text="小苍"
-                    android:layout_marginTop="10dp"
                     android:singleLine="true"
-                    android:textStyle="bold"
+                    android:text="小苍"
                     android:textColor="#ffffff"
-                    android:textSize="17sp"/>
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/sign"
@@ -68,15 +69,14 @@
                     android:text="吹牛逼的都是年轻人"
                     android:textColor="@color/bt_bg_c8c8c8"
                     android:textSize="15sp"
-                    android:visibility="visible"/>
+                    android:visibility="visible" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center"
                     android:layout_marginTop="10dp"
-                    >
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/lin_follow"
@@ -84,30 +84,28 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txt_attention_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="30"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
-                            />
+                            android:textSize="15sp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="关注"
                             android:textColor="@color/bt_bg_c8c8c8"
-                            android:textSize="13sp"
-                            />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="2dp"
                         android:layout_height="30dp"
-                        android:background="@color/txt_969696"
-                        />
+                        android:background="@color/txt_969696" />
 
                     <LinearLayout
                         android:id="@+id/lin_fans"
@@ -115,23 +113,22 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txt_fans_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="30"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
-                            />
+                            android:textSize="15sp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="粉丝"
                             android:textColor="@color/bt_bg_c8c8c8"
-                            android:textSize="13sp"
-                            />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -144,7 +141,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
         <android.support.design.widget.TabLayout
@@ -179,6 +176,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="#ffffff"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>
