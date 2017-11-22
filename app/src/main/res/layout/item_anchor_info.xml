@@ -8,14 +8,14 @@
     android:layout_marginTop="10dp"
     android:gravity="center"
     >
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/iv_anchor_head"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@mipmap/touxiang"
-        app:border_color="#FF000000"
-        app:border_overlay="false"
-        app:border_width="0dp" />
+        app:riv_oval="true"
+        android:scaleType="centerCrop"
+        />
 
 
     <TextView

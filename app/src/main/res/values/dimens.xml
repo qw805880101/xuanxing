@@ -3,5 +3,7 @@
 
     <dimen name="top_10">10dp</dimen>
     <dimen name="bottom_10">10dp</dimen>
+    <dimen name="bottom_170">170dp</dimen>
+    <dimen name="bottom_1">1dp</dimen>
     <dimen name="middle_5">5dp</dimen>
 </resources>

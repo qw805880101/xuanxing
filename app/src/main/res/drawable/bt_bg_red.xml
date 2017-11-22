@@ -8,7 +8,7 @@
 
     <!-- 描边 -->
     <stroke
-    android:width="2dp"
+    android:width="1dp"
     android:color="@color/title_bg_e83646"
     android:dashGap="2dp"/>
 </shape>

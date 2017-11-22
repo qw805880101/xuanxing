@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.PhotoActivity;
 import com.xuanxing.tc.game.bean.CommentList;
@@ -17,8 +18,6 @@ import com.xuanxing.tc.game.utils.XUtils;
 
 import java.io.File;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 评论列表
@@ -45,7 +44,7 @@ public class CommentAdapter extends BaseQuickAdapter<CommentList, BaseViewHolder
             }
         }
 
-        CircleImageView circleImageView = helper.getView(R.id.iv_head);
+        RoundedImageView circleImageView = helper.getView(R.id.iv_head);
         XUtils.loadHeadIcon(mContext, item.getFromHeadIcon(), circleImageView);
 
         helper.setText(R.id.txt_comment_name, item.getFromNickName())

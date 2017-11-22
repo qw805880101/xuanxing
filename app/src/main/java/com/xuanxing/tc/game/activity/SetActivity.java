@@ -15,6 +15,7 @@ import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.BaseBean;
+import com.xuanxing.tc.game.fragment.MyFragment;
 import com.xuanxing.tc.game.utils.XUtils;
 import com.xuanxing.tc.game.view.SwitchView;
 
@@ -80,6 +81,7 @@ public class SetActivity extends BaseActivity implements OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mTxtPhone.setText(MyApplication.loginInfo.getPhoneNum());
     }
 
     @Override
@@ -109,6 +111,7 @@ public class SetActivity extends BaseActivity implements OnClickListener {
                     Intent intent = new Intent(SetActivity.this, HomeActivity.class);
                     intent.putExtra("isLoginOut", true);
                     startActivity(intent);
+
                 } else {
                     toastMessage(baseBean.getCode(), baseBean.getMsg());
                 }

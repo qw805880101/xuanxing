@@ -26,9 +26,15 @@ import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseList;
 import com.xuanxing.tc.game.bean.GameAnchorList;
 import com.xuanxing.tc.game.fragment.VideoFragment;
+import com.xuanxing.tc.game.utils.SendEvent;
+import com.xuanxing.tc.game.utils.XUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import rx.Observable;
@@ -39,7 +45,7 @@ import rx.functions.Action1;
  * Created by tianchao on 2017/10/16.
  */
 
-public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapter.FollowOnclick{
+public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapter.FollowOnclick {
 
     @BindView(R.id.swipe_refresh_more_anchor)
     SwipeRefreshLayout mSwipeRefreshRecommend;
@@ -104,6 +110,7 @@ public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapte
         }, rvMoreAnchor);
 
         moreAnchorAdapter.setFollowOnclick(this);
+        moreAnchorAdapter.isAnchor(true);
 
         mSwipeRefreshRecommend.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -175,18 +182,33 @@ public class AnchorMoreActivity extends BaseActivity implements MoreAnchorAdapte
 
     /**
      * 关注
+     *
      * @param isAttention
      * @param pos
      */
-    private void follow(final int isAttention, final int pos){
+    private void follow(final int isAttention, final int pos) {
         Observable<BaseBean> follow = mXuanXingApi.follow(MyApplication.loginInfo.getMemberInfo().getMemberId(),
                 MyApplication.loginInfo.getP_token(), isAttention, "" + data.get(pos).getAnchorId()).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         mRxManager.add(follow.subscribe(new Action1<BaseBean>() {
             @Override
             public void call(BaseBean baseBean) {
                 if (baseBean.getCode().equals("0000")) {
-                    ToastUtils.showToast(AnchorMoreActivity.this, "关注成功");
-                    data.get(pos).setIsAttention(1);
+                    Map map = new LinkedHashMap();
+                    String num = "";
+                    if (isAttention == 1) {
+                        num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) + 1);
+                        ToastUtils.showToast(AnchorMoreActivity.this, "关注成功");
+                        data.get(pos).setIsAttention(1);
+                    } else {
+                        num = "" + (Integer.parseInt(MyApplication.loginInfo.getAttentionNum()) - 1);
+                        ToastUtils.showToast(AnchorMoreActivity.this, "取消关注");
+                        data.get(pos).setIsAttention(0);
+                    }
+
+                    map.put("followNum", num);
+                    //事件发送
+                    EventBus.getDefault().post(new SendEvent("followNum", num));
+                    XUtils.modUserInfo(AnchorMoreActivity.this, map);
                     moreAnchorAdapter.setNewData(data);
                 } else {
                     toastMessage(baseBean.getCode(), baseBean.getMsg());

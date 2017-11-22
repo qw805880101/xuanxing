@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,12 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
-import com.bumptech.glide.Glide;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
 import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
-import com.psylife.wrmvplibrary.utils.timeutils.DateUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.base.BaseActivity;
@@ -46,10 +44,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.Observable;
 import rx.functions.Action1;
@@ -80,7 +75,7 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
     @BindView(R.id.txt_birthday)
     TextView mTxtBirthday;
     @BindView(R.id.iv_head)
-    CircleImageView mIvHead;
+    RoundedImageView mIvHead;
     @BindView(R.id.txt_interest)
     TextView mTxtInterest;
     @BindView(R.id.txt_intro)

@@ -17,27 +17,23 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.helper.FragmentAdapter;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
-import com.xuanxing.tc.game.adapter.AnchorVideoAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseList;
-import com.xuanxing.tc.game.bean.MemberInfo;
 import com.xuanxing.tc.game.fragment.AnchorVideoFragment;
 import com.xuanxing.tc.game.fragment.RecommendFragment;
-import com.xuanxing.tc.game.fragment.VideoFragment;
 import com.xuanxing.tc.game.utils.XUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -47,10 +43,10 @@ import rx.functions.Action1;
  * Created by admin on 2017/9/14.
  */
 
-public class AnchorActivity extends BaseActivity {
+public class AnchorActivity extends BaseActivity implements OnClickListener {
 
     @BindView(R.id.head_img)
-    CircleImageView headImg;
+    RoundedImageView headImg;
     @BindView(R.id.nick_name)
     TextView nickName;
     @BindView(R.id.sign)
@@ -101,6 +97,9 @@ public class AnchorActivity extends BaseActivity {
 
     @Override
     public void initView(Bundle savedInstanceState) {
+        linFollow.setOnClickListener(this);
+        linFans.setOnClickListener(this);
+
         toolbar.setNavigationIcon(R.mipmap.fanhui);
         toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
@@ -115,6 +114,7 @@ public class AnchorActivity extends BaseActivity {
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
                     mCollapsingToolbarLayout.setTitle(nickName.getText().toString());
+                    mCollapsingToolbarLayout.setExpandedTitleColor(AnchorActivity.this.getResources().getColor(R.color.white));
                     mCollapsingToolbarLayout.setCollapsedTitleGravity(Gravity.LEFT);
                     StatusBarUtil.setColor(AnchorActivity.this, AnchorActivity.this.getResources().getColor(R.color.title_bg_e83646));
                 } else {
@@ -168,5 +168,22 @@ public class AnchorActivity extends BaseActivity {
                 }
             }
         }, this));
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == linFollow) {
+            Intent intent = new Intent(this, AttentionActivity.class);
+            intent.putExtra("isOther", true);
+            intent.putExtra("newsMemberId", "" + anchorId);
+            startActivity(intent);
+        }
+
+        if (view == linFans) {
+            Intent intent = new Intent(this, FansActivity.class);
+            intent.putExtra("isOther", true);
+            intent.putExtra("newsMemberId", "" + anchorId);
+            startActivity(intent);
+        }
     }
 }

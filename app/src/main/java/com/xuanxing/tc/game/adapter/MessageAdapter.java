@@ -1,23 +1,17 @@
 package com.xuanxing.tc.game.adapter;
 
-import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.MessageActivity;
 import com.xuanxing.tc.game.bean.NoticeInfo;
-import com.xuanxing.tc.game.bean.RecommendInfo;
 import com.xuanxing.tc.game.utils.DateUtils;
-import com.xuanxing.tc.game.utils.XUtils;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 消息列表
@@ -39,7 +33,7 @@ public class MessageAdapter extends BaseQuickAdapter<NoticeInfo, BaseViewHolder>
 
     @Override
     protected void convert(final BaseViewHolder helper, final NoticeInfo item) {
-        CircleImageView circleImageView = helper.getView(R.id.iv_head);
+        RoundedImageView circleImageView = helper.getView(R.id.iv_head);
         if (item.getNoticeType() == 0) { //系统消息
             helper.setText(R.id.txt_message_title, "系统消息")
                     .setText(R.id.txt_message_content, item.getNoticeContent());

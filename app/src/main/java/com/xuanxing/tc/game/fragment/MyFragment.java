@@ -1,20 +1,15 @@
 package com.xuanxing.tc.game.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.psylife.wrmvplibrary.utils.ToastUtils;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.AttentionActivity;
@@ -22,13 +17,10 @@ import com.xuanxing.tc.game.activity.AuthActivity;
 import com.xuanxing.tc.game.activity.CollectionActivity;
 import com.xuanxing.tc.game.activity.FansActivity;
 import com.xuanxing.tc.game.activity.FeedbackActivity;
-import com.xuanxing.tc.game.activity.HomeActivity;
-import com.xuanxing.tc.game.activity.LoginActivity;
 import com.xuanxing.tc.game.activity.MessageActivity;
 import com.xuanxing.tc.game.activity.PersonalInfoActivity;
 import com.xuanxing.tc.game.activity.SetActivity;
 import com.xuanxing.tc.game.base.BaseFragment;
-import com.xuanxing.tc.game.bean.LoginInfo;
 import com.xuanxing.tc.game.bean.MemberInfo;
 import com.xuanxing.tc.game.utils.SendEvent;
 import com.xuanxing.tc.game.utils.XUtils;
@@ -36,12 +28,7 @@ import com.xuanxing.tc.game.utils.XUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.File;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.xuanxing.tc.game.MyApplication.USER_INFO;
 
@@ -68,7 +55,7 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     @BindView(R.id.lin_fans)
     LinearLayout linFans;
     @BindView(R.id.iv_head)
-    CircleImageView mIvHead;
+    RoundedImageView mIvHead;
     @BindView(R.id.txt_user_name)
     TextView mTxtUserName;
     @BindView(R.id.txt_intro)
@@ -109,7 +96,6 @@ public class MyFragment extends BaseFragment implements OnClickListener {
         mTxtCollectNum.setText(MyApplication.loginInfo.getCollectNum());
         mTxtUserName.setText(memberInfo.getNickName());
         mTxtIntro.setText(memberInfo.getIntro());
-        //TODO 添加照片
         XUtils.loadHeadIcon(mContext, memberInfo.getHeadIcon(), mIvHead);
     }
 
@@ -202,4 +188,16 @@ public class MyFragment extends BaseFragment implements OnClickListener {
     protected void initLazyView() {
 
     }
+
+    /**
+     * 需要界面重新展示时调用这个方法
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            initData();
+        }
+    }
+
 }

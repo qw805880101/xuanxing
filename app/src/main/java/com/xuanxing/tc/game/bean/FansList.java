@@ -9,7 +9,7 @@ import java.util.List;
 public class FansList {
 
     private int totalCount;
-    private List<AnchorInfo> items;
+    private List<FansInfo> items;
 
     public int getTotalCount() {
         return totalCount;
@@ -19,11 +19,11 @@ public class FansList {
         this.totalCount = totalCount;
     }
 
-    public List<AnchorInfo> getItems() {
+    public List<FansInfo> getItems() {
         return items;
     }
 
-    public void setItems(List<AnchorInfo> items) {
+    public void setItems(List<FansInfo> items) {
         this.items = items;
     }
 }

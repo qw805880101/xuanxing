@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -124,6 +123,7 @@ public class XUtils {
                 birthday, alipay, sex, headicon, intro).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         manager.add(modUserInfo.subscribe(action1, action2));
     }
+
 
     public static String getVersionName(Context context) throws Exception {
         // 获取packagemanager的实例

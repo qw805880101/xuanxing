@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.psylife.wrmvplibrary.utils.LogUtil;
 import com.psylife.wrmvplibrary.utils.helper.FragmentAdapter;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.activity.MessageActivity;
 import com.xuanxing.tc.game.activity.SearchActivity;
 import com.xuanxing.tc.game.base.BaseFragment;
 import com.xuanxing.tc.game.view.CustomViewPager;
@@ -79,7 +80,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
 
         if (v == imageTongzhi) {
-
+            startActivity(new Intent(this.getContext(), MessageActivity.class));
         }
 
         if (v == imageSearch) {

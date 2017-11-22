@@ -1,7 +1,6 @@
 package com.xuanxing.tc.game.adapter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +12,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.bean.FindList;
 import com.xuanxing.tc.game.bean.RecommendInfo;
-import com.xuanxing.tc.game.bean.RecommendItemUtil;
 import com.xuanxing.tc.game.utils.SpaceItemDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

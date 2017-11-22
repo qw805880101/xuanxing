@@ -458,6 +458,10 @@ public interface Api {
                                                            @Query("type") int type
     );
 
+    @POST("api/home/likeGameList")
+    Observable<BaseBean> likeGameList();
+
+
     @POST("xxx")
     Observable<Object> test(@Body RequestBody file);
 

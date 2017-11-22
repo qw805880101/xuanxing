@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.activity.AnchorActivity;
@@ -17,8 +18,6 @@ import com.xuanxing.tc.game.bean.AnchorInfo;
 import com.xuanxing.tc.game.utils.XUtils;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 主播详细列表
@@ -39,7 +38,7 @@ public class FindAnchorAdapter extends BaseQuickAdapter<AnchorInfo, BaseViewHold
     protected void convert(BaseViewHolder helper, final AnchorInfo item) {
 
         helper.setText(R.id.txt_anchor_name, item.getAnchorName());
-        XUtils.loadHeadIcon(mContext, item.getAnchorPic(), (CircleImageView) helper.getView(R.id.iv_anchor_head));
+        XUtils.loadHeadIcon(mContext, item.getAnchorPic(), (RoundedImageView) helper.getView(R.id.iv_anchor_head));
 
         helper.getView(R.id.lin_anchor).setOnClickListener(new OnClickListener() {
             @Override

@@ -17,6 +17,15 @@ public class LoginInfo implements Serializable {
     private String attentionNum; //关注数量
     private String fansNum; //粉丝数量
     private String collectNum; //收藏数量
+    private String phoneNum;
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
 
     public String getP_token() {
         return p_token;
