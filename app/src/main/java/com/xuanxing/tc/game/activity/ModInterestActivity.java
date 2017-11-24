@@ -22,7 +22,9 @@ import com.xuanxing.tc.game.bean.HotGameList;
 import com.xuanxing.tc.game.utils.InterestSpaceItemDecoration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import rx.Observable;
@@ -46,6 +48,7 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
 
     private List<HotGameList> addedData = new ArrayList<>();
     private List<HotGameList> noAddedData = new ArrayList<>();
+    private List<HotGameList> allData = new ArrayList<>();
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
@@ -97,7 +100,7 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
 
     @Override
     public void initdata() {
-        getMLikeGame();
+        getAllData();
     }
 
     private void getMLikeGame() {
@@ -110,7 +113,9 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
                     for (HotGameList hotGameList : addedData) {
                         hotGameList.setType(0);
                     }
+                    noAddedData = getNoAdded(allData, addedData);
                     addedAdapter.setNewData(addedData);
+                    noAddedAdapter.setNewData(noAddedData);
                 } else {
                     toastMessage(baseListBaseBeanClass.getCode(), baseListBaseBeanClass.getMsg());
                 }
@@ -143,6 +148,29 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
         }, this));
     }
 
+    private void getAllData() {
+        Observable<BaseBeanClass<BaseList>> getListGame = mXuanXingApi.getLikeGameList(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token(), 1, 100).compose(RxUtil.<BaseBeanClass<BaseList>>rxSchedulerHelper());
+        mRxManager.add(getListGame.subscribe(new Action1<BaseBeanClass<BaseList>>() {
+            @Override
+            public void call(BaseBeanClass<BaseList> baseBean) {
+                if (baseBean.getCode().equals("0000")) {
+//                    data.clear();
+//                    if (baseBean.getData().getSelectLikeGameList().getTotalCount() % limit > 1) {
+//                        totalPage = baseBean.getData().getSelectLikeGameList().getTotalCount() / limit + 1;
+//                    } else {
+//                        totalPage = baseBean.getData().getSelectLikeGameList().getTotalCount() / limit;
+//                    }
+
+                    allData.addAll(baseBean.getData().getSelectLikeGameList().getItems());
+                    getMLikeGame();
+//                    change();
+                } else {
+                    toastMessage(baseBean.getCode(), baseBean.getMsg());
+                }
+            }
+        }, this));
+    }
+
     @Override
     public void channelState(View view, int position, int type) {
         if (type == 1) {
@@ -152,4 +180,42 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
             addOrDelGame(type, addedData.get(position).getCategoryCode(), position);
         }
     }
+
+    /**
+     * 获取两个List的不同元素
+     *
+     * @param list1
+     * @param list2
+     * @return
+     */
+    private static List<HotGameList> getNoAdded(List<HotGameList> list1, List<HotGameList> list2) {
+        long st = System.nanoTime();
+        List<HotGameList> diff = new ArrayList<>();
+        List<HotGameList> maxList = list1;
+        List<HotGameList> minList = list2;
+        if (list2.size() > list1.size()) {
+            maxList = list2;
+            minList = list1;
+        }
+        Map<HotGameList, Integer> map = new HashMap<HotGameList, Integer>(maxList.size());
+        for (HotGameList string : maxList) {
+            map.put(string, 1);
+        }
+        for (HotGameList string : minList) {
+            if (map.get(string) != null) {
+                map.put(string, 2);
+                continue;
+            }
+            diff.add(string);
+        }
+        for (Map.Entry<HotGameList, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == 1) {
+                diff.add(entry.getKey());
+            }
+        }
+        System.out.println("getDiffrent5 total times " + (System.nanoTime() - st));
+        return diff;
+
+    }
+
 }
