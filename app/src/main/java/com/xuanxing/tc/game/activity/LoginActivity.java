@@ -162,7 +162,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     MyApplication.loginInfo = loginInfoBaseBeanClass.getData();
                     MyApplication.loginInfo.setPhoneNum(phoneNum);
                     XUtils.modUserInfo(LoginActivity.this, loginInfoBaseBeanClass.getData());
-                    if (loginInfoBaseBeanClass.getData().getIsFirstLogin() == 0) {
+                    if (loginInfoBaseBeanClass.getData().getIsFirstLogin() == 1) {
                         Intent intent = new Intent(LoginActivity.this, InterestActivity.class);
                         startActivity(intent);
                     } else {
