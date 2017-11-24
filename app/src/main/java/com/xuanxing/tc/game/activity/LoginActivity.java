@@ -161,10 +161,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (loginInfoBaseBeanClass.getCode().equals("0000")) {
                     MyApplication.loginInfo = loginInfoBaseBeanClass.getData();
                     MyApplication.loginInfo.setPhoneNum(phoneNum);
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("loginInfo", loginInfoBaseBeanClass.getData());
                     XUtils.modUserInfo(LoginActivity.this, loginInfoBaseBeanClass.getData());
-                    startActivity(intent);
+                    if (loginInfoBaseBeanClass.getData().getIsFirstLogin() == 0) {
+                        Intent intent = new Intent(LoginActivity.this, InterestActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.putExtra("loginInfo", loginInfoBaseBeanClass.getData());
+                        startActivity(intent);
+                    }
                     finish();
                 } else {
                     toastMessage(loginInfoBaseBeanClass.getCode(), loginInfoBaseBeanClass.getMsg());

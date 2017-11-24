@@ -458,8 +458,46 @@ public interface Api {
                                                            @Query("type") int type
     );
 
-    @POST("api/home/likeGameList")
-    Observable<BaseBean> likeGameList();
+    /**
+     * 获取感兴趣游戏列表(登陆后)
+     *
+     * @param app_m_id
+     * @param app_p_token
+     * @param page
+     * @param limit
+     * @return
+     */
+    @POST("api/home/getLikeGameList")
+    Observable<BaseBeanClass<BaseList>> getLikeGameList(@Query("app_m_id") String app_m_id,
+                                                        @Query("app_p_token") String app_p_token,
+                                                        @Query("page") int page,
+                                                        @Query("limit") int limit);
+
+    /**
+     * 用户新增或删除喜欢的游戏
+     *
+     * @param app_m_id
+     * @param app_p_token
+     * @param type             类型(1添加 0 删除)
+     * @param gameCategoryCode 游戏分类Code
+     * @return
+     */
+    @POST("api/member/mAddOrDelLikeGame")
+    Observable<BaseBean> addOrDelLikeGame(@Query("app_m_id") String app_m_id,
+                                          @Query("app_p_token") String app_p_token,
+                                          @Query("type") int type,
+                                          @Query("gameCategoryCode") String gameCategoryCode);
+
+    /**
+     * 获取用户喜欢的游戏
+     *
+     * @param app_m_id
+     * @param app_p_token
+     * @return
+     */
+    @POST("api/member/mGetLikeGame")
+    Observable<BaseBeanClass<BaseList>> mGetLikeGameList(@Query("app_m_id") String app_m_id,
+                                                         @Query("app_p_token") String app_p_token);
 
 
     @POST("xxx")

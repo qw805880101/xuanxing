@@ -197,7 +197,8 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
         }
 
         if (v == linInterest) {
-
+            Intent intent = new Intent(this, ModInterestActivity.class);
+            startActivity(intent);
         }
 
         if (v == linModIntroduce) {

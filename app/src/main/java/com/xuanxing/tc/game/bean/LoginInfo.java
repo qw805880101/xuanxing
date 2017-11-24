@@ -18,6 +18,15 @@ public class LoginInfo implements Serializable {
     private String fansNum; //粉丝数量
     private String collectNum; //收藏数量
     private String phoneNum;
+    private int isFirstLogin; // 1是首次登陆，0不是
+
+    public int getIsFirstLogin() {
+        return isFirstLogin;
+    }
+
+    public void setIsFirstLogin(int isFirstLogin) {
+        this.isFirstLogin = isFirstLogin;
+    }
 
     public String getPhoneNum() {
         return phoneNum;

@@ -23,6 +23,15 @@ public class HotGameList implements Serializable {
     private String categoryCode;
     private String categoryPic;
     private String categorySort;
+    private int type = 1; //0删除、1添加
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getId() {
         return id;

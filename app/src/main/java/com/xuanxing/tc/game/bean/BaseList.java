@@ -1,5 +1,7 @@
 package com.xuanxing.tc.game.bean;
 
+import java.util.List;
+
 /**
  * Created by sandlovechao on 2017/10/30.
  */
@@ -12,6 +14,24 @@ public class BaseList {
     private NoticeList noticeList;
     private AttentionList attentionList;
     private MemberInfo otherMemberInfo;
+    private LikeGameList selectLikeGameList;
+    private List<HotGameList> likeGameList;
+
+    public List<HotGameList> getLikeGameList() {
+        return likeGameList;
+    }
+
+    public void setLikeGameList(List<HotGameList> likeGameList) {
+        this.likeGameList = likeGameList;
+    }
+
+    public LikeGameList getSelectLikeGameList() {
+        return selectLikeGameList;
+    }
+
+    public void setSelectLikeGameList(LikeGameList selectLikeGameList) {
+        this.selectLikeGameList = selectLikeGameList;
+    }
 
     public MemberInfo getOtherMemberInfo() {
         return otherMemberInfo;
