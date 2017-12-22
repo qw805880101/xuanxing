@@ -14,7 +14,16 @@ public class NewsDetailInfo {
     private int isCollect;
     private int detailInfo;
     private int collectNum;
+    private int commentNum;
     private List<NewsInfo> relateGameNewsList;
+
+    public int getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(int commentNum) {
+        this.commentNum = commentNum;
+    }
 
     public int getCollectNum() {
         return collectNum;

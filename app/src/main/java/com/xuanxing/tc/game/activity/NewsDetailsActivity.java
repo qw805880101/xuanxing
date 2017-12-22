@@ -279,7 +279,7 @@ public class NewsDetailsActivity extends BaseActivity implements OnClickListener
                         }
                         allCommentList = baseBean.getData().getCommentList();
                         txtCommentNum.setVisibility(View.VISIBLE);
-                        txtCommentNum.setText("" + baseBean.getData().getCommentList().size());
+                        txtCommentNum.setText("" + baseBean.getData().getCommentNum());
                     } else {
                         txtCollection.setVisibility(View.GONE);
                         txtCommentNum.setVisibility(View.GONE);
@@ -291,7 +291,7 @@ public class NewsDetailsActivity extends BaseActivity implements OnClickListener
                     isCollect = mNewsDetailInfo.getIsCollect();
                     if (isCollect == 1) {
                         txtCollection.setText("" + baseBean.getData().getCollectNum());
-                        txtCollection.setVisibility(View.VISIBLE);
+                        txtCollection.setVisibility(View.INVISIBLE);
                         ivCollection.setImageResource(R.mipmap.shoucang02_p);
                     } else if (isCollect == 0) {
                         txtCollection.setVisibility(View.GONE);

@@ -174,12 +174,11 @@
                 android:textColor="@color/tx_808080"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/txt_interest"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/re_interest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="王者荣耀"
                 android:textColor="@color/txt_bg_333333"
                 android:textSize="15sp" />
 

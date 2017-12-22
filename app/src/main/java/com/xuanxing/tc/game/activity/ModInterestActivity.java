@@ -2,10 +2,10 @@ package com.xuanxing.tc.game.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 
 import com.psylife.wrmvplibrary.utils.StatusBarUtil;
 import com.psylife.wrmvplibrary.utils.TitleBuilder;
@@ -14,17 +14,17 @@ import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
 import com.xuanxing.tc.game.adapter.InterestAdapter;
 import com.xuanxing.tc.game.adapter.InterestAdapter.ChannelState;
+import com.xuanxing.tc.game.adapter.ModInterestAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
 import com.xuanxing.tc.game.bean.BaseList;
 import com.xuanxing.tc.game.bean.HotGameList;
+import com.xuanxing.tc.game.bean.ModInterestList;
 import com.xuanxing.tc.game.utils.InterestSpaceItemDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import rx.Observable;
@@ -38,17 +38,21 @@ import rx.functions.Action1;
 
 public class ModInterestActivity extends BaseActivity implements ChannelState {
 
-    @BindView(R.id.rv_added)
-    RecyclerView mRvAdded;
-    @BindView(R.id.rv_no_added)
-    RecyclerView mRvNoAdded;
+//    @BindView(R.id.rv_added)
+//    RecyclerView mRvAdded;
+//    @BindView(R.id.rv_no_added)
+//    RecyclerView mRvNoAdded;
 
-    private InterestAdapter addedAdapter;
-    private InterestAdapter noAddedAdapter;
+    @BindView(R.id.rv_interest)
+    RecyclerView rvInterest;
 
     private List<HotGameList> addedData = new ArrayList<>();
     private List<HotGameList> noAddedData = new ArrayList<>();
     private List<HotGameList> allData = new ArrayList<>();
+
+    private List<ModInterestList> mModInterestList = new ArrayList<>();
+
+    private ModInterestAdapter mModInterestAdapter;
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
@@ -83,19 +87,10 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        addedAdapter = new InterestAdapter(addedData);
-        addedAdapter.setChannelState(this);
-        noAddedAdapter = new InterestAdapter(noAddedData);
-        noAddedAdapter.setChannelState(this);
+        mModInterestAdapter = new ModInterestAdapter(mModInterestList, this);
 
-        mRvAdded.setLayoutManager(new GridLayoutManager(this, 3));
-        mRvAdded.addItemDecoration(new InterestSpaceItemDecoration(this.getResources().getDimensionPixelSize(R.dimen.bottom_1)));
-        mRvAdded.setAdapter(addedAdapter);
-
-        mRvNoAdded.setLayoutManager(new GridLayoutManager(this, 3));
-        mRvNoAdded.addItemDecoration(new InterestSpaceItemDecoration(this.getResources().getDimensionPixelSize(R.dimen.bottom_1)));
-        mRvNoAdded.setAdapter(noAddedAdapter);
-
+        rvInterest.setLayoutManager(new LinearLayoutManager(this));
+        rvInterest.setAdapter(mModInterestAdapter);
     }
 
     @Override
@@ -103,19 +98,26 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
         getAllData();
     }
 
+    /**
+     * 获取喜欢的游戏列表
+     */
     private void getMLikeGame() {
+        mModInterestList.clear();
         Observable<BaseBeanClass<BaseList>> mLikeGame = mXuanXingApi.mGetLikeGameList(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token()).compose(RxUtil.<BaseBeanClass<BaseList>>rxSchedulerHelper());
         mRxManager.add(mLikeGame.subscribe(new Action1<BaseBeanClass<BaseList>>() {
             @Override
             public void call(BaseBeanClass<BaseList> baseListBaseBeanClass) {
                 if (baseListBaseBeanClass.getCode().equals("0000")) {
                     addedData = baseListBaseBeanClass.getData().getLikeGameList();
+                    noAddedData = getNoAdded(allData, addedData);
                     for (HotGameList hotGameList : addedData) {
                         hotGameList.setType(0);
                     }
-                    noAddedData = getNoAdded(allData, addedData);
-                    addedAdapter.setNewData(addedData);
-                    noAddedAdapter.setNewData(noAddedData);
+                    ModInterestList modInterestList = new ModInterestList();
+                    modInterestList.setAddedData(addedData);
+                    modInterestList.setNoAddedData(noAddedData);
+                    mModInterestList.add(modInterestList);
+                    mModInterestAdapter.setNewData(mModInterestList);
                 } else {
                     toastMessage(baseListBaseBeanClass.getCode(), baseListBaseBeanClass.getMsg());
                 }
@@ -123,7 +125,14 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
         }, this));
     }
 
+    /**
+     * 添加或删除
+     * @param type
+     * @param gameCategoryCode
+     * @param position
+     */
     private void addOrDelGame(final int type, String gameCategoryCode, final int position) {
+        mModInterestList.clear();
         Observable<BaseBean> addOrDelGame = mXuanXingApi.addOrDelLikeGame(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token(), type, gameCategoryCode).compose(RxUtil.<BaseBean>rxSchedulerHelper());
         mRxManager.add(addOrDelGame.subscribe(new Action1<BaseBean>() {
             @Override
@@ -139,8 +148,11 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
                         noAddedData.add(addedData.get(position));
                         addedData.remove(position);
                     }
-                    addedAdapter.setNewData(addedData);
-                    noAddedAdapter.setNewData(noAddedData);
+                    ModInterestList modInterestList = new ModInterestList();
+                    modInterestList.setAddedData(addedData);
+                    modInterestList.setNoAddedData(noAddedData);
+                    mModInterestList.add(modInterestList);
+                    mModInterestAdapter.setNewData(mModInterestList);
                 } else {
                     toastMessage(baseBean.getCode(), baseBean.getMsg());
                 }
@@ -148,6 +160,9 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
         }, this));
     }
 
+    /**
+     * 获取全部游戏列表
+     */
     private void getAllData() {
         Observable<BaseBeanClass<BaseList>> getListGame = mXuanXingApi.getLikeGameList(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token(), 1, 100).compose(RxUtil.<BaseBeanClass<BaseList>>rxSchedulerHelper());
         mRxManager.add(getListGame.subscribe(new Action1<BaseBeanClass<BaseList>>() {
@@ -189,32 +204,16 @@ public class ModInterestActivity extends BaseActivity implements ChannelState {
      * @return
      */
     private static List<HotGameList> getNoAdded(List<HotGameList> list1, List<HotGameList> list2) {
-        long st = System.nanoTime();
-        List<HotGameList> diff = new ArrayList<>();
-        List<HotGameList> maxList = list1;
-        List<HotGameList> minList = list2;
-        if (list2.size() > list1.size()) {
-            maxList = list2;
-            minList = list1;
-        }
-        Map<HotGameList, Integer> map = new HashMap<HotGameList, Integer>(maxList.size());
-        for (HotGameList string : maxList) {
-            map.put(string, 1);
-        }
-        for (HotGameList string : minList) {
-            if (map.get(string) != null) {
-                map.put(string, 2);
-                continue;
-            }
-            diff.add(string);
-        }
-        for (Map.Entry<HotGameList, Integer> entry : map.entrySet()) {
-            if (entry.getValue() == 1) {
-                diff.add(entry.getKey());
+
+        for (int i = 0; i < list2.size(); i++) {
+            for (HotGameList string : list1) {
+                if (list2.get(i).getId() == string.getId()) {
+                    list1.remove(string);
+                    break;
+                }
             }
         }
-        System.out.println("getDiffrent5 total times " + (System.nanoTime() - st));
-        return diff;
+        return list1;
 
     }
 

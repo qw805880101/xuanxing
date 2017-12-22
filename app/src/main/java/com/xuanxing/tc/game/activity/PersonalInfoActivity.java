@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -22,11 +24,15 @@ import com.psylife.wrmvplibrary.utils.ToastUtils;
 import com.psylife.wrmvplibrary.utils.helper.RxUtil;
 import com.xuanxing.tc.game.MyApplication;
 import com.xuanxing.tc.game.R;
+import com.xuanxing.tc.game.adapter.InterestPersonalAdapter;
 import com.xuanxing.tc.game.base.BaseActivity;
 import com.xuanxing.tc.game.bean.BaseBean;
 import com.xuanxing.tc.game.bean.BaseBeanClass;
+import com.xuanxing.tc.game.bean.BaseList;
 import com.xuanxing.tc.game.bean.HeadInfo;
+import com.xuanxing.tc.game.bean.HotGameList;
 import com.xuanxing.tc.game.bean.MemberInfo;
+import com.xuanxing.tc.game.bean.ModInterestList;
 import com.xuanxing.tc.game.utils.DateUtils;
 import com.xuanxing.tc.game.utils.DialogUtil;
 import com.xuanxing.tc.game.utils.SendEvent;
@@ -38,9 +44,11 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -76,8 +84,8 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
     TextView mTxtBirthday;
     @BindView(R.id.iv_head)
     RoundedImageView mIvHead;
-    @BindView(R.id.txt_interest)
-    TextView mTxtInterest;
+    @BindView(R.id.re_interest)
+    RecyclerView mReInterest;
     @BindView(R.id.txt_intro)
     TextView mTxtIntro;
 
@@ -86,6 +94,10 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
     private String path;
 
     private String birthday;
+
+    private List<HotGameList> addedData = new ArrayList<>();
+
+    private InterestPersonalAdapter mInterestPersonalAdapter;
 
     public void setStatusBarColor() {
         StatusBarUtil.setColor(this, this.getResources().getColor(R.color.title_bg_e83646));
@@ -129,10 +141,17 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
         mTxtUserName.setText(mMemberInfo.getNickName());
         mTxtBirthday.setText(mMemberInfo.getBirthdayStr() != null && !mMemberInfo.getBirthdayStr().equals("") ? mMemberInfo.getBirthdayStr() : "1991-01-01");
         birthday = mTxtBirthday.getText().toString().trim();
-        mTxtInterest.setText(mMemberInfo.getNickName());
+
+        mInterestPersonalAdapter = new InterestPersonalAdapter(this, addedData);
+        mReInterest.setLayoutManager(new GridLayoutManager(this, 4));
+        mReInterest.setAdapter(mInterestPersonalAdapter);
+
         mTxtIntro.setText(mMemberInfo.getIntro());
         //TODO 添加照片
         XUtils.loadHeadIcon(mContext, mMemberInfo.getHeadIcon(), mIvHead);
+
+        getMLikeGame();
+
     }
 
     @Override
@@ -287,7 +306,6 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
                     EventBus.getDefault().post(new SendEvent("headicon", baseBean.getData().getHeadIcon()));
                     XUtils.modUserInfo(PersonalInfoActivity.this, map);
                     XUtils.loadHeadIcon(mContext, new File(path), mIvHead);
-
                 } else {
                     ToastUtils.showToast(PersonalInfoActivity.this, baseBean.getMsg());
                 }
@@ -310,6 +328,31 @@ public class PersonalInfoActivity extends BaseActivity implements OnClickListene
             }
         }
     };
+
+    /**
+     * 获取喜欢的游戏列表
+     */
+    private void getMLikeGame() {
+        Observable<BaseBeanClass<BaseList>> mLikeGame = mXuanXingApi.mGetLikeGameList(MyApplication.loginInfo.getMemberInfo().getMemberId(), MyApplication.loginInfo.getP_token()).compose(RxUtil.<BaseBeanClass<BaseList>>rxSchedulerHelper());
+        mRxManager.add(mLikeGame.subscribe(new Action1<BaseBeanClass<BaseList>>() {
+            @Override
+            public void call(BaseBeanClass<BaseList> baseListBaseBeanClass) {
+                if (baseListBaseBeanClass.getCode().equals("0000")) {
+                    if (baseListBaseBeanClass.getData().getLikeGameList().size() > 3) {
+                        for (int i = 0; i < 4; i++) {
+                            addedData.add(baseListBaseBeanClass.getData().getLikeGameList().get(i));
+                        }
+                    } else {
+                        addedData = baseListBaseBeanClass.getData().getLikeGameList();
+                    }
+                    mInterestPersonalAdapter.setNewData(addedData);
+                } else {
+                    toastMessage(baseListBaseBeanClass.getCode(), baseListBaseBeanClass.getMsg());
+                }
+            }
+        }, this));
+    }
+
 
     @Override
     public void onDestroy() {
